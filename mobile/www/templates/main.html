@@ -1,0 +1,55 @@
+<nav class="tf-navbar">
+    <section class="icon">
+        <i class="fa fa-google"></i>
+    </section>
+    <section class="title">
+        <h4> ابزار باستانی </h4>
+        <p> صفحه اصلی </p>
+    </section>
+    <section class="icon button" ng-click="sidebar =! sidebar">
+        <i class="fa fa-navicon"></i>
+    </section>
+</nav>
+
+<div class="tf-container">
+    <div class="main-items row" ng-click="itemClick()">
+        <div>ماشین‌آلات نو</div>
+        <div>ماشین‌آلات کارکرده</div>
+        <div>ابزارآلات</div>
+        <div>شرکت‌ها</div>
+    </div>
+    <tf-image-slider ng-model="images" class="vertical-padding"></tf-image-slider>
+
+</div>
+
+<tf-sidebar open="sidebar" direction="left">
+    <div class="profile">
+        <i class="fa fa-user"></i><br>
+        <h5 ng-if="me !== false"> {{ me.alias }} </h5>
+        <h5 ng-if="me === false"> خوش آمدید! </h5>
+    </div>
+    <ul class="list-group main-sidebar pointer">
+        <li class="list-group-item" ng-if="me === false" tf-go="/login">
+            <i class="fa fa-sign-in"></i> ورود به سیستم
+        </li>
+
+        <li class="list-group-item" tf-go="/products">
+            <i class="fa fa-cubes"></i> محصولات
+        </li>
+        <li class="list-group-item" tf-go="/companies">
+            <i class="fa fa-building"></i> شرکت‌ها
+        </li>
+        <li class="list-group-item" tf-go="/brands">
+            <i class="fa fa-tags"></i> برندها
+        </li>
+        <li class="list-group-item" tf-go="/industries">
+            <i class="fa fa-industry"></i> صنایع
+        </li>
+        <li class="list-group-item" tf-go="/companies">
+            <i class="fa fa-info-circle"></i> درباره ما
+        </li>
+        <li class="list-group-item" ng-if="me !== false" tf-go="/login">
+            <i class="fa fa-sign-out"></i> خروج
+        </li>
+    </ul>
+</tf-sidebar>

@@ -1,0 +1,30 @@
+<nav class="tf-navbar">
+    <section class="icon">
+        <i class="fa fa-cubes"></i>
+    </section>
+    <section class="title">
+        <h4> ابزار باستانی </h4>
+        <p> محصولات </p>
+    </section>
+    <section class="icon button" tf-go="/products/new" ng-if="me !== false">
+        <i class="fa fa-plus"></i>
+    </section>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-arrow-left"></i>
+    </section>
+</nav>
+<div class="tf-container">
+    <ul class="list-group block pointer" ng-if="items.length > 0">
+        <li class="list-group-item" ng-repeat="item in items" tf-go="/products/{{item.id}}">
+            <div class="pull-right">
+                <h4>{{item.name}}</h4>
+                <label class="label label-warning">مدل: {{item.model}}</label>
+                <label class="label label-info">ساخت: {{item.country}}</label>
+                <label class="label label-info">سال: {{item.year}}</label>
+            </div>
+            <img ng-src="{{item.file}}" height="80px" class="pull-left" />
+            <div style="clear: both"></div>
+        </li>
+    </ul>
+    <p class="vertical-padding horizontal-padding" ng-if="items.length == 0"> هنوز هیچ آیتمی ثبت نشده‌است. </p>
+</div>

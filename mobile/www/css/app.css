@@ -1,0 +1,49 @@
+.profile {
+    padding: 25px 0;
+    text-align: center;
+    background: #f5f5f5;
+}
+
+.profile > i {
+    width: 70px;
+    height: 70px;
+    font-size: 42px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+    border: solid 1px #dddddd;
+    background-color: #f5f5f5;
+}
+
+.list-group.full-width .list-group-item {
+    border-right-width: 0;
+    border-left-width: 0;
+}
+
+.main-items {
+    text-align: center;
+    height: 70px;
+    top: 0;
+    width: 320px;
+    margin: 25px auto;
+}
+
+.main-items > div {
+    cursor: pointer;
+    background: #2196f3;
+    color: #fff;
+    text-align: center;
+    margin: 0 5px;
+    height: 70px;
+    width: 70px;
+    float: right;
+    border-radius: 70px;
+    line-height: 67px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    border-bottom: solid 4px rgba(0, 0, 0, 0.2);
+}
+
+.main-items > div:active {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background: #208ce0;
+}

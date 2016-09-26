@@ -1,0 +1,21 @@
+<nav class="tf-navbar">
+    <section class="icon">
+        <i class="fa fa-cubes"></i>
+    </section>
+    <section class="title">
+        <h4> ابزار باستانی </h4>
+        <p> محصول </p>
+    </section>
+    <section class="icon button" tf-go="back">
+        <i class="fa fa-arrow-left"></i>
+    </section>
+</nav>
+<div class="tf-container horizontal-padding vertical-padding">
+    <img ng-src="{{item.file}}" class="full-width" />
+    <div>
+        <h4>{{item.name}}</h4>
+        <label class="label label-warning">مدل: {{item.model}}</label>
+        <label class="label label-info">ساخت: {{item.country}}</label>
+        <label class="label label-info">سال: {{item.year}}</label>
+    </div>
+</div>
