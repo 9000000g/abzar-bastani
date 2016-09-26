@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.listen(config.server.port);
 
-app.post('/login', (req, res) => {
+app.post('/login', upload.array(), (req, res) => {
     if (req.session == null) {
         res.status(500).json('اشکال در ایجاد سشن!');
         return;
@@ -48,7 +48,7 @@ app.post('/login', (req, res) => {
             res.status(500).json('اشکال در بازیابی اطلاعات!');
         });
 });
-app.post('/logout', (req, res) => {
+app.post('/logout', upload.array(), (req, res) => {
     if (req.session == null) {
         res.status(500).json('اشکال در ایجاد سشن!');
         return;
