@@ -20,22 +20,22 @@ function tableNameToItem(tableName) {
 }
 
 function findTemplate(templateName) {
-    return '/templates/' + templateName + '.html';
+    return 'templates/' + templateName + '.html';
 }
 
 function findItemsTemplate(urlattr) {
     var template = urlattr.table;
-    return '/templates/' + template + '.html';
+    return 'templates/' + template + '.html';
 }
 
 function findItemTemplate(urlattr) {
     var template = tableNameToItem(urlattr.table);
-    return '/templates/' + template + '.html';
+    return 'templates/' + template + '.html';
 }
 
 function findNewItemTemplate(urlattr) {
     var template = 'new-' + tableNameToItem(urlattr.table);
-    return '/templates/' + template + '.html';
+    return 'templates/' + template + '.html';
 }
 
 function tableItemsResolve() {
