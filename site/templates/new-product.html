@@ -3,8 +3,7 @@
         <i class="fa fa-plus-square"></i>
     </section>
     <section class="title">
-        <h4> ابزار باستانی </h4>
-        <p> محصول جدید </p>
+        <h4> محصول جدید </h4>
     </section>
     <section class="icon button" tf-go="back">
         <i class="fa fa-arrow-left"></i>
@@ -48,15 +47,21 @@
                 <select tf-selectize class="form-control" options="options.industries" ng-model="inputs.industry" required><select>
             </div>
             <div class="form-group col-sm-6">
-                <label class="control-label">گروه</label>
-                <select tf-selectize class="form-control" options="options.groups" ng-model="inputs.group" required><select>
+                <label class="control-label">شرکت توزیع‌کننده</label>
+                <select tf-selectize class="form-control" options="options.importers" ng-model="inputs.importer" required><select>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-sm-6">
-                <label class="control-label">شرکت توزیع‌کننده</label>
-                <select tf-selectize class="form-control" options="options.companies" ng-model="inputs.company" required><select>
+                <label class="control-label">گروه</label>
+                <select tf-selectize class="form-control" options="options.groups" ng-model="inputs.group" required><select>
             </div>
+            <div class="form-group col-sm-6">
+                <label class="control-label">زیرگروه</label>
+                <select tf-selectize class="form-control" options="options.subgroups" ng-model="inputs.subgroup" required><select>
+            </div>
+        </div>
+        <div class="row">
             <div class="form-group col-sm-3">
                 <label class="control-label"> تصویر </label>
                 <div class="btn btn-default btn-block" tf-image-picker ng-model="inputs.file">
@@ -68,8 +73,11 @@
                 <tf-switch class="form-control" ng-model="inputs.used" required></tf-switch>
             </div>
         </div>
+        <div class="row">
+            <div class="form-group col-xs-12">
+                <label class="control-label"> </label>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">ثبت</button>
+            </div>
+        </div>
     </div>
 </form>
-<div>
-    <button class="btn btn-primary btn-lg btn-block" ng-click="submit()">ثبت</button>
-</div>

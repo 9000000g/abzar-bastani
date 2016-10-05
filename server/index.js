@@ -66,7 +66,7 @@ app.get('/users/:id', (req, res) => {
             res.status(500).json('اشکال در ایجاد سشن!');
             return;
         }
-        if (req.session.me === false) {
+        if (typeof req.session.me == 'undefined' || req.session.me === false) {
             res.json(false);
             return;
         } else {
@@ -81,42 +81,73 @@ app.get('/users/:id', (req, res) => {
         });
 });
 
-app.get('/table/:table', (req, res) => {
-    bst.getAll(req.params.table).then((result) => {
+app.get('/get-all/:table/:filters?', (req, res) => {
+    if (req.params.table == 'messages') {
+        if (req.session == null) {
+            res.status(500).json('اشکال در ایجاد سشن!');
+            return;
+        }
+        if (typeof req.session.me == 'undefined' || req.session.me === false) {
+            res.status(500).json('ابتدا وارد سیستم شوید!');
+            return;
+        }
+    }
+    let filters = {}
+    if (req.params.filters) {
+        let spl = req.params.filters.split('&');
+
+        for (let i in spl) {
+            let keyval = spl[i].split('=');
+            filters[keyval[0]] = keyval[1];
+        }
+    }
+    bst.getAll(req.params.table, filters).then((result) => {
             for (var i in result) {
-                result[i].file = `${global.config.server.address}:${global.config.server.port}/table/${req.params.table}/${result[i].id}/file`
+                result[i].file = `${global.config.server.address}:${global.config.server.port}/get-file/${req.params.table}/${result[i].id}`
             }
             res.json(result);
         })
         .catch((error) => {
+            console.log(error);
             res.status(500).json('اشکال در بازیابی اطلاعات!');
         });
 });
-app.get('/table/:table/:id', (req, res) => {
-    bst.get(req.params.table, req.params.id).then((result) => {
-            result.file = `${global.config.server.address}:${global.config.server.port}/table/${req.params.table}/${result.id}/file`
-            res.json(result);
+
+app.get('/get/:table/:id', (req, res) => {
+    let filters = {
+        id: req.params.id
+    }
+    bst.getAll(req.params.table, filters).then((result) => {
+            for (var i in result) {
+                result[i].file = `${global.config.server.address}:${global.config.server.port}/get-file/${req.params.table}/${result[i].id}`
+            }
+            res.json(result[0]);
         })
         .catch((error) => {
             res.status(500).json('اشکال در بازیابی اطلاعات!');
         });
 });
-app.get('/table/:table/:id/file', (req, res) => {
+app.get('/get-file/:table/:id', (req, res) => {
     let basedir = `${__dirname}/files`;
     let file = `${basedir}/${req.params.table}-${req.params.id}.jpg`;
     res.sendFile(file);
 });
-app.post('/table/:table/insert', upload.single('file'), (req, res) => {
-    if (req.session == null) {
-        res.status(500).json('اشکال در ایجاد سشن!');
-        return;
+app.post('/insert/:table', upload.single('file'), (req, res) => {
+    if (req.params.table == 'products') {
+        if (req.session == null) {
+            res.status(500).json('اشکال در ایجاد سشن!');
+            return;
+        }
+        if (typeof req.session.me == 'undefined' || req.session.me === false) {
+            res.status(500).json('لطفا اول وارد سیستم شوید!');
+            return;
+        }
     }
-    if (req.session.me === false) {
-        res.status(500).json('لطفا اول وارد سیستم شوید!');
-        return;
-    }
+    //console.log(req.file)
     //console.log(req.body)
+
     bst.insert(req.params.table, req.body).then((result) => {
+            //console.log('inserted')
             if (typeof req.file != 'undefined' && req.file) {
                 let path = `${__dirname}/files/${req.params.table}-${result.insertId}.jpg`;
 
@@ -127,6 +158,7 @@ app.post('/table/:table/insert', upload.single('file'), (req, res) => {
             }
         })
         .catch((error) => {
+            console.log(error);
             res.status(500).json(error);
         });
 });

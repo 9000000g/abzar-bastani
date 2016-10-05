@@ -1,27 +1,18 @@
 angular.module('app.directives', [])
-    .directive('imagePicker', function($timeout) {
+    .directive('abzarTabs', function($timeout) {
         return {
             restrict: 'EA',
             replace: true,
             transclude: true,
             scope: {
-                value: '=?'
+                active: '=?'
             },
-            link: function(scope) {
-                //scope.value = '';
-                scope.selectFile = function() {
-                    navigator.camera.getPicture(function(data) {
-                        scope.value = data;
-                        scope.$apply();
-
-                    }, new Function(), {
-                        destinationType: 0,
-                        sourceType: 2,
-                        EncodingType: 0
-                    });
-                }
-            },
-            template: '<span ng-click="selectFile()" ng-transclude></span>'
-
+            template: '' +
+                '<ul class="tf-tabs">' +
+                '   <li tf-go="/main" ng-class="{active: active==0}"> <i class="fa fa-home"></i> خانه </li>' +
+                '   <li tf-go="/get-all/products/group=1" ng-class="{active: active==1}"> <i class="fa fa-gears"></i> ماشین‌آلات </li>' +
+                '   <li tf-go="/get-all/products/group=2" ng-class="{active: active==2}"> <i class="fa fa-legal"></i> ابزارآلات </li>' +
+                '   <li tf-go="/get-all/companies/" ng-class="{active: active==3}"> <i class="fa fa-building"></i> شرکت‌ها </li>' +
+                '</ul>'
         }
     })

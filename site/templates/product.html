@@ -3,19 +3,51 @@
         <i class="fa fa-cubes"></i>
     </section>
     <section class="title">
-        <h4> ابزار باستانی </h4>
-        <p> محصول </p>
+        <h4> {{item.name}}، مدل {{item.model}} </h4>
     </section>
-    <section class="icon button" tf-go="back">
+    <section class="icon button" ng-show="photoViewer" ng-click="photoViewer = false">
+        <i class="fa fa-close"></i>
+    </section>
+    <section class="icon button" tf-go="back" ng-show="!photoViewer">
         <i class="fa fa-arrow-left"></i>
     </section>
 </nav>
-<div class="tf-container horizontal-padding vertical-padding">
-    <img ng-src="{{item.file}}" class="full-width" />
-    <div>
-        <h4>{{item.name}}</h4>
-        <label class="label label-warning">مدل: {{item.model}}</label>
-        <label class="label label-info">ساخت: {{item.country}}</label>
-        <label class="label label-info">سال: {{item.year}}</label>
+<div class="tf-container">
+    <div class="horizontal-padding vertical-padding product" ng-show="!photoViewer">
+        <img ng-src="{{item.file}}" class="full-width pointer" ng-click="photoViewer = true" />
+        <h4>{{item.name}}، مدل {{item.model}}</h4>
+        <div ng-if="item.code"> <b> کد: </b>
+            <p class="inline" ng-bind="item.code"></p>
+        </div>
+        <div ng-if="item.country_alias"> <b> کشور: </b>
+            <p class="inline" ng-bind="item.country_alias"></p>
+        </div>
+        <div ng-if="item.year"> <b> سال ساخت: </b>
+            <p class="inline" ng-bind="item.year"></p>
+        </div>
+        <div ng-if="item.group_alias"> <b> گروه: </b>
+            <p class="inline" ng-bind="item.group_alias"></p>
+        </div>
+        <div ng-if="item.subgroup_alias"> <b> زیرگروه: </b>
+            <p class="inline" ng-bind="item.subgroup_alias"></p>
+        </div>
+        <div ng-if="item.brand_alias"> <b> برند: </b>
+            <p class="inline" ng-bind="item.brand_alias"></p>
+        </div>
+        <div ng-if="item.industry_alias"> <b> صنعت: </b>
+            <p class="inline" ng-bind="item.industry_alias"></p>
+        </div>
+        <div ng-if="item.importer_alias"> <b> شرکت وارد‌کننده: </b>
+            <p class="inline" ng-bind="item.importer_alias"></p>
+        </div>
+        <div> <b> وضعیت: </b>
+            <p class="inline">{{item.used? 'گارکرده': 'نو'}}</p>
+        </div>
+        <hr>
+        <button class="btn btn-primary" tf-go="/insert/messages/product={{item.code}}"> درخواست خرید این محصول </button>
     </div>
+    <div class="photo-viewer" ng-show="photoViewer">
+        <img ng-src="{{item.file}}" />
+    </div>
+
 </div>

@@ -1,0 +1,23 @@
+<nav class="tf-navbar">
+    <section class="icon">
+        <i class="fa fa-comment"></i>
+    </section>
+    <section class="title">
+        <h4> {{item.name}}, درخواست خرید {{item.product}} </h4>
+    </section>
+    <section class="icon button" tf-go="back">
+        <i class="fa fa-arrow-left"></i>
+    </section>
+</nav>
+<div class="tf-container">
+    <div class="horizontal-padding vertical-padding item">
+        <h4 tf-go="/get/products/{{item.product_id}}">  {{item.name}}, درخواست خرید <a> {{item.product}} </a> </h4>
+        <div ng-if="item.phone"> <b> شماره تماس: </b>
+            <p class="inline" ng-bind="item.phone"></p>
+        </div>
+        <div ng-if="item.message"> <b> متن پیام: </b>
+            <p class="inline" ng-bind="item.message"></p>
+        </div>
+    </div>
+
+</div>

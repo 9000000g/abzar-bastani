@@ -1,4 +1,4 @@
 serverConfig = {
-    address: 'http://23.227.201.9',
+    address: 'http://192.168.2.163',
     port: 1978
 }

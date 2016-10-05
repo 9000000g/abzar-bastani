@@ -1,0 +1,40 @@
+<nav class="tf-navbar">
+    <section class="icon">
+        <i class="fa fa-cubes"></i>
+    </section>
+    <section class="title">
+        <h4 ng-bind="item.alias"></h4>
+    </section>
+    <section class="icon button" ng-show="photoViewer" ng-click="photoViewer = false">
+        <i class="fa fa-close"></i>
+    </section>
+    <section class="icon button" tf-go="back" ng-show="!photoViewer">
+        <i class="fa fa-arrow-left"></i>
+    </section>
+</nav>
+<div class="tf-container">
+    <div class="horizontal-padding vertical-padding item">
+        <h4>{{item.alias}}</h4>
+        <div ng-if="item.job"> <b> نوع فعالیت: </b>
+            <p class="inline" ng-bind="item.job"></p>
+        </div>
+        <div ng-if="item.description"> <b> توضیحات: </b>
+            <p class="inline" ng-bind="item.description"></p>
+        </div>
+        <div ng-if="item.site"> <b> سایت: </b>
+            <p class="inline" ng-bind="item.site"></p>
+        </div>
+        <div ng-if="item.email"> <b> ایمیل: </b>
+            <p class="inline" ng-bind="item.email"></p>
+        </div>
+        <div ng-if="item.phone"> <b> تلفن: </b>
+            <p class="inline" ng-bind="item.phone"></p>
+        </div>
+        <div ng-if="item.fax"> <b> فکس: </b>
+            <p class="inline" ng-bind="item.fax"></p>
+        </div>
+        <div ng-if="item.address"> <b> آدرس: </b>
+            <p class="inline" ng-bind="item.address"></p>
+        </div>
+    </div>
+</div>

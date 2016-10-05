@@ -1,12 +1,12 @@
 {
     "server": {
-        "address": "http://192.168.2.163",
+        "address": "http://23.227.201.9",
         "port": 1978
     },
     "mysql": {
         "host": "127.0.0.1",
-        "user": "nai",
-        "password": "1qaz@WSX",
+        "user": "root",
+        "password": "",
         "database": "bastani"
     }
 }
