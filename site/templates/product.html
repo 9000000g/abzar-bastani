@@ -14,7 +14,7 @@
 </nav>
 <div class="tf-container">
     <div class="horizontal-padding vertical-padding product" ng-show="!photoViewer">
-        <img ng-src="{{item.file}}" class="full-width pointer" ng-click="photoViewer = true" />
+        <img ng-src="{{item.file}}" class="full-width pointer" ngz-click="photoViewer = true" />
         <h4>{{item.name}}، مدل {{item.model}}</h4>
         <div ng-if="item.code"> <b> کد: </b>
             <p class="inline" ng-bind="item.code"></p>
@@ -47,7 +47,7 @@
         <button class="btn btn-primary" tf-go="/insert/messages/product={{item.code}}"> درخواست خرید این محصول </button>
     </div>
     <div class="photo-viewer" ng-show="photoViewer">
-        <img ng-src="{{item.file}}" />
+        <img ng-src="{{item.file}}" class="img" />
     </div>
 
 </div>

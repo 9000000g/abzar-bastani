@@ -182,7 +182,7 @@ CREATE TABLE `messages` (
   `product` varchar(45) DEFAULT NULL,
   `read` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,7 +191,7 @@ CREATE TABLE `messages` (
 
 LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-INSERT INTO `messages` VALUES (2,'علی باستانی','09129293232','asdasdasd','x897',0),(3,'حمید حسنی','09129293232','سلام. من قصد خرید این محصول رو دارم. لطفا با من تماس بگیرید.','x897',0);
+INSERT INTO `messages` VALUES (2,'علی باستانی','09129293232','asdasdasd','x897',0),(3,'حمید حسنی','09129293232','سلام. من قصد خرید این محصول رو دارم. لطفا با من تماس بگیرید.','x897',0),(4,'علی','09364463727','سلام. اقا این دستگاه چند؟','ab556',0);
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -216,7 +216,7 @@ CREATE TABLE `products` (
   `subgroup` int(11) DEFAULT NULL,
   `importer` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -225,7 +225,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (14,'لبه چسبان','M0031','EB-101',2016,'CN',0,1,1,1,1,2),(15,'دستگاه خوب','x273','x273',1987,'CN',1,2,2,2,25,2),(16,'آل کلر','x897','e225',1879,'AL',1,2,2,2,2,2),(17,'A2','A222','8742',19999,'DZ',0,6,2,2,2,2),(18,'تست','zcxzxc','sdcsc',234234,'TM',0,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `products` VALUES (14,'لبه چسبان','M0031','EB-101',2016,'CN',0,1,1,1,1,2),(15,'دستگاه خوب','x273','x273',1987,'CN',1,2,2,2,25,2),(16,'آل کلر','x897','e225',1879,'AL',1,2,2,2,2,2),(17,'A2','A222','8742',19999,'DZ',0,6,2,2,2,2),(18,'تست','zcxzxc','sdcsc',234234,'TM',0,NULL,NULL,NULL,NULL,NULL),(19,'تست جدید','ab556','84',1987,'TW',0,5,1,2,29,1);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -267,7 +267,7 @@ CREATE TABLE `userproducts` (
   `product` varchar(455) DEFAULT NULL,
   `description` varchar(455) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -276,7 +276,7 @@ CREATE TABLE `userproducts` (
 
 LOCK TABLES `userproducts` WRITE;
 /*!40000 ALTER TABLE `userproducts` DISABLE KEYS */;
-INSERT INTO `userproducts` VALUES (18,'آقای حسنی','09123213333','دستگاه لبه پر فلان','این دستگاه سه ماه دست ما بوده. تقریبا نو هستش. برای بازدید تماس بگیرید'),(19,'عبس حمسدس','091233213123123','دستگاه بالابر فلان','سلام این یه متن تسته');
+INSERT INTO `userproducts` VALUES (18,'آقای حسنی','09123213333','دستگاه لبه پر فلان','این دستگاه سه ماه دست ما بوده. تقریبا نو هستش. برای بازدید تماس بگیرید'),(19,'عبس حمسدس','091233213123123','دستگاه بالابر فلان','سلام این یه متن تسته'),(20,'sdf','sdf','fsd','sdfsdf');
 /*!40000 ALTER TABLE `userproducts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -315,4 +315,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-10-05 20:50:25
+-- Dump completed on 2016-10-20  1:57:07

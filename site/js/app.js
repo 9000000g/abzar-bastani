@@ -237,6 +237,26 @@ function tableNewItemResolve() {
         }
     }
 }
+
+function mainResolve() {
+    return {
+        last: function($tfHttp, $q, $theFramework) {
+            $theFramework.loading();
+            var defer = $q.defer();
+            $tfHttp.get(
+                '/get-all/products/TRUE/6'
+            ).then(function(res) {
+                $theFramework.loading(false);
+                defer.resolve(res.data);
+            }).catch(function(err) {
+                $theFramework.loading(false);
+                $theFramework.toast(err.data);
+                defer.reject(err.data);
+            });
+            return defer.promise;
+        }
+    }
+}
 angular.module('app', ['theFramework', 'app.services', 'app.directives', 'app.controllers'])
     .config(function($routeProvider, $tfHttpProvider) {
         /* ajax config */
@@ -250,7 +270,8 @@ angular.module('app', ['theFramework', 'app.services', 'app.directives', 'app.co
             })
             .when('/main', {
                 templateUrl: findTemplate('main'),
-                controller: 'MainCtrl'
+                controller: 'MainCtrl',
+                resolve: mainResolve()
             })
             .when('/get-all/:table/:filters?/:searchTitle?', {
                 controller: 'TableItemsCtrl',

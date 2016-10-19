@@ -76,7 +76,8 @@ module.exports.get = (table = 'users', id = 1, fields = ['*']) => {
         });
     });
 }
-module.exports.getAll = (table = 'users', filters = {}) => {
+module.exports.getAll = (table = 'users', filters = {}, limit = false) => {
+    limit = limit ? limit : 99999;
     let query;
     let where = 'TRUE ';
 
@@ -113,6 +114,7 @@ module.exports.getAll = (table = 'users', filters = {}) => {
             .leftJoin('subgroups s', 'p.subgroup = s.id')
             .where(where)
             .orderBy('`p`.`id`', 'DESC')
+            .limit(0, limit)
             .val();
     } else if (table == 'messages') {
         query = qc.new().select([

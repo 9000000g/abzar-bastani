@@ -12,6 +12,15 @@
 <abzar-tabs active="0"></abzar-tabs>
 <div class="tf-container">
     <tf-image-slider ng-model="images" class="vertical-padding"></tf-image-slider>
+    <div class="vertical-padding horizontal-padding">
+        <h4>آخرین محصولات:</h4>
+        <ul class="last">
+            <li ng-repeat="item in last" tf-go="/get/products/{{item.id}}">
+                <div class="img" ng-style="{'background-image': 'url(' + item.file + ')'}"></div>
+                <h5 ng-bind="item.name"></h5>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <tf-sidebar open="sidebar" direction="left">

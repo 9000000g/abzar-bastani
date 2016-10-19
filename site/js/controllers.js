@@ -16,7 +16,7 @@ angular.module('app.controllers', [])
         }
         $rootScope.deside(); // check logged in or not
     })
-    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp) {
+    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, last) {
         //alert('we are here');
 
         $scope.sidebar = false;
@@ -29,11 +29,10 @@ angular.module('app.controllers', [])
         }, {
             src: 'images/4.jpg'
         }];
+
+        $scope.last = last;
         $scope.fetch = function() {
             //alert('we are here');
-        }
-        $scope.itemClick = function() {
-            $theFramework.toast('این آیتم فعلا غیر فعال است!')
         }
 
         $scope.fetch();
@@ -70,6 +69,13 @@ angular.module('app.controllers', [])
         $scope.filters = filters;
         $scope.searching = searching;
         $scope.searchTitle = searchTitle;
+
+        $scope._bottomSheet = false;
+        $scope.hovered = {};
+        $scope.bottomSheet = function(item) {
+            $scope._bottomSheet = true;
+            $scope.hovered = item;
+        }
     })
     .controller('TableItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $routeParams, item) {
         console.log(item);

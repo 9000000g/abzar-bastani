@@ -4,15 +4,15 @@
     </section>
     <section class="title">
         <h4> ابزار باستانی </h4>
-        <p> شرکت‌ها </p>
     </section>
-    <section class="icon button" tf-go="/main">
+    <section class="icon button" tf-go="back">
         <i class="fa fa-arrow-left"></i>
     </section>
 </nav>
+<abzar-tabs active="3"></abzar-tabs>
 <div class="tf-container">
     <ul class="list-group block pointer" ng-if="items.length > 0">
-        <li class="list-group-item" ng-repeat="item in items">
+        <li class="list-group-item" ng-repeat="item in items" tf-go="/get/companies/{{item.id}}">
             <i class="fa fa-building"></i> {{item.alias}}
         </li>
     </ul>

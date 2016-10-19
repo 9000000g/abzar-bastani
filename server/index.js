@@ -58,6 +58,9 @@ app.post('/logout', upload.array(), (req, res) => {
 });
 
 
+app.get('/hi', (req, res) => {
+    res.json(true);
+});
 
 app.get('/users/:id', (req, res) => {
     let id = req.params.id;
@@ -81,7 +84,7 @@ app.get('/users/:id', (req, res) => {
         });
 });
 
-app.get('/get-all/:table/:filters?', (req, res) => {
+app.get('/get-all/:table/:filters?/:limit?', (req, res) => {
     if (req.params.table == 'messages') {
         if (req.session == null) {
             res.status(500).json('اشکال در ایجاد سشن!');
@@ -98,10 +101,12 @@ app.get('/get-all/:table/:filters?', (req, res) => {
 
         for (let i in spl) {
             let keyval = spl[i].split('=');
-            filters[keyval[0]] = keyval[1];
+            if (keyval.length == 2) {
+                filters[keyval[0]] = keyval[1];
+            }
         }
     }
-    bst.getAll(req.params.table, filters).then((result) => {
+    bst.getAll(req.params.table, filters, req.params.limit).then((result) => {
             for (var i in result) {
                 result[i].file = `${global.config.server.address}:${global.config.server.port}/get-file/${req.params.table}/${result[i].id}`
             }

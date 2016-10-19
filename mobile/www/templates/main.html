@@ -4,22 +4,23 @@
     </section>
     <section class="title">
         <h4> ابزار باستانی </h4>
-        <p> صفحه اصلی </p>
     </section>
     <section class="icon button" ng-click="sidebar =! sidebar">
         <i class="fa fa-navicon"></i>
     </section>
 </nav>
-
+<abzar-tabs active="0"></abzar-tabs>
 <div class="tf-container">
-    <div class="main-items row" ng-click="itemClick()">
-        <div>ماشین‌آلات نو</div>
-        <div>ماشین‌آلات کارکرده</div>
-        <div>ابزارآلات</div>
-        <div>شرکت‌ها</div>
-    </div>
     <tf-image-slider ng-model="images" class="vertical-padding"></tf-image-slider>
-
+    <div class="vertical-padding horizontal-padding">
+        <h4>آخرین محصولات:</h4>
+        <ul class="last">
+            <li ng-repeat="item in last" tf-go="/get/products/{{item.id}}">
+                <div class="img" ng-style="{'background-image': 'url(' + item.file + ')'}"></div>
+                <h5 ng-bind="item.name"></h5>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <tf-sidebar open="sidebar" direction="left">
@@ -29,25 +30,25 @@
         <h5 ng-if="me === false"> خوش آمدید! </h5>
     </div>
     <ul class="list-group main-sidebar pointer">
-        <li class="list-group-item" ng-if="me === false" tf-go="/login">
+        <li class="list-group-item" tf-go="/login" ng-if="me === false">
             <i class="fa fa-sign-in"></i> ورود به سیستم
         </li>
-
-        <li class="list-group-item" tf-go="/products">
-            <i class="fa fa-cubes"></i> محصولات
+        <li class="list-group-item" ng-if="me !== false" tf-go="/get-all/messages">
+            <i class="fa fa-comments"></i> پیام‌ها
         </li>
-        <li class="list-group-item" tf-go="/companies">
+
+        <li class="list-group-item" tf-go="/get-all/userproducts">
+            <i class="fa fa-cubes"></i> آگهی‌ها
+        </li>
+
+        <li class="list-group-item" tf-go="/get-all/companies">
             <i class="fa fa-building"></i> شرکت‌ها
         </li>
-        <li class="list-group-item" tf-go="/brands">
+        <li class="list-group-item" tf-go="/get-all/brands">
             <i class="fa fa-tags"></i> برندها
         </li>
-        <li class="list-group-item" tf-go="/industries">
-            <i class="fa fa-industry"></i> صنایع
-        </li>
-        <li class="list-group-item" tf-go="/companies">
-            <i class="fa fa-info-circle"></i> درباره ما
-        </li>
+
+
         <li class="list-group-item" ng-if="me !== false" tf-go="/login">
             <i class="fa fa-sign-out"></i> خروج
         </li>

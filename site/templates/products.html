@@ -15,9 +15,9 @@
     <div class="row">
         <div class="col-sm-6 col-md-4 product" ng-repeat="item in items">
             <div class="panel panel-default">
-                <div class="panel-heading pointer" tf-go="/products/{{item.id}}">{{item.name}}، مدل {{item.model}}</div>
+                <div class="panel-heading pointer" ng-click="bottomSheet(item)">{{item.name}}، مدل {{item.model}}</div>
                 <div class="panel-body">
-                    <img tf-go="/get/products/{{item.id}}" ng-src="{{item.file}}" class="pointer img" width="100%" />
+                    <img ng-click="bottomSheet(item)" ng-src="{{item.file}}" class="pointer img" width="100%" />
                     <p>
                         <label class="label label-danger">کد {{item.code}}</label>
                         <label class="label label-info pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}country={{item.country}}/کشور {{item.country_alias}}">کشور {{item.country_alias}}</label>
@@ -38,3 +38,13 @@
         <i class="fa fa-plus"></i>
     </tf-floating-btn>
 </div>
+<tf-bottom-sheet open="_bottomSheet" label="{{hovered.name}}، مدل {{hovered.model}}">
+    <ul class="list-group block">
+        <li class="list-group-item" tf-go="get/products/{{hovered.id}}">
+            <i class="fa fa-eye"></i> مشاهده محصول
+        </li>
+        <li class="list-group-item" tf-go="/insert/messages/product={{hovered.code}}">
+            <i class="fa fa-shopping-cart"></i> درخواست خرید محصول
+        </li>
+    </ul>
+</tf-bottom-sheet>
