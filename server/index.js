@@ -1,3 +1,4 @@
+"use strict";
 global.config = require('./config.json');
 
 const express = require('express');
@@ -16,7 +17,7 @@ const upload = multer({
 });
 
 
-const bst = require('./modules/bst.js');
+const bst = require('./modules/bst.js.js');
 
 const app = express();
 
@@ -144,6 +145,16 @@ app.post('/insert/:table', upload.single('file'), (req, res) => {
             return;
         }
         if (typeof req.session.me == 'undefined' || req.session.me === false) {
+            res.status(500).json('لطفا اول وارد سیستم شوید!');
+            return;
+        }
+    }
+    if (req.params.table == 'users') {
+        if (req.session == null) {
+            res.status(500).json('اشکال در ایجاد سشن!');
+            return;
+        }
+        if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1 ) {
             res.status(500).json('لطفا اول وارد سیستم شوید!');
             return;
         }

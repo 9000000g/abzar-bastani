@@ -5,16 +5,16 @@
     <section class="title">
         <h4> {{item.name}}، مدل {{item.model}} </h4>
     </section>
-    <section class="icon button" ng-show="photoViewer" ng-click="photoViewer = false">
-        <i class="fa fa-close"></i>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-home"></i>
     </section>
-    <section class="icon button" tf-go="back" ng-show="!photoViewer">
+    <section class="icon button" tf-go="back">
         <i class="fa fa-arrow-left"></i>
     </section>
 </nav>
 <div class="tf-container">
-    <div class="horizontal-padding vertical-padding product" ng-show="!photoViewer">
-        <img ng-src="{{item.file}}" class="full-width pointer" ngz-click="photoViewer = true" />
+    <div class="horizontal-padding vertical-padding product">
+        <img ng-src="{{item.file}}" class="full-width pointer" />
         <h4>{{item.name}}، مدل {{item.model}}</h4>
         <div ng-if="item.code"> <b> کد: </b>
             <p class="inline" ng-bind="item.code"></p>
@@ -46,8 +46,4 @@
         <hr>
         <button class="btn btn-primary" tf-go="/insert/messages/product={{item.code}}"> درخواست خرید این محصول </button>
     </div>
-    <div class="photo-viewer" ng-show="photoViewer">
-        <img ng-src="{{item.file}}" class="img" />
-    </div>
-
 </div>

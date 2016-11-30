@@ -34,7 +34,7 @@
             <i class="fa fa-sign-in"></i> ورود به سیستم
         </li>
         <li class="list-group-item" ng-if="me !== false" tf-go="/get-all/messages">
-            <i class="fa fa-comments"></i> پیام‌ها
+            <i class="fa fa-comments"></i> پیام‌ها <span class="badge" ng-bind="unreadMessages.length"></span>
         </li>
 
         <li class="list-group-item" tf-go="/get-all/userproducts">
@@ -47,8 +47,6 @@
         <li class="list-group-item" tf-go="/get-all/brands">
             <i class="fa fa-tags"></i> برندها
         </li>
-
-
         <li class="list-group-item" ng-if="me !== false" tf-go="/login">
             <i class="fa fa-sign-out"></i> خروج
         </li>

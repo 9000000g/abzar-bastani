@@ -212,8 +212,14 @@ function tableNewItemResolve() {
                     defer.resolve(data);
                 }).catch(function(err) {
                     $theFramework.toast(err.data);
-                    endOfStory();
+                    defer.reject(err.data);
                 });
+            } else if ($route.current.params.table == 'users') {
+                data.options.types = [
+                    {text: 'ادمین', value: 1},
+                    {text: 'مشتری', value: 2}
+                ];
+                defer.resolve(data);
             } else {
                 defer.resolve(data);
             }
@@ -245,6 +251,21 @@ function mainResolve() {
             var defer = $q.defer();
             $tfHttp.get(
                 '/get-all/products/TRUE/6'
+            ).then(function(res) {
+                $theFramework.loading(false);
+                defer.resolve(res.data);
+            }).catch(function(err) {
+                $theFramework.loading(false);
+                $theFramework.toast(err.data);
+                defer.reject(err.data);
+            });
+            return defer.promise;
+        },
+        unreadMessages: function($tfHttp, $q, $theFramework){
+            var defer = $q.defer();
+            $theFramework.loading();
+            $tfHttp.get(
+                '/get-all/messages/read=0'
             ).then(function(res) {
                 $theFramework.loading(false);
                 defer.resolve(res.data);

@@ -6,6 +6,9 @@
         <h4 ng-if="!searchTitle"> {{filters.group==1? 'ماشین‌آلات': (filters.group==2? 'ابزارآلات': 'محصولات')}} </h4>
         <h4 ng-if="searchTitle"> جست‌وجو: {{searchTitle}}</h4>
     </section>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-home"></i>
+    </section>
     <section class="icon button" tf-go="back">
         <i class="fa fa-arrow-left"></i>
     </section>

@@ -61,7 +61,14 @@ module.exports.users = (id = false, password = false) => {
 
 module.exports.get = (table = 'users', id = 1, fields = ['*']) => {
     let query;
-
+    if (table == 'users') {
+        fields = [
+                'id',
+                'username',
+                'alias',
+                'type',
+            ];
+    }
     query = qc.new().select(fields, table).where('id = ?', [id]).val();
 
     return new Promise((resolve, reject) => {
@@ -122,6 +129,14 @@ module.exports.getAll = (table = 'users', filters = {}, limit = false) => {
                 'p.id AS product_id'
             ], 'messages m')
             .leftJoin('products p', 'p.code = m.product')
+            .where(where).orderBy('id', 'DESC').val();
+    } else if (table == 'users') {
+        query = qc.new().select([
+                'id',
+                'username',
+                'alias',
+                'type',
+            ], 'users')
             .where(where).orderBy('id', 'DESC').val();
     } else {
         query = qc.new().select('*', table).where(where).orderBy('id', 'DESC').val();

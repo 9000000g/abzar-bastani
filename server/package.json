@@ -1,10 +1,11 @@
 {
-  "name": "Abzar-Bastani",
+  "name": "abzar-bastani",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel index.js -o index.js.js && babel ./modules/bst.js -o ./modules/bst.js.js"
   },
   "author": "nainemom <nainemom@gmail.com>",
   "license": "MIT",
@@ -14,7 +15,11 @@
     "express": "^4.14.0",
     "multer": "^1.2.0",
     "mysql": "^2.11.1",
-    "query-creator": "0.0.4",
+    "query-creator": "0.0.6",
     "se-session": "git+https://github.com/nainemom/se-session.git"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-latest": "^6.16.0"
   }
 }

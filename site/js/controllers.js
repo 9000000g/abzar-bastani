@@ -16,7 +16,7 @@ angular.module('app.controllers', [])
         }
         $rootScope.deside(); // check logged in or not
     })
-    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, last) {
+    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, last, unreadMessages) {
         //alert('we are here');
 
         $scope.sidebar = false;
@@ -31,6 +31,7 @@ angular.module('app.controllers', [])
         }];
 
         $scope.last = last;
+        $scope.unreadMessages = unreadMessages;
         $scope.fetch = function() {
             //alert('we are here');
         }
@@ -78,13 +79,12 @@ angular.module('app.controllers', [])
         }
     })
     .controller('TableItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $routeParams, item) {
-        console.log(item);
         $scope.item = item;
     })
     .controller('TableNewItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $timeout, $routeParams, data, insert) {
         $scope.options = data.options;
         $scope.inputs = data.inputs;
-        console.log('aaa');
+        $scope.temp = {};
         $scope.submit = function() {
             if (typeof $scope.inputs.used != 'undefined') {
                 $scope.inputs.used = $scope.inputs.used ? 1 : 0;

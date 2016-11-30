@@ -1,0 +1,61 @@
+<nav class="tf-navbar">
+    <section class="icon">
+        <i class="fa fa-plus-square"></i>
+    </section>
+    <section class="title">
+        <h4> کاربر جدید </h4>
+    </section>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-home"></i>
+    </section>
+    <section class="icon button" tf-go="back">
+        <i class="fa fa-arrow-left"></i>
+    </section>
+</nav>
+<form class="tf-container vertical-padding" ng-submit="submit()">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="form-group col-xs-12">
+                <label class="control-label">نام کاربری</label>
+                <input type="text" class="form-control" ng-model="inputs.username" placeholder="نام کاربری خود را وارد کنید." required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-12">
+                <label class="control-label">رمز عبور</label>
+                <input type="password" class="form-control" ng-model="inputs.password" placeholder="رمز عبور خود را وارد کنید." required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-12">
+                <label class="control-label">تکرار رمز عبور</label>
+                <input type="password" class="form-control" ng-model="temp.password" placeholder="رمز عبور خود را مجددا وارد کنید." required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label class="control-label">نوع کاربری</label>
+                <tf-select class="form-control" options="options.countries" ng-model="inputs.country" required><tf-select>
+            </div>
+        </div>
+       
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <label class="control-label"> تصویر </label>
+                <div class="btn btn-default btn-block" tf-image-picker ng-model="inputs.file">
+                    <i class="fa fa-image"></i>
+                </div>
+            </div>
+            <div class="form-group col-sm-3">
+                <label class="control-label">کارکرده</label>
+                <tf-switch class="form-control" ng-model="inputs.used" required></tf-switch>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-12">
+                <label class="control-label"> </label>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">ثبت</button>
+            </div>
+        </div>
+    </div>
+</form>
