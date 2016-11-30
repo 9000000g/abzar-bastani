@@ -212,7 +212,7 @@ function tableNewItemResolve() {
                     defer.resolve(data);
                 }).catch(function(err) {
                     $theFramework.toast(err.data);
-                    defer.reject(err.data);
+                    defer.resolve({});
                 });
             } else if ($route.current.params.table == 'users') {
                 data.options.types = [
@@ -257,7 +257,7 @@ function mainResolve() {
             }).catch(function(err) {
                 $theFramework.loading(false);
                 $theFramework.toast(err.data);
-                defer.reject(err.data);
+                defer.resolve({});
             });
             return defer.promise;
         },
@@ -272,7 +272,7 @@ function mainResolve() {
             }).catch(function(err) {
                 $theFramework.loading(false);
                 $theFramework.toast(err.data);
-                defer.reject(err.data);
+                defer.resolve({});
             });
             return defer.promise;
         }
