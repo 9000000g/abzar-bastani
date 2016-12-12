@@ -3,7 +3,7 @@
         <i class="fa fa-cubes"></i>
     </section>
     <section class="title">
-        <h4 ng-if="!searchTitle"> {{filters.group==1? 'ماشین‌آلات': (filters.group==2? 'ابزارآلات': 'محصولات')}} </h4>
+        <h4 ng-if="!searchTitle"> {{filters.group==1? 'ماشین‌آلات': (filters.group==2? 'ابزارآلات': 'نتایج جست‌وجو')}} </h4>
         <h4 ng-if="searchTitle"> جست‌وجو: {{searchTitle}}</h4>
     </section>
     <section class="icon button" tf-go="/main">
@@ -36,8 +36,8 @@
             </div>
         </div>
     </div>
-    <p class="vertical-padding horizontal-padding" ng-if="items.length==0"> هنوز هیچ آیتمی ثبت نشده‌است. </p>
-    <tf-floating-btn tf-go="/insert/products" ng-if="me !==false" ng-show="bars">
+    <p class="vertical-padding horizontal-padding" ng-if="items.length==0"> متاسفانه هیچ موردی یافت نشد! </p>
+    <tf-floating-btn tf-go="/insert/products" ng-if="me !==false && me.type=1" ng-show="bars">
         <i class="fa fa-plus"></i>
     </tf-floating-btn>
 </div>
@@ -45,6 +45,9 @@
     <ul class="list-group block">
         <li class="list-group-item" tf-go="get/products/{{hovered.id}}">
             <i class="fa fa-eye"></i> مشاهده محصول
+        </li>
+        <li class="list-group-item" tf-go="update/products/{{hovered.id}}" ng-if="me !==false && me.type=1">
+            <i class="fa fa-eye"></i> ویرایش محصول
         </li>
         <li class="list-group-item" tf-go="/insert/messages/product={{hovered.code}}">
             <i class="fa fa-shopping-cart"></i> درخواست خرید محصول

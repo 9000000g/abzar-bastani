@@ -139,21 +139,14 @@ app.get('/get-file/:table/:id', (req, res) => {
     res.sendFile(file);
 });
 app.post('/insert/:table', upload.single('file'), (req, res) => {
-    if (req.params.table == 'products') {
-        if (req.session == null) {
-            res.status(500).json('اشکال در ایجاد سشن!');
-            return;
-        }
-        if (typeof req.session.me == 'undefined' || req.session.me === false) {
-            res.status(500).json('لطفا اول وارد سیستم شوید!');
-            return;
-        }
+    if (req.session == null) {
+        res.status(500).json('اشکال در ایجاد سشن!');
+        return;
     }
-    if (req.params.table == 'users') {
-        if (req.session == null) {
-            res.status(500).json('اشکال در ایجاد سشن!');
-            return;
-        }
+    if (  req.params.table == 'userproducts' || (req.params.table == 'users' && req.body.type != 1) ) { // mikhad user add kone o typesh 1 nist
+        // let do it
+    }
+    else{
         if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1 ) {
             res.status(500).json('لطفا اول وارد سیستم شوید!');
             return;
@@ -178,7 +171,56 @@ app.post('/insert/:table', upload.single('file'), (req, res) => {
             res.status(500).json(error);
         });
 });
+app.post('/update/:table/:filters', upload.single('file'), (req, res) => {
+    if (req.params.table == 'products') {
+        if (req.session == null) {
+            res.status(500).json('اشکال در ایجاد سشن!');
+            return;
+        }
+        if (typeof req.session.me == 'undefined' || req.session.me === false) {
+            res.status(500).json('لطفا اول وارد سیستم شوید!');
+            return;
+        }
+    }
+    if (req.params.table == 'users') {
+        if (req.session == null) {
+            res.status(500).json('اشکال در ایجاد سشن!');
+            return;
+        }
+        if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1 ) {
+            res.status(500).json('لطفا اول وارد سیستم شوید!');
+            return;
+        }
+    }
+    let filters = {}
+    if (req.params.filters) {
+        let spl = req.params.filters.split('&');
 
+        for (let i in spl) {
+            let keyval = spl[i].split('=');
+            if (keyval.length == 2) {
+                filters[keyval[0]] = keyval[1];
+            }
+        }
+    }
+    console.log(filters);
+    bst.update(req.params.table, req.body, filters).then((result) => {
+            //console.log('inserted')
+            if (typeof req.file != 'undefined' && req.file) {
+                let path = `${__dirname}/files/${req.params.table}-${filters.id}.jpg`;
+                console.log(path)
+                //fs.removeSync(path);
+                fs.renameSync(req.file.path, path);
+                res.json(result);
+            } else {
+                res.json(result);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).json(error);
+        });
+});
 
 app.post('/tf', upload.single('file'), (req, res) => {
     console.log('got request');

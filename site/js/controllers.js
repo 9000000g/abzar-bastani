@@ -18,8 +18,8 @@ angular.module('app.controllers', [])
     })
     .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, last, unreadMessages) {
         //alert('we are here');
-
         $scope.sidebar = false;
+        $scope.searchbar = false;
         $scope.images = [{
             src: 'images/1.jpg'
         }, {
@@ -32,11 +32,13 @@ angular.module('app.controllers', [])
 
         $scope.last = last;
         $scope.unreadMessages = unreadMessages;
-        $scope.fetch = function() {
-            //alert('we are here');
+        $scope.search = function(text) {
+            $theFramework.go('/get-all/products/name='+text);
         }
-
-        $scope.fetch();
+        $scope.notYet = function(){
+            $theFramework.toast('این بخش از برنامه هنوز راه‌اندازی نشده‌است!');
+        }
+        console.log( $rootScope.me );
     })
     .controller('LoginCtrl', function($scope, $rootScope, $theFramework, $timeout, $tfHttp) {
         $scope.inputs = {};
@@ -81,18 +83,21 @@ angular.module('app.controllers', [])
     .controller('TableItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $routeParams, item) {
         $scope.item = item;
     })
-    .controller('TableNewItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $timeout, $routeParams, data, insert) {
+    .controller('TableNewItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $timeout, $routeParams, data, submit) {
         $scope.options = data.options;
         $scope.inputs = data.inputs;
+        console.log( data.options)
+
+        $scope.log = function(){
+            console.log($scope.inputs)
+        }
         $scope.temp = {};
         $scope.submit = function() {
             if (typeof $scope.inputs.used != 'undefined') {
                 $scope.inputs.used = $scope.inputs.used ? 1 : 0;
             }
-            insert($scope.inputs, function() {
+            submit($scope.inputs, function() {
                 $theFramework.go('/main');
             })
         }
-
-
     });

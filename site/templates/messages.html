@@ -16,6 +16,7 @@
     <ul class="list-group block pointer" ng-if="items.length > 0">
         <li class="list-group-item" ng-repeat="item in items" tf-go="/get/messages/{{item.id}}">
             <i class="fa fa-comment"></i> {{item.name}}, درخواست خرید {{item.product}}
+            <span class="badge" ng-if="item.read!=1">جدید</span>
         </li>
     </ul>
     <p class="vertical-padding horizontal-padding" ng-if="items.length == 0"> هنوز هیچ آیتمی ثبت نشده‌است. </p>

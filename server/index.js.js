@@ -130,6 +130,37 @@ app.get('/get-file/:table/:id', function (req, res) {
     res.sendFile(file);
 });
 app.post('/insert/:table', upload.single('file'), function (req, res) {
+    if (req.session == null) {
+        res.status(500).json('اشکال در ایجاد سشن!');
+        return;
+    }
+    if (req.params.table == 'userproducts' || req.params.table == 'users' && req.body.type != 1) {// mikhad user add kone o typesh 1 nist
+        // let do it
+    } else {
+        if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1) {
+            res.status(500).json('لطفا اول وارد سیستم شوید!');
+            return;
+        }
+    }
+    //console.log(req.file)
+    //console.log(req.body)
+
+    bst.insert(req.params.table, req.body).then(function (result) {
+        //console.log('inserted')
+        if (typeof req.file != 'undefined' && req.file) {
+            var _path = __dirname + '/files/' + req.params.table + '-' + result.insertId + '.jpg';
+
+            fs.renameSync(req.file.path, _path);
+            res.json(result);
+        } else {
+            res.json(result);
+        }
+    }).catch(function (error) {
+        console.log(error);
+        res.status(500).json(error);
+    });
+});
+app.post('/update/:table/:filters', upload.single('file'), function (req, res) {
     if (req.params.table == 'products') {
         if (req.session == null) {
             res.status(500).json('اشکال در ایجاد سشن!');
@@ -150,15 +181,25 @@ app.post('/insert/:table', upload.single('file'), function (req, res) {
             return;
         }
     }
-    //console.log(req.file)
-    //console.log(req.body)
+    var filters = {};
+    if (req.params.filters) {
+        var spl = req.params.filters.split('&');
 
-    bst.insert(req.params.table, req.body).then(function (result) {
+        for (var i in spl) {
+            var keyval = spl[i].split('=');
+            if (keyval.length == 2) {
+                filters[keyval[0]] = keyval[1];
+            }
+        }
+    }
+    console.log(filters);
+    bst.update(req.params.table, req.body, filters).then(function (result) {
         //console.log('inserted')
         if (typeof req.file != 'undefined' && req.file) {
-            var _path = __dirname + '/files/' + req.params.table + '-' + result.insertId + '.jpg';
-
-            fs.renameSync(req.file.path, _path);
+            var _path2 = __dirname + '/files/' + req.params.table + '-' + filters.id + '.jpg';
+            console.log(_path2);
+            //fs.removeSync(path);
+            fs.renameSync(req.file.path, _path2);
             res.json(result);
         } else {
             res.json(result);

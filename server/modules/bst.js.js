@@ -34,7 +34,7 @@ module.exports.users = function () {
     var password = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
     var query = void 0;
-    var fields = ['id', 'username', 'alias'];
+    var fields = ['id', 'username', 'alias', 'type'];
     var table = 'users';
 
     var field = 'username';
@@ -106,7 +106,13 @@ module.exports.getAll = function () {
         }
     }
     for (var i in filters) {
-        where += 'AND `' + i + '` = \'' + filters[i] + '\' ';
+        var operator = '=';
+        var prefix = '';
+        if (['name', 'model', 'code'].indexOf(i) !== -1) {
+            operator = 'LIKE';
+            prefix = '%';
+        }
+        where += 'AND `' + i + '` ' + operator + ' \'' + prefix + filters[i] + prefix + '\' ';
     }
     if (table == 'products') {
         query = qc.new().select(['p.*', 'i.alias AS industry_alias', 'im.alias AS importer_alias', 'g.alias AS group_alias', 's.alias AS subgroup_alias', 's.alias AS subgroup_alias', 'ir.text AS country_alias', 'b.alias AS brand_alias'], 'products p').leftJoin('industries i', 'p.industry = i.id').leftJoin('importers im', 'p.importer = im.id').leftJoin('groups g', 'p.group = g.id').leftJoin('countries ir', 'p.country = ir.value').leftJoin('brands b', 'p.brand = b.id').leftJoin('subgroups s', 'p.subgroup = s.id').where(where).orderBy('`p`.`id`', 'DESC').limit(0, limit).val();
@@ -136,7 +142,40 @@ module.exports.insert = function () {
         data['`group`'] = data.group;
         delete data.group;
     }
+    if (typeof data.read != 'undefined') {
+        data['`read`'] = data.read;
+        delete data.read;
+    }
     var query = qc.new().insert(table, data).val();
+    return new Promise(function (resolve, reject) {
+        db.query(query, function (err, result) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+module.exports.update = function () {
+    var table = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'users';
+    var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var filters = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    if (typeof data.group != 'undefined') {
+        data['`group`'] = data.group;
+        delete data.group;
+    }
+    if (typeof data.read != 'undefined') {
+        data['`read`'] = data.read;
+        delete data.read;
+    }
+    var where = 'TRUE ';
+    for (var i in filters) {
+        where += 'AND `' + i + '` = \'' + filters[i] + '\' ';
+    }
+
+    var query = qc.new().update(table, data).where(where).val();
     return new Promise(function (resolve, reject) {
         db.query(query, function (err, result) {
             if (err) {

@@ -30,7 +30,7 @@ module.exports.hi = () => {
 
 module.exports.users = (id = false, password = false) => {
     let query;
-    let fields = ['id', 'username', 'alias'];
+    let fields = ['id', 'username', 'alias','type'];
     let table = 'users';
 
     let field = 'username';
@@ -100,7 +100,13 @@ module.exports.getAll = (table = 'users', filters = {}, limit = false) => {
         }
     }
     for (let i in filters) {
-        where += `AND \`${i}\` = '${filters[i]}' `;
+        let operator = '=';
+        let prefix = '';
+        if( ['name','model','code'].indexOf(i) !== -1 ){
+            operator = 'LIKE';
+            prefix = '%';
+        }
+        where += `AND \`${i}\` ${operator} '${prefix}${filters[i]}${prefix}' `;
     }
     if (table == 'products') {
         query = qc.new().select([
@@ -158,7 +164,36 @@ module.exports.insert = (table = 'users', data = {}) => {
         data['`group`'] = data.group;
         delete data.group;
     }
+    if (typeof data.read != 'undefined') {
+        data['`read`'] = data.read;
+        delete data.read;
+    }
     let query = qc.new().insert(table, data).val();
+    return new Promise((resolve, reject) => {
+        db.query(query, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+}
+module.exports.update = (table = 'users', data={}, filters={})=>{
+    if (typeof data.group != 'undefined') {
+        data['`group`'] = data.group;
+        delete data.group;
+    }
+    if (typeof data.read != 'undefined') {
+        data['`read`'] = data.read;
+        delete data.read;
+    }
+    let where = 'TRUE ';
+    for (let i in filters) {
+        where += `AND \`${i}\` = '${filters[i]}' `;
+    }
+
+    let query = qc.new().update(table, data).where(where).val();
     return new Promise((resolve, reject) => {
         db.query(query, (err, result) => {
             if (err) {
