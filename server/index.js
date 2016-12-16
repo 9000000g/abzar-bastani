@@ -91,7 +91,7 @@ app.get('/get-all/:table/:filters?/:limit?', (req, res) => {
             res.status(500).json('اشکال در ایجاد سشن!');
             return;
         }
-        if (typeof req.session.me == 'undefined' || req.session.me === false) {
+        if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1) {
             res.status(500).json('ابتدا وارد سیستم شوید!');
             return;
         }
@@ -136,15 +136,24 @@ app.get('/get/:table/:id', (req, res) => {
 app.get('/get-file/:table/:id', (req, res) => {
     let basedir = `${__dirname}/files`;
     let file = `${basedir}/${req.params.table}-${req.params.id}.jpg`;
-    res.sendFile(file);
+    if( fs.existsSync(file) ){
+        res.sendFile(file);
+    }
+    else{
+        res.sendFile(`${basedir}/notfound.jpg`);
+    }
+    
 });
 app.post('/insert/:table', upload.single('file'), (req, res) => {
     if (req.session == null) {
         res.status(500).json('اشکال در ایجاد سشن!');
         return;
     }
-    if (  req.params.table == 'userproducts' || (req.params.table == 'users' && req.body.type != 1) ) { // mikhad user add kone o typesh 1 nist
-        // let do it
+    if (  req.params.table == 'messages' || req.params.table == 'userproducts' || (req.params.table == 'users' && req.body.type != 1) ) { // mikhad user add kone o typesh 1 nist
+        if( req.params.table == 'messages' ){
+            req.body.user = req.session.me.id;
+            req.body.read = 0;
+        }
     }
     else{
         if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1 ) {
@@ -172,22 +181,12 @@ app.post('/insert/:table', upload.single('file'), (req, res) => {
         });
 });
 app.post('/update/:table/:filters', upload.single('file'), (req, res) => {
-    if (req.params.table == 'products') {
+    if (req.params.table == 'products' || req.params.table == 'users') {
         if (req.session == null) {
             res.status(500).json('اشکال در ایجاد سشن!');
             return;
         }
-        if (typeof req.session.me == 'undefined' || req.session.me === false) {
-            res.status(500).json('لطفا اول وارد سیستم شوید!');
-            return;
-        }
-    }
-    if (req.params.table == 'users') {
-        if (req.session == null) {
-            res.status(500).json('اشکال در ایجاد سشن!');
-            return;
-        }
-        if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1 ) {
+        if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1) {
             res.status(500).json('لطفا اول وارد سیستم شوید!');
             return;
         }
@@ -203,7 +202,6 @@ app.post('/update/:table/:filters', upload.single('file'), (req, res) => {
             }
         }
     }
-    console.log(filters);
     bst.update(req.params.table, req.body, filters).then((result) => {
             //console.log('inserted')
             if (typeof req.file != 'undefined' && req.file) {
@@ -221,7 +219,34 @@ app.post('/update/:table/:filters', upload.single('file'), (req, res) => {
             res.status(500).json(error);
         });
 });
+app.post('/delete/:table/:filters', upload.single('file'), (req, res) => {
+    if (req.session == null) {
+        res.status(500).json('اشکال در ایجاد سشن!');
+        return;
+    }
+    if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1) {
+        res.status(500).json('لطفا اول وارد سیستم شوید!');
+        return;
+    }
+    let filters = {}
+    if (req.params.filters) {
+        let spl = req.params.filters.split('&');
 
+        for (let i in spl) {
+            let keyval = spl[i].split('=');
+            if (keyval.length == 2) {
+                filters[keyval[0]] = keyval[1];
+            }
+        }
+    }
+    bst.delete(req.params.table, filters).then((result) => {
+        res.json(result);
+    })
+    .catch((error) => {
+        console.log(error);
+        res.status(500).json(error);
+    });
+});
 app.post('/tf', upload.single('file'), (req, res) => {
     console.log('got request');
     console.log(req.body);

@@ -117,9 +117,9 @@ module.exports.getAll = function () {
     if (table == 'products') {
         query = qc.new().select(['p.*', 'i.alias AS industry_alias', 'im.alias AS importer_alias', 'g.alias AS group_alias', 's.alias AS subgroup_alias', 's.alias AS subgroup_alias', 'ir.text AS country_alias', 'b.alias AS brand_alias'], 'products p').leftJoin('industries i', 'p.industry = i.id').leftJoin('importers im', 'p.importer = im.id').leftJoin('groups g', 'p.group = g.id').leftJoin('countries ir', 'p.country = ir.value').leftJoin('brands b', 'p.brand = b.id').leftJoin('subgroups s', 'p.subgroup = s.id').where(where).orderBy('`p`.`id`', 'DESC').limit(0, limit).val();
     } else if (table == 'messages') {
-        query = qc.new().select(['m.*', 'p.id AS product_id'], 'messages m').leftJoin('products p', 'p.code = m.product').where(where).orderBy('id', 'DESC').val();
+        query = qc.new().select(['m.*', 'p.id AS product_id', 'u.alias AS user_alias', 'u.username AS user_username', 'u.phone AS user_phone', 'u.mobile AS user_mobile', 'u.businessName AS user_businessName', 'u.address AS user_address'], 'messages m').leftJoin('products p', 'p.code = m.product').leftJoin('users u', 'u.id = m.user').where(where).orderBy('id', 'DESC').val();
     } else if (table == 'users') {
-        query = qc.new().select(['id', 'username', 'alias', 'type'], 'users').where(where).orderBy('id', 'DESC').val();
+        query = qc.new().select(['id', 'username', 'phone', 'mobile', 'businessName', 'address', 'alias', 'type'], 'users').where(where).orderBy('id', 'DESC').val();
     } else {
         query = qc.new().select('*', table).where(where).orderBy('id', 'DESC').val();
     }
@@ -176,6 +176,26 @@ module.exports.update = function () {
     }
 
     var query = qc.new().update(table, data).where(where).val();
+    return new Promise(function (resolve, reject) {
+        db.query(query, function (err, result) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
+module.exports.delete = function () {
+    var table = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'users';
+    var filters = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    var where = 'TRUE ';
+    for (var i in filters) {
+        where += 'AND `' + i + '` = \'' + filters[i] + '\' ';
+    }
+    var query = qc.new().delete(table).where(where).val();
     return new Promise(function (resolve, reject) {
         db.query(query, function (err, result) {
             if (err) {

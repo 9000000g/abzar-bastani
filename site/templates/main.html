@@ -18,33 +18,27 @@
 <div class="tf-container" id="main">
     
     <div class="vertical-padding horizontal-padding">
-        <div class="col-md-3">
-            <h4>دسترسی سریع:</h4>
-            <div class="appitem appitem-1" tf-go="/get-all/userproducts"><i class="fa fa-cubes"></i> آگهی‌ها</div>
-            <div class="appitem appitem-2" ng-click="notYet()"><i class="fa fa-wrench"></i> مزایده و مناقصه</div>
-            <div class="appitem appitem-3" ng-click="notYet()"><i class="fa fa-info"></i> اطلاعات فنی</div>
-            <div class="appitem appitem-4" tf-go="get/companies/1"><i class="fa fa-google"></i> درباره ما</div>
-        </div>
-        <div class="col-md-6">
-            <h4>فروش ویژه:</h4>
-            <tf-image-slider ng-model="images" class="vertical-padding"></tf-image-slider>
-            <h4>آخرین محصولات:</h4>
-            <ul class="last">
-                <li ng-repeat="item in last" tf-go="/get/products/{{item.id}}">
-                    <div class="img" ng-style="{'background-image': 'url(' + item.file + ')'}"></div>
-                    <h5 ng-bind="item.name"></h5>
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-3">
-            <h4>تبلیغات:</h4>
-            <div class="ad ad-1" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات یک</div>
-            <div class="ad ad-2" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات دو</div>
-            <div class="ad ad-3" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات سه</div>
-            <div class="ad ad-4" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات چهار</div>
-        </div>
-        <div class="col-xs-12">
-
+        <div class="row">
+            <div class="col-md-6 col-xs-12">
+                <h4>فروش ویژه</h4>
+                <div class="">
+                    <tf-image-slider ng-model="images" height="365" class="slider"></tf-image-slider>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-6">
+                <h4>دسترسی سریع</h4>
+                <div class="appitem appitem-1" tf-go="/get-all/userproducts"><i class="fa fa-cubes"></i> آگهی‌ها</div>
+                <div class="appitem appitem-2" ng-click="notYet()"><i class="fa fa-wrench"></i> مزایده و مناقصه</div>
+                <div class="appitem appitem-3"  tf-go="/insert/messages/type=2"><i class="fa fa-comment"></i> درخواست جدید </div>
+                <div class="appitem appitem-4" tf-go="get/companies/1"><i class="fa fa-google"></i> درباره ما</div>
+            </div>
+            <div class="col-md-3 col-xs-6">
+                <h4>تبلیغات</h4>
+                <div class="ad ad-1" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات یک</div>
+                <div class="ad ad-2" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات دو</div>
+                <div class="ad ad-3" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات سه</div>
+                <div class="ad ad-4" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات چهار</div>
+            </div>
         </div>
     </div>
 </div>
@@ -65,7 +59,10 @@
         <li class="list-group-item" tf-go="/insert/users" ng-if="me !== false && me.type === 1">
             <i class="fa fa-user-plus"></i> اضافه‌کردن کاربر جدید
         </li>
-        <li class="list-group-item" ng-if="me !== false" tf-go="/get-all/messages">
+        <li class="list-group-item" tf-go="/insert/messages/type=2">
+            <i class="fa fa-comment"></i> درخواست جدید
+        </li>
+        <li class="list-group-item" ng-if="me !== false && me.type === 1" tf-go="/get-all/messages">
             <i class="fa fa-comments"></i> پیام‌ها <span class="badge" ng-show="unreadMessages.length" ng-bind="unreadMessages.length"></span>
         </li>
 

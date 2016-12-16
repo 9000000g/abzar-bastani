@@ -176,13 +176,14 @@ DROP TABLE IF EXISTS `messages`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  `phone` varchar(45) DEFAULT NULL,
+  `user` int(11) DEFAULT NULL,
   `message` varchar(455) DEFAULT NULL,
   `product` varchar(45) DEFAULT NULL,
   `read` tinyint(1) DEFAULT '0',
+  `type` int(11) DEFAULT NULL COMMENT '1 for buy (product code should be one of products)\n2 for sale \n3 for buyNewItem (not in products)\n4 for normal messages',
+  `date` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,7 +192,7 @@ CREATE TABLE `messages` (
 
 LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-INSERT INTO `messages` VALUES (2,'علی باستانی','09129293232','asdasdasd','x897',1),(3,'حمید حسنی','09129293232','سلام. من قصد خرید این محصول رو دارم. لطفا با من تماس بگیرید.','x897',1),(4,'علی','09364463727','سلام. اقا این دستگاه چند؟','ab556',1),(5,'علی','09234339293','salam in mahsul ghetmatesh chand?','x599',1);
+INSERT INTO `messages` VALUES (1,3,'سلام. خیلی محصول خوبی به نظر میرسه. همینو میخوام.','M0031',1,1,'2016-12-16 03:18:20'),(2,1,'سلام. من یه محصولی جدید میخوام. دارین؟',NULL,1,3,'2016-12-16 05:53:36');
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -225,8 +226,33 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (14,'لبه چسبان','M0031','EB-101',2016,'CN',0,1,1,1,1,2),(15,'دستگاه خوب','x273','x273',1987,'CN',1,2,2,2,25,2),(16,'آل کلر','x897','e225',1879,'AL',1,2,2,2,2,2),(17,'A2','A222','8742',19999,'DZ',0,6,2,2,2,2),(18,'تست','zcxzxc','sdcsc',234234,'TM',0,NULL,NULL,NULL,NULL,NULL),(19,'تست جدید','ab556','84',1987,'TW',0,5,1,2,29,1),(20,'test jadid','x599','A220',1998,'IN',0,6,1,1,24,-1),(21,'salamsalam','salamsalam','213123',19999,'ZA',0,1,-1,2,-1,-1);
+INSERT INTO `products` VALUES (14,'لبه چسبان','M0031','EB-101',2016,'CN',0,1,1,1,1,2),(15,'دستگاه خوب','x273','x273',1987,'CN',1,2,2,2,25,2),(16,'آل کلر','x897','e225',1879,'AL',1,2,2,2,2,2),(17,'A2','A222','8742',19999,'DZ',0,6,2,2,2,2),(18,'تست','zcxzxc','sdcsc',234234,'TM',0,NULL,NULL,NULL,NULL,NULL),(19,'تست جدید','ab556','84',1987,'TW',0,5,1,2,29,1),(20,'test jadid','x599','A220',1998,'IN',0,6,1,1,24,-1);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `requests`
+--
+
+DROP TABLE IF EXISTS `requests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `requests` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user` varchar(45) NOT NULL,
+  `body` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `date` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `requests`
+--
+
+LOCK TABLES `requests` WRITE;
+/*!40000 ALTER TABLE `requests` DISABLE KEYS */;
+/*!40000 ALTER TABLE `requests` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -293,8 +319,12 @@ CREATE TABLE `users` (
   `password` varchar(45) NOT NULL,
   `alias` varchar(45) CHARACTER SET utf8 NOT NULL,
   `type` int(11) NOT NULL DEFAULT '1',
+  `phone` varchar(45) DEFAULT NULL,
+  `mobile` varchar(45) DEFAULT NULL,
+  `businessName` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `address` varchar(455) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`,`username`,`password`,`alias`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -303,7 +333,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'bastani','123456','آقای باستانی',1),(2,'amir','123456','Amir Agha',2);
+INSERT INTO `users` VALUES (1,'bastani','123456','آقای باستانی',1,NULL,NULL,NULL,NULL),(2,'amir','123456','Amir Agha',2,NULL,NULL,NULL,NULL),(3,'nainemom','123456','Nainemom',2,NULL,'09365586015',NULL,'تهرانپارس - خیابان استخر - بوستان هفت - پلاک 11');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -316,4 +346,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-12 20:06:09
+-- Dump completed on 2016-12-16  6:20:52

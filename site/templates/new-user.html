@@ -1,6 +1,6 @@
 <nav class="tf-navbar">
     <section class="icon">
-        <i class="fa fa-plus-square"></i>
+        <i class="fa fa-user"></i>
     </section>
     <section class="title">
         <h4> کاربر جدید </h4>
@@ -24,18 +24,40 @@
                 <input type="text" class="form-control" ng-model="inputs.alias" placeholder="نام کاربری خود را وارد کنید. مثل: آقای باستانی" required/>
             </div>
             <div class="form-group col-sm-4">
+                <label class="control-label">نام تجاری</label>
+                <input type="text" class="form-control" ng-model="inputs.businessName" placeholder="نام تجاری شرکت خود را وارد کنید. (اختیاری)"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label class="control-label">شماره تلفن ثابت</label>
+                <input type="tel" class="form-control" ng-model="inputs.phone" placeholder="تلفن ثابت خود را وارد کنید."/>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="control-label">شماره موبایل</label>
+                <input type="tel" class="form-control" ng-model="inputs.mobile" placeholder="موبایل خود را وارد کنید." required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
                 <label class="control-label">رمز عبور</label>
                 <input type="password" class="form-control" ng-model="inputs.password" placeholder="رمز عبور خود را وارد کنید." required/>
             </div>
-            <div class="form-group col-sm-4">
+            <div class="form-group col-sm-6">
                 <label class="control-label">تکرار رمز عبور</label>
                 <input type="password" class="form-control" ng-model="temp.password" placeholder="رمز عبور خود را مجددا وارد کنید." required/>
             </div>
         </div>
         <div class="row">
+            <div class="form-group col-sm-12">
+                <label class="control-label">آدرس</label>
+                <textarea class="form-control" ng-model="inputs.address" required></textarea>
+            </div>
+        </div>
+        <div class="row">
             <div class="form-group col-sm-6">
                 <label class="control-label">نوع کاربری</label>
-                <tf-select class="form-control" options="options.types" ng-model="inputs.type" required><tf-select>
+                <tf-select class="form-control" options="options.types" ng-model="inputs.type" required></tf-select>
             </div>
         </div>
         <div class="row">

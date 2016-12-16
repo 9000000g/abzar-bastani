@@ -14,9 +14,24 @@ angular.module('app.controllers', [])
                 $theFramework.toast(err.data);
             });
         }
+        $rootScope.log = function(msg){
+            console.log(msg);
+        }
+        $rootScope.messageType = function(t){
+            switch( t ){
+                case 1:
+                    return 'خرید محصولات سایت';
+                case 2:
+                    return 'فروش محصول به سایت';
+                case 3:
+                    return 'درخواست خرید محصول جدید';
+                case 4:
+                    return 'پیام عادی';
+            }
+        }
         $rootScope.deside(); // check logged in or not
     })
-    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, last, unreadMessages) {
+    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, unreadMessages) {
         //alert('we are here');
         $scope.sidebar = false;
         $scope.searchbar = false;
@@ -30,7 +45,6 @@ angular.module('app.controllers', [])
             src: 'images/4.jpg'
         }];
 
-        $scope.last = last;
         $scope.unreadMessages = unreadMessages;
         $scope.search = function(text) {
             $theFramework.go('/get-all/products/name='+text);
@@ -66,7 +80,7 @@ angular.module('app.controllers', [])
             $theFramework.toast(err.data);
         });
     })
-    .controller('TableItemsCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $routeParams, items, searching, searchTitle, filters) {
+    .controller('TableItemsCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $route, $routeParams, items, searching, searchTitle, filters) {
         $scope.bars = true;
         $scope.items = items;
         $scope.filters = filters;
@@ -79,9 +93,24 @@ angular.module('app.controllers', [])
             $scope._bottomSheet = true;
             $scope.hovered = item;
         }
+        if( $routeParams.table == 'products' && $rootScope.me !== false && $rootScope.me.type == 1){
+            $scope.deleteItem = function(id){
+                if( !confirm('آیا مطمئنید؟') ){
+                    return;
+                }
+                $tfHttp.post('/delete/products/id=' + id, {}).then( function(){
+                    $route.reload();  
+                });
+            }
+            
+        }
     })
     .controller('TableItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $routeParams, item) {
         $scope.item = item;
+        if( $routeParams.table == 'messages' && $rootScope.me !== false && $rootScope.me.type == 1){
+            var id = $routeParams.id;
+            $tfHttp.post('/update/messages/id=' + $routeParams.id, {read: 1});
+        }
     })
     .controller('TableNewItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $timeout, $routeParams, data, submit) {
         $scope.options = data.options;

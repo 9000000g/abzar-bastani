@@ -1,4 +1,4 @@
-<nav class="tf-navbar" ng-show="bars">
+<nav class="tf-navbar">
     <section class="icon">
         <i class="fa fa-cubes"></i>
     </section>
@@ -14,9 +14,9 @@
     </section>
 </nav>
 <abzar-tabs active="filters.group==1? 1: (filters.group==2? 2: -1)"></abzar-tabs>
-<div class="tf-container vertical-padding horizontal-padding" tf-scroll tf-scroll-down="bars=false" tf-scroll-up="bars=true">
+<div class="tf-container vertical-padding horizontal-padding">
     <div class="row">
-        <div class="col-sm-6 col-md-4 product" ng-repeat="item in items">
+        <div class="col-sm-6 col-md-6 product" ng-repeat="item in items">
             <div class="panel panel-default">
                 <div class="panel-heading pointer" ng-click="bottomSheet(item)">{{item.name}}، مدل {{item.model}}</div>
                 <div class="panel-body">
@@ -37,7 +37,7 @@
         </div>
     </div>
     <p class="vertical-padding horizontal-padding" ng-if="items.length==0"> متاسفانه هیچ موردی یافت نشد! </p>
-    <tf-floating-btn tf-go="/insert/products" ng-if="me !==false && me.type=1" ng-show="bars">
+    <tf-floating-btn tf-go="/insert/products" ng-if="me !==false && me.type==1">
         <i class="fa fa-plus"></i>
     </tf-floating-btn>
 </div>
@@ -46,10 +46,13 @@
         <li class="list-group-item" tf-go="get/products/{{hovered.id}}">
             <i class="fa fa-eye"></i> مشاهده محصول
         </li>
-        <li class="list-group-item" tf-go="update/products/{{hovered.id}}" ng-if="me !==false && me.type=1">
-            <i class="fa fa-eye"></i> ویرایش محصول
+        <li class="list-group-item" tf-go="update/products/{{hovered.id}}" ng-if="me !==false && me.type==1">
+            <i class="fa fa-edit"></i> ویرایش محصول
         </li>
-        <li class="list-group-item" tf-go="/insert/messages/product={{hovered.code}}">
+        <li class="list-group-item" ng-click="deleteItem(hovered.id)" ng-if="me !==false && me.type==1">
+            <i class="fa fa-trash"></i> حذف محصول
+        </li>
+        <li class="list-group-item" tf-go="/insert/messages/product={{hovered.code}}&type=1">
             <i class="fa fa-shopping-cart"></i> درخواست خرید محصول
         </li>
     </ul>

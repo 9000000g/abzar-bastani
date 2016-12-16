@@ -151,3 +151,12 @@ ul.last li h5 {
 #main h4{
     padding: 15px;
 }
+#main .slider{
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+}
+
+
+.infomessage{
+    font-size: 14px;
+    padding: 20px;
+}

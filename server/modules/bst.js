@@ -132,14 +132,25 @@ module.exports.getAll = (table = 'users', filters = {}, limit = false) => {
     } else if (table == 'messages') {
         query = qc.new().select([
                 'm.*',
-                'p.id AS product_id'
+                'p.id AS product_id',
+                'u.alias AS user_alias',
+                'u.username AS user_username',
+                'u.phone AS user_phone',
+                'u.mobile AS user_mobile',
+                'u.businessName AS user_businessName',
+                'u.address AS user_address'
             ], 'messages m')
             .leftJoin('products p', 'p.code = m.product')
+            .leftJoin('users u', 'u.id = m.user')
             .where(where).orderBy('id', 'DESC').val();
     } else if (table == 'users') {
         query = qc.new().select([
                 'id',
                 'username',
+                'phone',
+                'mobile',
+                'businessName',
+                'address',
                 'alias',
                 'type',
             ], 'users')
@@ -194,6 +205,23 @@ module.exports.update = (table = 'users', data={}, filters={})=>{
     }
 
     let query = qc.new().update(table, data).where(where).val();
+    return new Promise((resolve, reject) => {
+        db.query(query, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+}
+
+module.exports.delete = (table = 'users', filters = {}) => {
+    let where = 'TRUE ';
+    for (let i in filters) {
+        where += `AND \`${i}\` = '${filters[i]}' `;
+    }
+    let query = qc.new().delete(table).where(where).val();
     return new Promise((resolve, reject) => {
         db.query(query, (err, result) => {
             if (err) {

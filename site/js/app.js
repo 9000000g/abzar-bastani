@@ -16,6 +16,8 @@ function tableNameToItem(tableName) {
             return 'message';
         case 'users':
             return 'user';
+        case 'requests':
+            return 'request';
         default:
             return tableName;
     }
@@ -89,25 +91,8 @@ function tableItemResolve() {
             $tfHttp.get(
                 '/get/' + $route.current.params.table + '/' + $route.current.params.id
             ).then(function(res) {
-                
-                if ($route.current.params.table == 'messages') {
-                    var id = $route.current.params.id;
-                    $tfHttp.post(
-                        '/update/' + $route.current.params.table + '/id=' + $route.current.params.id, {read: 1}
-                    ).then( function(){
-                        $theFramework.loading(false);
-                        defer.resolve(res.data);
-                    }).catch(function(err){
-                        $theFramework.loading(false);
-                        $theFramework.toast(err.data);
-                        defer.resolve(err.data);   
-                    });
-                }
-                else{
-                    $theFramework.loading(false);
-                    defer.resolve(res.data);
-                }
-               
+                $theFramework.loading(false);
+                defer.resolve(res.data);
             }).catch(function(err) {
                 $theFramework.loading(false);
                 $theFramework.toast(err.data);
@@ -241,19 +226,13 @@ function tableNewItemResolve(type) {
                     endOfStory();
                 });
             } else if ($route.current.params.table == 'messages') {
-                $tfHttp.get('/get-all/products').then(function(res) {
-                    data.options.products = [];
-                    for (var i = 0; i < res.data.length; i++) {
-                        data.options.products.push({
-                            text: res.data[i].name,
-                            value: res.data[i].id
-                        });
-                    }
-                    nextAfterFetchDeps();
-                }).catch(function(err) {
-                    $theFramework.toast(err.data);
-                    nextAfterFetchDeps();
-                });
+                data.options.types = [
+                    //{text: 'خرید محصولات سایت', value: 1},
+                    {text: 'فروش محصول به سایت', value: 2},
+                    {text: 'درخواست خرید محصول جدید', value: 3},
+                    {text: 'پیام عادی', value: 4}
+                ];
+                nextAfterFetchDeps();
             } else if ($route.current.params.table == 'users') {
                 data.options.types = [
                     {text: 'ادمین', value: 1},
@@ -300,21 +279,6 @@ function tableNewItemResolve(type) {
 
 function mainResolve() {
     return {
-        last: function($tfHttp, $q, $theFramework) {
-            $theFramework.loading();
-            var defer = $q.defer();
-            $tfHttp.get(
-                '/get-all/products/TRUE/5'
-            ).then(function(res) {
-                $theFramework.loading(false);
-                defer.resolve(res.data);
-            }).catch(function(err) {
-                $theFramework.loading(false);
-                //$theFramework.toast(err.data);
-                defer.resolve({});
-            });
-            return defer.promise;
-        },
         unreadMessages: function($tfHttp, $q, $theFramework){
             var defer = $q.defer();
             $theFramework.loading();
