@@ -2,6 +2,9 @@ const fs = require('fs');
 const mysql = require('mysql');
 const qc = require('query-creator');
 const db = mysql.createConnection(config.mysql);
+const Finder = require('fs-finder');
+const path = require('path');
+
 db.connect();
 
 module.exports.db = db;
@@ -98,6 +101,10 @@ module.exports.getAll = (table = 'users', filters = {}, limit = false) => {
             filters['m`.`id'] = filters.id;
             delete filters.id;
         }
+        if (filters.type) {
+            filters['m`.`type'] = filters.type;
+            delete filters.type;
+        }
     }
     for (let i in filters) {
         let operator = '=';
@@ -157,7 +164,7 @@ module.exports.getAll = (table = 'users', filters = {}, limit = false) => {
             .where(where).orderBy('id', 'DESC').val();
     } else {
         query = qc.new().select('*', table).where(where).orderBy('id', 'DESC').val();
-    }
+    } 
 
 
     return new Promise((resolve, reject) => {
@@ -231,4 +238,26 @@ module.exports.delete = (table = 'users', filters = {}) => {
             }
         });
     });
+}
+
+
+
+module.exports.getFiles = (table = 'products', id = "1", notFoundImg = false)=>{
+    let basedir = `${__dirname}/../files`;
+    let files = Finder.from(basedir).findFiles(`${table}-${id}-*.*`);
+    let ret = [];
+    files.forEach( (file)=>{
+        let index = path.basename(file).split('-');
+        index = index[ index.length -1 ];
+        index = index.split('.')[0];
+        ret.push(
+            `${config.server.address}:${config.server.port}/get-file/${table}/${id}/${index}`
+        )
+    });
+    if( files.length == 0 && notFoundImg ){
+        ret.push(
+            `${config.server.address}:${config.server.port}/get-file/notfound/0/0`
+        )
+    }
+    return ret;
 }

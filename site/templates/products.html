@@ -20,7 +20,11 @@
             <div class="panel panel-default">
                 <div class="panel-heading pointer" ng-click="bottomSheet(item)">{{item.name}}، مدل {{item.model}}</div>
                 <div class="panel-body">
-                    <img ng-click="bottomSheet(item)" ng-src="{{item.file}}" class="pointer img" width="100%" />
+                    <!--img ng-click="bottomSheet(item)" ng-src="{{item.files[0]}}" class="pointer img" width="100%" ng-if="item.files.length == 1"/-->
+                    <div ng-dblclick="bottomSheet(item)" class="pointer">
+                        <div ng-if="item.files.length==1" class="product-img" ng-style="{'background': 'url(' + item.files[0] + ')'}" ></div>
+                        <tf-image-slider  ng-if="item.files.length>1" ng-model="item.files" height="365" class="slider"></tf-image-slider>
+                    </div>
                     <p>
                         <label class="label label-danger">کد {{item.code}}</label>
                         <label class="label label-info pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}country={{item.country}}/کشور {{item.country_alias}}">کشور {{item.country_alias}}</label>
@@ -48,6 +52,9 @@
         </li>
         <li class="list-group-item" tf-go="update/products/{{hovered.id}}" ng-if="me !==false && me.type==1">
             <i class="fa fa-edit"></i> ویرایش محصول
+        </li>
+        <li class="list-group-item" tf-go="files/products/{{hovered.id}}" ng-if="me !==false && me.type==1">
+            <i class="fa fa-file"></i> فایل‌های محصول
         </li>
         <li class="list-group-item" ng-click="deleteItem(hovered.id)" ng-if="me !==false && me.type==1">
             <i class="fa fa-trash"></i> حذف محصول

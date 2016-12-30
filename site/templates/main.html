@@ -3,7 +3,7 @@
         <i class="fa fa-google"></i>
     </section>
     <section class="title">
-        <h4> ابزار باستانی </h4>
+        <h4> بازار کلاسیک </h4>
     </section>
     <section class="icon button" ng-click="searchbar =! searchbar">
         <i class="fa fa-search"></i>
@@ -27,7 +27,7 @@
             </div>
             <div class="col-md-3 col-xs-6">
                 <h4>دسترسی سریع</h4>
-                <div class="appitem appitem-1" tf-go="/get-all/userproducts"><i class="fa fa-cubes"></i> آگهی‌ها</div>
+                <div class="appitem appitem-1" tf-go="/get-all/messages/type=5&confirmed=1"><i class="fa fa-cubes"></i> آگهی‌ها</div>
                 <div class="appitem appitem-2" ng-click="notYet()"><i class="fa fa-wrench"></i> مزایده و مناقصه</div>
                 <div class="appitem appitem-3"  tf-go="/insert/messages/type=2"><i class="fa fa-comment"></i> درخواست جدید </div>
                 <div class="appitem appitem-4" tf-go="get/companies/1"><i class="fa fa-google"></i> درباره ما</div>
@@ -64,10 +64,6 @@
         </li>
         <li class="list-group-item" ng-if="me !== false && me.type === 1" tf-go="/get-all/messages">
             <i class="fa fa-comments"></i> پیام‌ها <span class="badge" ng-show="unreadMessages.length" ng-bind="unreadMessages.length"></span>
-        </li>
-
-        <li class="list-group-item" tf-go="/get-all/userproducts">
-            <i class="fa fa-cubes"></i> آگهی‌ها
         </li>
 
         <li class="list-group-item" tf-go="/get-all/companies">

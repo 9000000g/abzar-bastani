@@ -14,7 +14,7 @@
 </nav>
 <div class="tf-container infomessage">
     <div class="horizontal-padding vertical-padding item">
-        <img ng-src="{{item.file}}" class="full-width" />
+        <div ng-if="item.files.length==1" class="product-img-single" ng-style="{'background': 'url(' + item.files[0] + ')'}" ></div> 
         <hr/>
         <h4 tf-go="/get/products/{{item.product_id}}" ng-if="item.product">  درخواست خرید <a> {{item.product}} </a> </h4>
         <div> <b> نوع درخواست:</b>
@@ -36,8 +36,11 @@
         <div> <b> تاریخ:</b>
             <p class="inline">{{item.date | pDate }}</p>
         </div>
-        <div ng-if="item.message" ng-click="log(item)"> <b> متن پیام: </b>
+        <div ng-if="item.message"> <b> متن پیام: </b>
             <p class="inline" ng-bind="item.message"></p>
         </div>
-    </div>
+        <div ng-if="me !== false && me.type == 1 && item.type == 5"> <b> تایید شده توسط مدیر؟: </b>
+            <tf-switch ng-model="item.confirmed" on-value="1" off-value="0"></tf-switch>
+        </div>
+    </div>    
 </div>

@@ -14,7 +14,10 @@
 </nav>
 <div class="tf-container">
     <div class="horizontal-padding vertical-padding product">
-        <img ng-src="{{item.file}}" class="full-width pointer" />
+        <!--img ng-src="{{item.file}}" class="full-width pointer" /-->
+        <div ng-if="item.files.length==1" class="product-img-single" ng-style="{'background': 'url(' + item.files[0] + ')'}" ></div>
+        <tf-image-slider  ng-if="item.files.length>1" ng-model="item.files" height="365" class="slider"></tf-image-slider>
+
         <h4>{{item.name}}، مدل {{item.model}}</h4>
         <div ng-if="item.code"> <b> کد: </b>
             <p class="inline" ng-bind="item.code"></p>
@@ -44,6 +47,6 @@
             <p class="inline">{{item.used? 'گارکرده': 'نو'}}</p>
         </div>
         <hr>
-        <button class="btn btn-primary" tf-go="/insert/messages/product={{item.code}}"> درخواست خرید این محصول </button>
+        <button class="btn btn-primary" tf-go="/insert/messages/product={{item.code}}&type=1"> درخواست خرید این محصول </button>
     </div>
 </div>

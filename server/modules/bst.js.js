@@ -4,6 +4,9 @@ var fs = require('fs');
 var mysql = require('mysql');
 var qc = require('query-creator');
 var db = mysql.createConnection(config.mysql);
+var Finder = require('fs-finder');
+var path = require('path');
+
 db.connect();
 
 module.exports.db = db;
@@ -103,6 +106,10 @@ module.exports.getAll = function () {
         if (filters.id) {
             filters['m`.`id'] = filters.id;
             delete filters.id;
+        }
+        if (filters.type) {
+            filters['m`.`type'] = filters.type;
+            delete filters.type;
         }
     }
     for (var i in filters) {
@@ -205,4 +212,24 @@ module.exports.delete = function () {
             }
         });
     });
+};
+
+module.exports.getFiles = function () {
+    var table = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'products';
+    var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "1";
+    var notFoundImg = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+    var basedir = __dirname + '/../files';
+    var files = Finder.from(basedir).findFiles(table + '-' + id + '-*.*');
+    var ret = [];
+    files.forEach(function (file) {
+        var index = path.basename(file).split('-');
+        index = index[index.length - 1];
+        index = index.split('.')[0];
+        ret.push(config.server.address + ':' + config.server.port + '/get-file/' + table + '/' + id + '/' + index);
+    });
+    if (files.length == 0 && notFoundImg) {
+        ret.push(config.server.address + ':' + config.server.port + '/get-file/notfound/0/0');
+    }
+    return ret;
 };

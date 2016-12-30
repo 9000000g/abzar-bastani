@@ -160,3 +160,38 @@ ul.last li h5 {
     font-size: 14px;
     padding: 20px;
 }
+
+.tf-floating-btn{
+    z-index: 2999;
+}
+
+.product-img{
+    width: 100% !important;
+    background-position: center !important;
+    background-size: cover !important;
+    height: 365px !important;
+    margin-bottom: 10px;
+}
+.product-img-single{
+    width: 100% !important;
+    background-position: center !important;
+    background-size: cover !important;
+    height: 600px !important;
+    margin-bottom: 10px; 
+}
+.red{
+    color: red;
+}
+.bold{
+    font-weight: bold;
+}
+
+.message-unread{
+    background: rgba(0,0,0,0.1);
+}
+.message-unconfirm{
+    border-right: solid 6px #BB0F0F !important;
+}
+.message-confirm{
+    border-right: solid 6px #2EB22C !important;
+}

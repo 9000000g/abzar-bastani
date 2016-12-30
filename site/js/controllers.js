@@ -27,6 +27,8 @@ angular.module('app.controllers', [])
                     return 'درخواست خرید محصول جدید';
                 case 4:
                     return 'پیام عادی';
+                case 5:
+                    return 'آگهی';
             }
         }
         $rootScope.deside(); // check logged in or not
@@ -44,6 +46,7 @@ angular.module('app.controllers', [])
         }, {
             src: 'images/4.jpg'
         }];
+        $scope.images = ['images/1.jpg','images/2.jpg','images/3.jpg','images/4.jpg'];
 
         $scope.unreadMessages = unreadMessages;
         $scope.search = function(text) {
@@ -107,15 +110,22 @@ angular.module('app.controllers', [])
     })
     .controller('TableItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $routeParams, item) {
         $scope.item = item;
+        $scope.temp = {};
         if( $routeParams.table == 'messages' && $rootScope.me !== false && $rootScope.me.type == 1){
             var id = $routeParams.id;
             $tfHttp.post('/update/messages/id=' + $routeParams.id, {read: 1});
+
+            if( item.type == 5 ){
+                $scope.$watch('item.confirmed', function(val){
+                    $tfHttp.post('/update/messages/id=' + $routeParams.id, {confirmed: val});
+                });
+            }
         }
+
     })
     .controller('TableNewItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $timeout, $routeParams, data, submit) {
         $scope.options = data.options;
         $scope.inputs = data.inputs;
-        console.log( data.options)
 
         $scope.log = function(){
             console.log($scope.inputs)
@@ -129,4 +139,28 @@ angular.module('app.controllers', [])
                 $theFramework.go('/main');
             })
         }
-    });
+    })
+    .controller('TableFilesCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $route, $routeParams, files, add, del) {
+        
+        $scope.file = null;
+
+        $scope.files = files;
+
+        $scope.add = function(){
+            add( $scope.file, function(){
+                $scope.file = null;
+                $route.reload();  
+            });
+        }
+        $scope.del = function(fileUrl){
+            if( !confirm('آیا مطمئنید؟') ){
+                return false;
+            }
+            del( fileUrl, function(){
+                $scope.file = null;
+                $route.reload();  
+            } );
+        }
+
+    })
+    ;

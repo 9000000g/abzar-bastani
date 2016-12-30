@@ -9,6 +9,8 @@ var fs = require('fs');
 var path = require('path');
 var ses = require('se-session');
 var multer = require('multer');
+var Finder = require('fs-finder');
+
 var upload = multer({
     dest: __dirname + '/tmp/',
     limits: {
@@ -26,7 +28,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.listen(config.server.port);
-
+console.log('listening to ' + config.server.address + ':' + config.server.port);
 app.post('/login', upload.array(), function (req, res) {
     if (req.session == null) {
         res.status(500).json('اشکال در ایجاد سشن!');
@@ -102,7 +104,7 @@ app.get('/get-all/:table/:filters?/:limit?', function (req, res) {
     }
     bst.getAll(req.params.table, filters, req.params.limit).then(function (result) {
         for (var i in result) {
-            result[i].file = global.config.server.address + ':' + global.config.server.port + '/get-file/' + req.params.table + '/' + result[i].id;
+            result[i].files = bst.getFiles(req.params.table, result[i].id, true);
         }
         res.json(result);
     }).catch(function (error) {
@@ -117,14 +119,71 @@ app.get('/get/:table/:id', function (req, res) {
     };
     bst.getAll(req.params.table, filters).then(function (result) {
         for (var i in result) {
-            result[i].file = global.config.server.address + ':' + global.config.server.port + '/get-file/' + req.params.table + '/' + result[i].id;
+            result[i].files = bst.getFiles(req.params.table, result[i].id, true);
         }
         res.json(result[0]);
     }).catch(function (error) {
         res.status(500).json('اشکال در بازیابی اطلاعات!');
     });
 });
-app.get('/get-file/:table/:id', function (req, res) {
+
+app.post('/add-file/:table/:id', upload.single('file'), function (req, res) {
+    if (req.params.table == 'messages' || req.params.table == 'userproducts') {// mikhad user add kone o typesh 1 nist
+        // let do this
+    } else {
+        if (req.session == null) {
+            res.status(500).json('اشکال در ایجاد سشن!');
+            return;
+        }
+        if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1) {
+            res.status(500).json('لطفا اول وارد سیستم شوید!');
+            return;
+        }
+    }
+    //fs.unlinkSync
+    if (typeof req.file != 'undefined' && req.file) {
+        var rnd = new Date().getTime();
+        var _path = __dirname + '/files/' + req.params.table + '-' + req.params.id + '-' + rnd + '.jpg';
+        fs.renameSync(req.file.path, _path);
+        res.json('با موفقیت آپلود شد');
+    } else {
+        res.status(500).json('اشکال در آپلود فایل!');
+    }
+});
+app.get('/get-files/:table/:id', function (req, res) {
+    res.json(bst.getFiles(req.params.table, req.params.id));
+});
+app.get('/get-file/:table/:id/:index', function (req, res) {
+    var file = __dirname + '/files/' + req.params.table + '-' + req.params.id + '-' + req.params.index + '.jpg';
+    if (fs.existsSync(file)) {
+        res.sendFile(file);
+    } else {
+        res.sendFile(__dirname + '/files/notfound.jpg');
+    }
+});
+app.post('/delete-file/:table/:id/:index', function (req, res) {
+    if (req.session == null) {
+        res.status(500).json('اشکال در ایجاد سشن!');
+        return;
+    }
+    if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1) {
+        res.status(500).json('لطفا اول وارد سیستم شوید!');
+        return;
+    }
+    var file = __dirname + '/files/' + req.params.table + '-' + req.params.id + '-' + req.params.index + '.jpg';
+    if (fs.existsSync(file)) {
+        var ret = fs.unlinkSync(file);
+        if (ret) {
+            res.json('با موفقیت حذف شد');
+        } else {
+            res.status(500).json('اشکال در حذف فایل');
+        }
+    } else {
+        res.status(500).json('فایل درخواستی در سیستم موجود نیست');
+    }
+});
+
+app.get('/get-file/:table/:id/', function (req, res) {
     var basedir = __dirname + '/files';
     var file = basedir + '/' + req.params.table + '-' + req.params.id + '.jpg';
     if (fs.existsSync(file)) {
@@ -156,9 +215,9 @@ app.post('/insert/:table', upload.single('file'), function (req, res) {
     bst.insert(req.params.table, req.body).then(function (result) {
         //console.log('inserted')
         if (typeof req.file != 'undefined' && req.file) {
-            var _path = __dirname + '/files/' + req.params.table + '-' + result.insertId + '.jpg';
-
-            fs.renameSync(req.file.path, _path);
+            var rnd = new Date().getTime();
+            var _path2 = __dirname + '/files/' + req.params.table + '-' + result.insertId + '-' + rnd + '.jpg';
+            fs.renameSync(req.file.path, _path2);
             res.json(result);
         } else {
             res.json(result);
@@ -193,10 +252,9 @@ app.post('/update/:table/:filters', upload.single('file'), function (req, res) {
     bst.update(req.params.table, req.body, filters).then(function (result) {
         //console.log('inserted')
         if (typeof req.file != 'undefined' && req.file) {
-            var _path2 = __dirname + '/files/' + req.params.table + '-' + filters.id + '.jpg';
-            console.log(_path2);
-            //fs.removeSync(path);
-            fs.renameSync(req.file.path, _path2);
+            var rnd = new Date().getTime();
+            var _path3 = __dirname + '/files/' + req.params.table + '-' + result.insertId + '-' + rnd + '.jpg';
+            fs.renameSync(req.file.path, _path3);
             res.json(result);
         } else {
             res.json(result);
@@ -206,6 +264,7 @@ app.post('/update/:table/:filters', upload.single('file'), function (req, res) {
         res.status(500).json(error);
     });
 });
+
 app.post('/delete/:table/:filters', upload.single('file'), function (req, res) {
     if (req.session == null) {
         res.status(500).json('اشکال در ایجاد سشن!');
@@ -218,7 +277,6 @@ app.post('/delete/:table/:filters', upload.single('file'), function (req, res) {
     var filters = {};
     if (req.params.filters) {
         var spl = req.params.filters.split('&');
-
         for (var i in spl) {
             var keyval = spl[i].split('=');
             if (keyval.length == 2) {

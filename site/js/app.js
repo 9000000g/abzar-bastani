@@ -10,14 +10,10 @@ function tableNameToItem(tableName) {
             return 'industry';
         case 'products':
             return 'product';
-        case 'userproducts':
-            return 'userproduct';
         case 'messages':
             return 'message';
         case 'users':
             return 'user';
-        case 'requests':
-            return 'request';
         default:
             return tableName;
     }
@@ -40,6 +36,10 @@ function findItemTemplate(urlattr) {
 function findNewItemTemplate(urlattr) {
     var template = 'new-' + tableNameToItem(urlattr.table);
     return 'templates/' + template + '.html';
+}
+function findFilesTemplate(urlattr) {
+    var template = tableNameToItem(urlattr.table);
+    return 'templates/' + template + '-files.html';
 }
 
 function tableItemsResolve() {
@@ -230,13 +230,18 @@ function tableNewItemResolve(type) {
                     //{text: 'خرید محصولات سایت', value: 1},
                     {text: 'فروش محصول به سایت', value: 2},
                     {text: 'درخواست خرید محصول جدید', value: 3},
-                    {text: 'پیام عادی', value: 4}
+                    {text: 'پیام عادی', value: 4},
+                    {text: 'آگهی', value: 5}
                 ];
                 nextAfterFetchDeps();
             } else if ($route.current.params.table == 'users') {
                 data.options.types = [
-                    {text: 'ادمین', value: 1},
-                    {text: 'مشتری', value: 2}
+                    {text: 'ادمین اصلی', value: 1},
+                    {text: 'مصفرف کننده', value: 2},
+                    {text: 'تولید کننده', value: 3},
+                    {text: 'وارد کننده', value: 4},
+                    {text: 'کارگاه خدماتی', value: 5},
+                    {text: 'فروشگاه', value: 6}
                 ];
                 nextAfterFetchDeps();
             } else {
@@ -261,7 +266,7 @@ function tableNewItemResolve(type) {
                     id = inputs.id;
                     delete inputs.id;
                 }
-                //console.log(inputs)
+                console.log(inputs)
                 $tfHttp.post(
                     '/'+type+'/' + $route.current.params.table + (type=='update'?'/id='+id:''), inputs
                 ).then(function(res) {
@@ -276,6 +281,70 @@ function tableNewItemResolve(type) {
         }
     }
 }
+
+function tableFilesResolve() {
+    return {
+        files: function($q, $theFramework, $tfHttp, $route) {
+            var defer = $q.defer();
+            $tfHttp.get(
+                    '/get-files/' + $route.current.params.table + '/' + $route.current.params.id
+            ).then(function(res) {
+                $theFramework.loading(false);
+                defer.resolve(res.data);
+            }).catch(function(err) {
+                $theFramework.toast(err.data);
+                $theFramework.loading(false);
+                defer.resolve([]);
+            });
+            return defer.promise;
+        },
+        add: function($q, $theFramework, $tfHttp, $route) {
+            return function(file, cb) {
+                cb = typeof cb != 'undefined' ? cb : function() {};
+                $theFramework.loading();
+                var table = $route.current.params.table;
+                var id = $route.current.params.id;
+
+                $tfHttp.post(
+                    '/add-file/' + table + '/' + id, file
+                ).then(function(res) {
+                    $theFramework.loading(false);
+                    $theFramework.toast(res.data);
+                    cb(true);
+                }).catch(function(err) {
+                    $theFramework.loading(false);
+                    $theFramework.toast(err.data);
+                    cb(false);
+                });
+            }
+        },
+        del: function($q, $theFramework, $tfHttp, $route) {
+            return function(fileUrl, cb) {
+                var fileIndex = fileUrl.split('/');
+                fileIndex = fileIndex[fileIndex.length-1] == ''? fileIndex[fileIndex.length-2]: fileIndex[fileIndex.length-1];
+
+
+                cb = typeof cb != 'undefined' ? cb : function() {};
+                $theFramework.loading();
+                var table = $route.current.params.table;
+                var id = $route.current.params.id;
+
+                $tfHttp.post(
+                    '/delete-file/' + table + '/' + id + '/' + fileIndex, {}
+                ).then(function(res) {
+                    $theFramework.loading(false);
+                    $theFramework.toast(res.data);
+                    cb(true);
+                }).catch(function(err) {
+                    $theFramework.loading(false);
+                    $theFramework.toast(err.data);
+                    cb(false);
+                });
+            }
+        }
+    }
+}
+
 
 function mainResolve() {
     return {
@@ -321,6 +390,11 @@ angular.module('app', ['theFramework', 'app.services', 'app.directives', 'app.co
                 controller: 'TableItemCtrl',
                 templateUrl: findItemTemplate,
                 resolve: tableItemResolve()
+            })
+            .when('/files/:table/:id', {
+                controller: 'TableFilesCtrl',
+                templateUrl: findFilesTemplate,
+                resolve: tableFilesResolve()
             })
             .when('/update/:table/:id', {
                 controller: 'TableNewItemCtrl',

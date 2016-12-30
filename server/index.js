@@ -8,6 +8,8 @@ const fs = require('fs');
 const path = require('path');
 const ses = require('se-session');
 const multer = require('multer');
+const Finder = require('fs-finder');
+
 const upload = multer({
     dest: `${__dirname}/tmp/`,
     limits: {
@@ -27,7 +29,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.listen(config.server.port);
-
+console.log(`listening to ${config.server.address}:${config.server.port}`)
 app.post('/login', upload.array(), (req, res) => {
     if (req.session == null) {
         res.status(500).json('اشکال در ایجاد سشن!');
@@ -109,7 +111,7 @@ app.get('/get-all/:table/:filters?/:limit?', (req, res) => {
     }
     bst.getAll(req.params.table, filters, req.params.limit).then((result) => {
             for (var i in result) {
-                result[i].file = `${global.config.server.address}:${global.config.server.port}/get-file/${req.params.table}/${result[i].id}`
+                result[i].files = bst.getFiles( req.params.table, result[i].id, true );
             }
             res.json(result);
         })
@@ -125,7 +127,7 @@ app.get('/get/:table/:id', (req, res) => {
     }
     bst.getAll(req.params.table, filters).then((result) => {
             for (var i in result) {
-                result[i].file = `${global.config.server.address}:${global.config.server.port}/get-file/${req.params.table}/${result[i].id}`
+                result[i].files = bst.getFiles( req.params.table, result[i].id, true );
             }
             res.json(result[0]);
         })
@@ -133,7 +135,76 @@ app.get('/get/:table/:id', (req, res) => {
             res.status(500).json('اشکال در بازیابی اطلاعات!');
         });
 });
-app.get('/get-file/:table/:id', (req, res) => {
+
+
+app.post('/add-file/:table/:id', upload.single('file'), (req,res) =>{
+    if (  req.params.table == 'messages' || req.params.table == 'userproducts' ) { // mikhad user add kone o typesh 1 nist
+        // let do this
+    }
+    else{
+        if (req.session == null) {
+            res.status(500).json('اشکال در ایجاد سشن!');
+            return;
+        }
+        if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1 ) {
+            res.status(500).json('لطفا اول وارد سیستم شوید!');
+            return;
+        }
+    }
+    //fs.unlinkSync
+    if (typeof req.file != 'undefined' && req.file) {
+        let rnd = new Date().getTime();
+        let path = `${__dirname}/files/${req.params.table}-${req.params.id}-${rnd}.jpg`;
+        fs.renameSync(req.file.path, path);
+        res.json('با موفقیت آپلود شد');
+    }
+    else{
+        res.status(500).json('اشکال در آپلود فایل!');
+    }
+});
+app.get('/get-files/:table/:id', (req, res) => {
+    res.json( bst.getFiles( req.params.table, req.params.id ) );
+});
+app.get('/get-file/:table/:id/:index', (req, res) => {
+    let file = `${__dirname}/files/${req.params.table}-${req.params.id}-${req.params.index}.jpg`;
+    if( fs.existsSync(file) ){
+        res.sendFile(file);
+    }
+    else{
+        res.sendFile(`${__dirname}/files/notfound.jpg`);
+    }
+});
+app.post('/delete-file/:table/:id/:index', (req, res) => {
+    if (req.session == null) {
+        res.status(500).json('اشکال در ایجاد سشن!');
+        return;
+    }
+    if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1 ) {
+        res.status(500).json('لطفا اول وارد سیستم شوید!');
+        return;
+    }
+    let file = `${__dirname}/files/${req.params.table}-${req.params.id}-${req.params.index}.jpg`;
+    if( fs.existsSync(file) ){
+        let ret = fs.unlinkSync(file);
+        if( ret ){
+            res.json('با موفقیت حذف شد');
+        }
+        else{
+            res.status(500).json('اشکال در حذف فایل');
+        }
+    }
+    else{
+        res.status(500).json('فایل درخواستی در سیستم موجود نیست');
+    }
+});
+
+
+
+
+
+
+
+app.get('/get-file/:table/:id/', (req, res) => {
     let basedir = `${__dirname}/files`;
     let file = `${basedir}/${req.params.table}-${req.params.id}.jpg`;
     if( fs.existsSync(file) ){
@@ -167,8 +238,8 @@ app.post('/insert/:table', upload.single('file'), (req, res) => {
     bst.insert(req.params.table, req.body).then((result) => {
             //console.log('inserted')
             if (typeof req.file != 'undefined' && req.file) {
-                let path = `${__dirname}/files/${req.params.table}-${result.insertId}.jpg`;
-
+                let rnd = new Date().getTime();
+                let path = `${__dirname}/files/${req.params.table}-${result.insertId}-${rnd}.jpg`;
                 fs.renameSync(req.file.path, path);
                 res.json(result);
             } else {
@@ -205,9 +276,8 @@ app.post('/update/:table/:filters', upload.single('file'), (req, res) => {
     bst.update(req.params.table, req.body, filters).then((result) => {
             //console.log('inserted')
             if (typeof req.file != 'undefined' && req.file) {
-                let path = `${__dirname}/files/${req.params.table}-${filters.id}.jpg`;
-                console.log(path)
-                //fs.removeSync(path);
+                let rnd = new Date().getTime();
+                let path = `${__dirname}/files/${req.params.table}-${result.insertId}-${rnd}.jpg`;
                 fs.renameSync(req.file.path, path);
                 res.json(result);
             } else {
@@ -219,6 +289,10 @@ app.post('/update/:table/:filters', upload.single('file'), (req, res) => {
             res.status(500).json(error);
         });
 });
+
+
+
+
 app.post('/delete/:table/:filters', upload.single('file'), (req, res) => {
     if (req.session == null) {
         res.status(500).json('اشکال در ایجاد سشن!');
@@ -231,7 +305,6 @@ app.post('/delete/:table/:filters', upload.single('file'), (req, res) => {
     let filters = {}
     if (req.params.filters) {
         let spl = req.params.filters.split('&');
-
         for (let i in spl) {
             let keyval = spl[i].split('=');
             if (keyval.length == 2) {
