@@ -154,7 +154,7 @@ CREATE TABLE `industries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `alias` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `industries` (
 
 LOCK TABLES `industries` WRITE;
 /*!40000 ALTER TABLE `industries` DISABLE KEYS */;
-INSERT INTO `industries` VALUES (1,'چوب و ام‌دی‌اف'),(2,'فلز');
+INSERT INTO `industries` VALUES (1,'چوب و ام‌دی‌اف'),(2,'فلز'),(3,'لاستیک و پلاستیک'),(4,'ساختمان');
 /*!40000 ALTER TABLE `industries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,13 +177,14 @@ DROP TABLE IF EXISTS `messages`;
 CREATE TABLE `messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(11) DEFAULT NULL,
-  `message` varchar(455) DEFAULT NULL,
+  `message` varchar(1455) DEFAULT NULL,
   `product` varchar(45) DEFAULT NULL,
   `read` tinyint(1) DEFAULT '0',
-  `type` int(11) DEFAULT NULL COMMENT '1 for buy (product code should be one of products)\n2 for sale \n3 for buyNewItem (not in products)\n4 for normal messages',
+  `type` int(11) DEFAULT NULL COMMENT '1 for buy (product code should be one of products)\n2 for sale \n3 for buyNewItem (not in products)\n4 for normal messages\n5 for ads',
   `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `confirmed` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,7 +193,7 @@ CREATE TABLE `messages` (
 
 LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-INSERT INTO `messages` VALUES (1,3,'سلام. خیلی محصول خوبی به نظر میرسه. همینو میخوام.','M0031',1,1,'2016-12-15 23:48:20'),(2,1,'سلام. من یه محصولی جدید میخوام. دارین؟',NULL,1,3,'2016-12-16 02:23:36');
+INSERT INTO `messages` VALUES (1,3,'سلام. خیلی محصول خوبی به نظر میرسه. همینو میخوام.','M0031',1,1,'2016-12-15 23:48:20',0),(2,1,'سلام. من یه محصولی جدید میخوام. دارین؟',NULL,1,3,'2016-12-16 02:23:36',0),(3,1,'dsfsf',NULL,1,3,'2016-12-24 08:11:58',0),(4,1,'سلام. چند؟','M0031',1,1,'2016-12-30 08:27:31',1),(5,1,'این محصول رو میخوام به شما بفروشم.',NULL,1,2,'2016-12-30 08:31:33',0),(6,1,'دستگاه بالابر جدید شرکت ابر رایانه',NULL,1,5,'2016-12-30 08:47:15',1),(7,1,'این یک درخواست بصورت تست میباشد. اتریبیوت ng-model همانطور که از نامش پیداست، برای دریافت مدل استفاده می‌شود. مقادیری که در اتریبیوت‌های دل‌بخواهی on-value و off-value وارد می‌شود، برای مقدار مدل، هنگام انتخاب‌شده و بالعکس استفاده می‌شود. در صورتی که این دو اتریبیوت مقداردهی نشوند، true و false در نظر گرفته می‌شود.\r\n\r\nهمچنین در نظر داشته باشید که اگر مقدار ngModel در ابتدای کار مقداری خارج از onValue یا offValue باشد، مقدار offValue به طور پیش‌فرض برای آن در نظر گرفته می‌شود.',NULL,1,5,'2016-12-30 10:02:36',0);
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,7 +218,7 @@ CREATE TABLE `products` (
   `subgroup` int(11) DEFAULT NULL,
   `importer` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,7 +227,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (14,'لبه چسبان','M0031','EB-101',2016,'CN',0,1,1,1,1,2),(15,'دستگاه خوب','x273','x273',1987,'CN',1,2,2,2,25,2),(16,'آل کلر','x897','e225',1879,'AL',1,2,2,2,2,2),(17,'A2','A222','8742',19999,'DZ',0,6,2,2,2,2),(18,'تست','zcxzxc','sdcsc',234234,'TM',0,NULL,NULL,NULL,NULL,NULL),(19,'تست جدید','ab556','84',1987,'TW',0,5,1,2,29,1),(20,'test jadid','x599','A220',1998,'IN',0,6,1,1,24,-1);
+INSERT INTO `products` VALUES (14,'لبه چسبان','M0031','EB-101',2016,'CN',0,1,1,1,1,2),(15,'دستگاه خوب','x273','x273',1987,'CN',1,2,2,2,25,2),(16,'آل کلر','x897','e225',1879,'AL',1,2,2,2,2,2),(17,'A2','A222','8742',19999,'DZ',0,6,2,2,2,2),(18,'تست','zcxzxc','sdcsc',234234,'TM',0,NULL,NULL,NULL,NULL,NULL),(19,'تست جدید','ab556','84',1987,'TW',0,5,1,2,29,1),(20,'test jadid','x599','A220',1998,'IN',0,6,1,1,24,-1),(21,'تست جدید','x2222','1231231',1788,'TH',1,3,1,1,30,1),(22,'dfsdfsdf','sdfsdfsdf','dsfsdfds',234234,'TW',0,3,1,2,25,2),(23,'تست جدید','sdaasd','asdsadasd',234234,'TW',1,4,3,1,27,1);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -267,6 +268,7 @@ CREATE TABLE `userproducts` (
   `phone` varchar(45) NOT NULL,
   `product` varchar(455) DEFAULT NULL,
   `description` varchar(455) DEFAULT NULL,
+  `confirmed` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -277,7 +279,7 @@ CREATE TABLE `userproducts` (
 
 LOCK TABLES `userproducts` WRITE;
 /*!40000 ALTER TABLE `userproducts` DISABLE KEYS */;
-INSERT INTO `userproducts` VALUES (18,'آقای حسنی','09123213333','دستگاه لبه پر فلان','این دستگاه سه ماه دست ما بوده. تقریبا نو هستش. برای بازدید تماس بگیرید'),(19,'عبس حمسدس','091233213123123','دستگاه بالابر فلان','سلام این یه متن تسته'),(20,'sdf','sdf','fsd','sdfsdf');
+INSERT INTO `userproducts` VALUES (18,'آقای حسنی','09123213333','دستگاه لبه پر فلان','این دستگاه سه ماه دست ما بوده. تقریبا نو هستش. برای بازدید تماس بگیرید',0),(19,'عبس حمسدس','091233213123123','دستگاه بالابر فلان','سلام این یه متن تسته',0),(20,'sdf','sdf','fsd','sdfsdf',0);
 /*!40000 ALTER TABLE `userproducts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -321,4 +323,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-16  6:32:33
+-- Dump completed on 2016-12-30 13:53:18
