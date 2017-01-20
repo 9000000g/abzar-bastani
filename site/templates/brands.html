@@ -15,9 +15,22 @@
 </nav>
 <div class="tf-container">
     <ul class="list-group block pointer" ng-if="items.length > 0">
-        <li class="list-group-item" ng-repeat="item in items" tf-go="/get-all/products/brand={{item.id}}/برند {{item.alias}}">
+        <li class="list-group-item" ng-repeat="item in items" ng-click="bottomSheet(item)">
             <i class="fa fa-tags"></i> {{item.alias}}
         </li>
     </ul>
     <p class="vertical-padding horizontal-padding" ng-if="items.length == 0"> هنوز هیچ آیتمی ثبت نشده‌است. </p>
+    <tf-floating-btn tf-go="/insert/brands" ng-if="me !==false && me.type==1">
+        <i class="fa fa-plus"></i>
+    </tf-floating-btn>
 </div>
+<tf-bottom-sheet open="_bottomSheet" label="برند {{hovered.alias}}">
+    <ul class="list-group block">
+        <li class="list-group-item" tf-go="update/brands/{{hovered.id}}" ng-if="me !==false && me.type==1">
+            <i class="fa fa-edit"></i> ویرایش برند
+        </li>
+        <li class="list-group-item" ng-click="deleteItem(hovered.id)" ng-if="me !==false && me.type==1">
+            <i class="fa fa-trash"></i> حذف برند
+        </li>
+    </ul>
+</tf-bottom-sheet>

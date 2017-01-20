@@ -65,6 +65,10 @@
             </div>
         </div>
         <div class="row">
+            <div class="form-group col-sm-6">
+                <label class="control-label">قیمت (به تومان)</label>
+                <input type="tel" class="form-control" ng-model="inputs.price" placeholder="قیمت" required/>
+            </div>
             <div class="form-group col-sm-3">
                 <label class="control-label"> تصویر </label>
                 <div class="btn btn-default btn-block" tf-image-picker ng-model="inputs.file" required>
@@ -73,7 +77,7 @@
             </div>
             <div class="form-group col-sm-3">
                 <label class="control-label">کارکرده</label>
-                <tf-switch class="form-control" ng-model="inputs.used" required></tf-switch>
+                <tf-switch class="form-control" ng-model="inputs.used" on-value="1" off-value="0"></tf-switch>
             </div>
         </div>
         <div class="row">

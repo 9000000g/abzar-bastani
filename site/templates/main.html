@@ -19,20 +19,20 @@
     
     <div class="vertical-padding horizontal-padding">
         <div class="row">
-            <div class="col-md-6 col-xs-12">
-                <h4>فروش ویژه</h4>
+            <div class="col-md-6 col-md-offset-1 col-xs-12">
+                <h4> <i class="fa fa-bolt red"></i>  فروش ویژه </h4>
                 <div class="">
                     <tf-image-slider ng-model="images" height="365" class="slider"></tf-image-slider>
                 </div>
             </div>
-            <div class="col-md-3 col-xs-6">
+            <div class="col-md-2 col-xs-6">
                 <h4>دسترسی سریع</h4>
                 <div class="appitem appitem-1" tf-go="/get-all/messages/type=5&confirmed=1"><i class="fa fa-cubes"></i> آگهی‌ها</div>
                 <div class="appitem appitem-2" ng-click="notYet()"><i class="fa fa-wrench"></i> مزایده و مناقصه</div>
                 <div class="appitem appitem-3"  tf-go="/insert/messages/type=2"><i class="fa fa-comment"></i> درخواست جدید </div>
                 <div class="appitem appitem-4" tf-go="get/companies/1"><i class="fa fa-google"></i> درباره ما</div>
             </div>
-            <div class="col-md-3 col-xs-6">
+            <div class="col-md-2 col-xs-6">
                 <h4>تبلیغات</h4>
                 <div class="ad ad-1" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات یک</div>
                 <div class="ad ad-2" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات دو</div>
@@ -45,8 +45,9 @@
 
 <tf-sidebar open="sidebar" direction="left">
     <div class="profile">
-        <i class="fa fa-user"></i><br>
-        <h5 ng-if="me !== false"> {{ me.alias }} </h5>
+        <i class="fa fa-user pointer" ng-if="me !== false" tf-go="/update/users/{{me.id}}"></i><br>
+        <h5 class="pointer" ng-if="me !== false" tf-go="/update/users/{{me.id}}"> {{ me.alias }} </h5>
+        <i class="fa fa-user" ng-if="me === false" tf-go="/insert/users/type=2"></i><br>
         <h5 ng-if="me === false"> خوش آمدید! </h5>
     </div>
     <ul class="list-group main-sidebar pointer">

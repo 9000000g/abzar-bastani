@@ -13,9 +13,8 @@
     </section>
 </nav>
 <div class="tf-container infomessage">
+    <div ng-if="item.files.length==1" class="product-img-single" ng-style="{'background': 'url(' + item.files[0] + ')'}" ></div> 
     <div class="horizontal-padding vertical-padding item">
-        <div ng-if="item.files.length==1" class="product-img-single" ng-style="{'background': 'url(' + item.files[0] + ')'}" ></div> 
-        <hr/>
         <h4 tf-go="/get/products/{{item.product_id}}" ng-if="item.product">  درخواست خرید <a> {{item.product}} </a> </h4>
         <div> <b> نوع درخواست:</b>
             <p class="inline">{{messageType(item.type)}}</p>

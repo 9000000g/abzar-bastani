@@ -1,0 +1,10 @@
+ALTER TABLE `bastani`.`users` ADD COLUMN `fax` VARCHAR(45) NULL AFTER `address`;
+
+
+ALTER TABLE `bastani`.`products` ADD COLUMN `price` VARCHAR(45) NULL AFTER `importer`;
+
+
+
+
+// after clone:
+http://127.0.0.1:1978/fix-uploaded

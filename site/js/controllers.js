@@ -24,7 +24,7 @@ angular.module('app.controllers', [])
                 case 2:
                     return 'فروش محصول به سایت';
                 case 3:
-                    return 'درخواست خرید محصول جدید';
+                    return 'سفارش محصول';
                 case 4:
                     return 'پیام عادی';
                 case 5:
@@ -96,12 +96,12 @@ angular.module('app.controllers', [])
             $scope._bottomSheet = true;
             $scope.hovered = item;
         }
-        if( $routeParams.table == 'products' && $rootScope.me !== false && $rootScope.me.type == 1){
+        if( $rootScope.me !== false && $rootScope.me.type == 1){
             $scope.deleteItem = function(id){
                 if( !confirm('آیا مطمئنید؟') ){
                     return;
                 }
-                $tfHttp.post('/delete/products/id=' + id, {}).then( function(){
+                $tfHttp.post('/delete/'+$routeParams.table+'/id=' + id, {}).then( function(){
                     $route.reload();  
                 });
             }

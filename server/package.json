@@ -15,6 +15,7 @@
     "cors-express": "^0.2.2",
     "express": "^4.14.0",
     "fs-finder": "^1.8.1",
+    "jimp": "^0.2.27",
     "multer": "^1.2.0",
     "mysql": "^2.11.1",
     "query-creator": "0.0.6",

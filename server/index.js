@@ -10,6 +10,8 @@ const ses = require('se-session');
 const multer = require('multer');
 const Finder = require('fs-finder');
 
+const jimp = require('jimp');
+
 const upload = multer({
     dest: `${__dirname}/tmp/`,
     limits: {
@@ -36,8 +38,7 @@ app.post('/login', upload.array(), (req, res) => {
         return;
     }
     if (!req.body.username ||
-        !req.body.password ||
-        req.body.password.length < 6
+        !req.body.password
     ) {
         res.status(500).json('اطلاعات ورودی اشتباه است!');
         return;
@@ -48,7 +49,7 @@ app.post('/login', upload.array(), (req, res) => {
             res.json(result);
         })
         .catch((error) => {
-            res.status(500).json('اشکال در بازیابی اطلاعات!');
+            res.status(500).json(error);
         });
 });
 app.post('/logout', upload.array(), (req, res) => {
@@ -88,16 +89,6 @@ app.get('/users/:id', (req, res) => {
 });
 
 app.get('/get-all/:table/:filters?/:limit?', (req, res) => {
-    if (req.params.table == 'messages') {
-        if (req.session == null) {
-            res.status(500).json('اشکال در ایجاد سشن!');
-            return;
-        }
-        if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1) {
-            res.status(500).json('ابتدا وارد سیستم شوید!');
-            return;
-        }
-    }
     let filters = {}
     if (req.params.filters) {
         let spl = req.params.filters.split('&');
@@ -107,6 +98,16 @@ app.get('/get-all/:table/:filters?/:limit?', (req, res) => {
             if (keyval.length == 2) {
                 filters[keyval[0]] = keyval[1];
             }
+        }
+    }
+    if (req.params.table == 'messages' && filters.type != 5) {
+        if (req.session == null) {
+            res.status(500).json('اشکال در ایجاد سشن!');
+            return;
+        }
+        if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1) {
+            res.status(500).json('ابتدا وارد سیستم شوید!');
+            return;
         }
     }
     bst.getAll(req.params.table, filters, req.params.limit).then((result) => {
@@ -155,8 +156,13 @@ app.post('/add-file/:table/:id', upload.single('file'), (req,res) =>{
     if (typeof req.file != 'undefined' && req.file) {
         let rnd = new Date().getTime();
         let path = `${__dirname}/files/${req.params.table}-${req.params.id}-${rnd}.jpg`;
-        fs.renameSync(req.file.path, path);
-        res.json('با موفقیت آپلود شد');
+        jimp.read(req.file.path).then( (lenna)=>{
+            lenna.resize(450, jimp.AUTO)
+                .quality(45)
+                .write(path, ()=>{
+                    res.json('با موفقیت آپلود شد');
+                });
+        });
     }
     else{
         res.status(500).json('اشکال در آپلود فایل!');
@@ -228,7 +234,7 @@ app.post('/insert/:table', upload.single('file'), (req, res) => {
     }
     else{
         if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1 ) {
-            res.status(500).json('لطفا اول وارد سیستم شوید!');
+            res.status(500).json('برای انجام این کار، نیاز به دسترسی ادمین دارید!');
             return;
         }
     }
@@ -240,8 +246,15 @@ app.post('/insert/:table', upload.single('file'), (req, res) => {
             if (typeof req.file != 'undefined' && req.file) {
                 let rnd = new Date().getTime();
                 let path = `${__dirname}/files/${req.params.table}-${result.insertId}-${rnd}.jpg`;
-                fs.renameSync(req.file.path, path);
-                res.json(result);
+                jimp.read(req.file.path).then( (lenna)=>{
+                    lenna.resize(450, jimp.AUTO)
+                        .quality(45)
+                        .write(path, ()=>{
+                            res.json(result);
+                        });
+                });
+                //fs.renameSync(req.file.path, path);
+                
             } else {
                 res.json(result);
             }
@@ -252,14 +265,19 @@ app.post('/insert/:table', upload.single('file'), (req, res) => {
         });
 });
 app.post('/update/:table/:filters', upload.single('file'), (req, res) => {
-    if (req.params.table == 'products' || req.params.table == 'users') {
+    if (req.params.table == 'products' || req.params.table == 'users' || req.params.table == 'brands' || req.params.table == 'importers' || req.params.table == 'subgroups' || req.params.table == 'groups' || req.params.table == 'companies' || req.params.table == 'countries') {
         if (req.session == null) {
             res.status(500).json('اشکال در ایجاد سشن!');
             return;
         }
         if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1) {
-            res.status(500).json('لطفا اول وارد سیستم شوید!');
+            res.status(500).json('برای انجام این کار، نیاز به دسترسی ادمین دارید!');
             return;
+        }
+    }
+    if( req.params.table == 'users' ){
+        if( !req.params.password ){
+            delete req.params.password;
         }
     }
     let filters = {}
@@ -278,8 +296,14 @@ app.post('/update/:table/:filters', upload.single('file'), (req, res) => {
             if (typeof req.file != 'undefined' && req.file) {
                 let rnd = new Date().getTime();
                 let path = `${__dirname}/files/${req.params.table}-${result.insertId}-${rnd}.jpg`;
-                fs.renameSync(req.file.path, path);
-                res.json(result);
+                jimp.read(req.file.path).then( (lenna)=>{
+                    lenna.resize(450, jimp.AUTO)
+                        .quality(45)
+                        .write(path, ()=>{
+                            res.json(result);
+                        });
+                });
+                //res.json(result);
             } else {
                 res.json(result);
             }
@@ -320,10 +344,23 @@ app.post('/delete/:table/:filters', upload.single('file'), (req, res) => {
         res.status(500).json(error);
     });
 });
-app.post('/tf', upload.single('file'), (req, res) => {
-    console.log('got request');
-    console.log(req.body);
-    console.log(req.file);
-    res.send('ok');
+app.get('/fix-uploaded', upload.single('file'), (req, res) => {
+    let files = Finder.from(`${__dirname}/files/`).findFiles(`*.*`);
+    let ret = [];
+    let did = 0;
+    let job = files.length;
+    files.forEach( (file)=>{
+        jimp.read( file ).then( (lenna)=>{
+            lenna.resize(450, jimp.AUTO)
+                .quality(45)
+                .write(file, ()=>{
+                    did++;
+                    if( did == job ){
+                        res.send('ok');
+                    }
+                });
+        });
+    });
+    
 
 });

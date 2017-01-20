@@ -229,7 +229,7 @@ function tableNewItemResolve(type) {
                 data.options.types = [
                     //{text: 'خرید محصولات سایت', value: 1},
                     {text: 'فروش محصول به سایت', value: 2},
-                    {text: 'درخواست خرید محصول جدید', value: 3},
+                    {text: 'سفارش محصول', value: 3},
                     {text: 'پیام عادی', value: 4},
                     {text: 'آگهی', value: 5}
                 ];
@@ -237,7 +237,7 @@ function tableNewItemResolve(type) {
             } else if ($route.current.params.table == 'users') {
                 data.options.types = [
                     {text: 'ادمین اصلی', value: 1},
-                    {text: 'مصفرف کننده', value: 2},
+                    {text: 'مصرف کننده', value: 2},
                     {text: 'تولید کننده', value: 3},
                     {text: 'وارد کننده', value: 4},
                     {text: 'کارگاه خدماتی', value: 5},
@@ -253,7 +253,7 @@ function tableNewItemResolve(type) {
             return function(inputs, cb) {
                 cb = typeof cb != 'undefined' ? cb : function() {};
                 $theFramework.loading();
-                if( typeof inputs.file == 'undefined' || inputs.file == '' || !inputs.file ){
+                if( typeof inputs.file == 'undefined' || inputs.file == '' || !inputs.file || inputs.file === null ){
                     delete inputs.file;
                 }
                 for( var i in inputs ){
@@ -261,6 +261,7 @@ function tableNewItemResolve(type) {
                         delete inputs[i];
                     }
                 }
+                delete inputs.files;
                 var id = null;
                 if( type == 'update' ){
                     id = inputs.id;

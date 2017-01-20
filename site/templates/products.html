@@ -31,7 +31,6 @@
                         <label class="label label-info pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}year={{item.year}}/سال ساخت {{item.year}}">سال ساخت {{item.year}}</label>
                         <label class="label label-info pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}subgroup={{item.subgroup}}/زیرگروه {{item.subgroup_alias}}">زیرگروه {{item.subgroup_alias}}</label>
                         <label class="label label-info pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}brand={{item.brand}}/برند {{item.brand_alias}}">برند {{item.brand_alias}}</label>
-                        <label class="label label-info pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}importer={{item.importer}}/شرکت وارد‌کننده {{item.importer_alias}}">شرکت وارد‌کننده {{item.importer_alias}}</label>
                         <label class="label label-info pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}industry={{item.industry}}/صنعت {{item.industry_alias}}">صنعت {{item.industry_alias}}</label>
                         <label class="label label-info pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}used=1/کارکرده" ng-if="item.used">کارکرده</label>
                         <label class="label label-info pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}used=0/نو" ng-if="!item.used">نو</label>
