@@ -25,7 +25,7 @@ SOLVED: tuye mahsul, fielde gheymat bashe, vali ekhtiari bashe. age nabyud, tuye
 
 ----
 
-tabe khadamat ezafe beshe kenare abzar o ina. ke betune khadamat ro bebine karbar
+NEW_SOLVED: tabe khadamat ezafe beshe kenare abzar o ina. ke betune khadamat ro bebine karbar
 
 ----
 
@@ -45,7 +45,7 @@ ya khode bastani,  betune be felan guruh payam bede
 
 -----
 
-tuye safe asli, furushe vizhe bishtar tuye cheshm bashe
+SOLVED: tuye safe asli, furushe vizhe bishtar tuye cheshm bashe
 
 
 -----
@@ -55,5 +55,5 @@ SOLVED: theme site beshe ghermez
 
 -----
 
-tablighat ro betune avaz kone khodesh
+NEW_SOLVED: tablighat ro betune avaz kone khodesh
 

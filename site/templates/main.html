@@ -34,10 +34,10 @@
             </div>
             <div class="col-md-2 col-xs-6">
                 <h4>تبلیغات</h4>
-                <div class="ad ad-1" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات یک</div>
-                <div class="ad ad-2" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات دو</div>
+                <div ng-repeat="(index, ad) in ads"  class="ad ad-{{index+1}}"><a ng-href="{{ad.url}}" target="_blank"> <i class="fa fa-external-link"></i> {{ad.title}} </a> </div>
+                <!--div class="ad ad-2" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات دو</div>
                 <div class="ad ad-3" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات سه</div>
-                <div class="ad ad-4" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات چهار</div>
+                <div class="ad ad-4" ng-click="notYet()"><i class="fa fa-external-link"></i> تبلیعات چهار</div-->
             </div>
         </div>
     </div>
@@ -72,6 +72,9 @@
         </li>
         <li class="list-group-item" tf-go="/get-all/brands">
             <i class="fa fa-tags"></i> برندها
+        </li>
+        <li class="list-group-item" tf-go="/get-all/ads" ng-if="me !== false && me.type === 1">
+            <i class="fa fa-external-link"></i> تبلیغات
         </li>
         <li class="list-group-item" ng-if="me !== false" tf-go="/login">
             <i class="fa fa-sign-out"></i> خروج

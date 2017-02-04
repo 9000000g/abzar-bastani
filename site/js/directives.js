@@ -13,6 +13,7 @@ angular.module('app.directives', [])
                 '   <li tf-go="/get-all/products/group=1" ng-class="{active: active==1}"> <i class="fa fa-gears"></i> ماشین‌آلات </li>' +
                 '   <li tf-go="/get-all/products/group=2" ng-class="{active: active==2}"> <i class="fa fa-legal"></i> ابزارآلات </li>' +
                 '   <li tf-go="/get-all/messages/type=5&confirmed=1" ng-class="{active: active==3}"> <i class="fa fa-cubes"></i> آکهی‌ها </li>' +
+                '   <li tf-go="/get-all/services" ng-class="{active: active==5}"> <i class="fa fa-cog"></i> خدمات </li>' +
                 '</ul>'
         }
     })

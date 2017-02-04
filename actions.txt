@@ -4,6 +4,12 @@ ALTER TABLE `bastani`.`users` ADD COLUMN `fax` VARCHAR(45) NULL AFTER `address`;
 ALTER TABLE `bastani`.`products` ADD COLUMN `price` VARCHAR(45) NULL AFTER `importer`;
 
 
+--------
+
+CREATE TABLE `bastani`.`services` (`id` INT NOT NULL AUTO_INCREMENT,`title` VARCHAR(255) CHARACTER SET 'utf8' NULL,`body` VARCHAR(45) CHARACTER SET 'utf8' NULL,PRIMARY KEY (`id`));
+
+CREATE TABLE `bastani`.`ads` (`id` INT NOT NULL AUTO_INCREMENT,`title` VARCHAR(255) CHARACTER SET 'utf8' NOT NULL,`url` VARCHAR(255) NOT NULL,PRIMARY KEY (`id`));
+
 
 
 // after clone:

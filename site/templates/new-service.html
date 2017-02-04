@@ -1,9 +1,9 @@
 <nav class="tf-navbar">
     <section class="icon">
-        <i class="fa fa-comment"></i>
+        <i class="fa fa-cog"></i>
     </section>
     <section class="title">
-        <h4> برند </h4>
+        <h4> خدمات </h4>
     </section>
     <section class="icon button" tf-go="/main">
         <i class="fa fa-home"></i>
@@ -16,8 +16,14 @@
     <div class="container-fluid row col-md-8 col-md-offset-2">
         <div class="row">
             <div class="form-group col-xs-12">
-                <label class="control-label"> نام برند </label>
-                <input type="text" class="form-control" ng-model="inputs.alias" placeholder="نام برند" required/>
+                <label class="control-label"> عنوان </label>
+                <input type="text" class="form-control" ng-model="inputs.title" placeholder="عنوان" required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <label class="control-label">توضیحات</label>
+                <textarea class="form-control" ng-model="inputs.body" placeholder="توضیحات" required></textarea>
             </div>
         </div>
         <div class="row">

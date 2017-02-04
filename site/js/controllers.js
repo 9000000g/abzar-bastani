@@ -33,7 +33,7 @@ angular.module('app.controllers', [])
         }
         $rootScope.deside(); // check logged in or not
     })
-    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, unreadMessages) {
+    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, unreadMessages, ads) {
         //alert('we are here');
         $scope.sidebar = false;
         $scope.searchbar = false;
@@ -49,6 +49,7 @@ angular.module('app.controllers', [])
         $scope.images = ['images/1.jpg','images/2.jpg','images/3.jpg','images/4.jpg'];
 
         $scope.unreadMessages = unreadMessages;
+        $scope.ads = ads;
         $scope.search = function(text) {
             $theFramework.go('/get-all/products/name='+text);
         }

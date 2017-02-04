@@ -136,6 +136,10 @@ ul.last li h5 {
     border: solid 3px rgba(255,255,255,0.4);
     border-radius: 6px;
 }
+#main .ad a{
+    color: #fff;
+    text-decoration: none;
+}
 #main .ad:hover, #main .appitem:hover {
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
 }

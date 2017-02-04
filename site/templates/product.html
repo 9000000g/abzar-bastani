@@ -13,7 +13,7 @@
     </section>
 </nav>
 <div class="tf-container">
-    <div class="product">
+    <div class="product horizontal-padding vertical-padding row col-md-8 col-md-offset-2">
         <!--img ng-src="{{item.file}}" class="full-width pointer" /-->
         <div ng-if="item.files.length==1" class="product-img-single" ng-style="{'background': 'url(' + item.files[0] + ')'}" ></div>
         <tf-image-slider  ng-if="item.files.length>1" ng-model="item.files" height="365" class="slider"></tf-image-slider>

@@ -14,6 +14,10 @@ function tableNameToItem(tableName) {
             return 'message';
         case 'users':
             return 'user';
+        case 'services':
+            return 'service';
+        case 'ads':
+            return 'ad';
         default:
             return tableName;
     }
@@ -354,6 +358,21 @@ function mainResolve() {
             $theFramework.loading();
             $tfHttp.get(
                 '/get-all/messages/read=0'
+            ).then(function(res) {
+                $theFramework.loading(false);
+                defer.resolve(res.data);
+            }).catch(function(err) {
+                $theFramework.loading(false);
+                //$theFramework.toast(err.data);
+                defer.resolve({});
+            });
+            return defer.promise;
+        },
+        ads: function($tfHttp, $q, $theFramework){
+            var defer = $q.defer();
+            $theFramework.loading();
+            $tfHttp.get(
+                '/get-all/ads'
             ).then(function(res) {
                 $theFramework.loading(false);
                 defer.resolve(res.data);
