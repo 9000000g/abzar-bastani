@@ -14,28 +14,40 @@ angular.module('app.controllers', [])
                 $theFramework.toast(err.data);
             });
         }
+        $rootScope.log = function(msg){
+            console.log(msg);
+        }
+        $rootScope.messageType = function(t){
+            switch( t ){
+                case 1:
+                    return 'خرید محصولات سایت';
+                case 2:
+                    return 'فروش محصول به سایت';
+                case 3:
+                    return 'سفارش محصول';
+                case 4:
+                    return 'پیام عادی';
+                case 5:
+                    return 'آگهی';
+            }
+        }
         $rootScope.deside(); // check logged in or not
     })
-    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, last) {
+    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, unreadMessages, ads, slides) {
         //alert('we are here');
-
         $scope.sidebar = false;
-        $scope.images = [{
-            src: 'images/1.jpg'
-        }, {
-            src: 'images/2.jpg'
-        }, {
-            src: 'images/3.jpg'
-        }, {
-            src: 'images/4.jpg'
-        }];
+        $scope.searchbar = false;
+        $scope.slides = slides;
 
-        $scope.last = last;
-        $scope.fetch = function() {
-            //alert('we are here');
+        $scope.unreadMessages = unreadMessages;
+        $scope.ads = ads;
+        $scope.search = function(text) {
+            $theFramework.go('/get-all/products/name='+text);
         }
-
-        $scope.fetch();
+        $scope.notYet = function(){
+            $theFramework.toast('این بخش از برنامه هنوز راه‌اندازی نشده‌است!');
+        }
+        console.log( $rootScope.me );
     })
     .controller('LoginCtrl', function($scope, $rootScope, $theFramework, $timeout, $tfHttp) {
         $scope.inputs = {};
@@ -63,7 +75,7 @@ angular.module('app.controllers', [])
             $theFramework.toast(err.data);
         });
     })
-    .controller('TableItemsCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $routeParams, items, searching, searchTitle, filters) {
+    .controller('TableItemsCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $route, $routeParams, items, searching, searchTitle, filters) {
         $scope.bars = true;
         $scope.items = items;
         $scope.filters = filters;
@@ -76,23 +88,71 @@ angular.module('app.controllers', [])
             $scope._bottomSheet = true;
             $scope.hovered = item;
         }
+        if( $rootScope.me !== false && $rootScope.me.type == 1){
+            $scope.deleteItem = function(id){
+                if( !confirm('آیا مطمئنید؟') ){
+                    return;
+                }
+                $tfHttp.post('/delete/'+$routeParams.table+'/id=' + id, {}).then( function(){
+                    $route.reload();  
+                });
+            }
+            
+        }
     })
     .controller('TableItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $routeParams, item) {
-        console.log(item);
         $scope.item = item;
+        $scope.temp = {};
+        if( $routeParams.table == 'messages' && $rootScope.me !== false && $rootScope.me.type == 1){
+            var id = $routeParams.id;
+            $tfHttp.post('/update/messages/id=' + $routeParams.id, {read: 1});
+
+            if( item.type == 5 ){
+                $scope.$watch('item.confirmed', function(val){
+                    $tfHttp.post('/update/messages/id=' + $routeParams.id, {confirmed: val});
+                });
+            }
+        }
+
     })
-    .controller('TableNewItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $timeout, $routeParams, data, insert) {
+    .controller('TableNewItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $timeout, $routeParams, data, submit) {
         $scope.options = data.options;
         $scope.inputs = data.inputs;
-        console.log('aaa');
+
+        $scope.log = function(){
+            console.log($scope.inputs)
+        }
+        $scope.temp = {};
         $scope.submit = function() {
             if (typeof $scope.inputs.used != 'undefined') {
                 $scope.inputs.used = $scope.inputs.used ? 1 : 0;
             }
-            insert($scope.inputs, function() {
+            submit($scope.inputs, function() {
                 $theFramework.go('/main');
             })
         }
+    })
+    .controller('TableFilesCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $route, $routeParams, files, add, del) {
+        
+        $scope.file = null;
 
+        $scope.files = files;
 
-    });
+        $scope.add = function(){
+            add( $scope.file, function(){
+                $scope.file = null;
+                $route.reload();  
+            });
+        }
+        $scope.del = function(fileUrl){
+            if( !confirm('آیا مطمئنید؟') ){
+                return false;
+            }
+            del( fileUrl, function(){
+                $scope.file = null;
+                $route.reload();  
+            } );
+        }
+
+    })
+    ;

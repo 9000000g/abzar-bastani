@@ -30,7 +30,7 @@ angular.module('app.services', [])
     })
     .filter('pDate', function() {
         return function(dt) {
-            var ret = moment(dt).format('jD jMMMM jYY');
+            var ret = moment(dt).format('jD jMMMM jYY ساعت HH:MM');
             ret = ret
                 .replace('Farvardin', 'فروردین')
                 .replace('Ordibehesht', 'اردیبهشت')
@@ -39,72 +39,11 @@ angular.module('app.services', [])
                 .replace('Amordaad', 'مرداد')
                 .replace('Shahrivar', 'شهریور')
                 .replace('Mehr', 'مهر')
-                .replace('Aban', 'آبان')
-                .replace('Azar', 'آذر')
+                .replace('Aaban', 'آبان')
+                .replace('Aazar', 'آذر')
                 .replace('Dey', 'دی')
                 .replace('Bahman', 'بهمن')
                 .replace('Esfand', 'اسفند');
             return ret;
         }
     })
-    .filter('fPrice', function() {
-        return function(item) {
-            if (typeof item == 'undefined') {
-                return '';
-            }
-            if (item.type == 'sale') {
-                return item.totalPrice + ' ریال';
-            } else {
-                var periodTexts = {
-                    year: 'سالانه',
-                    month: 'ماهانه',
-                    week: 'هفتگی',
-                    day: 'روزانه',
-                    hour: 'هر ساعت'
-                }
-                return item.mortgagePrice + ' ریال ودیعه و ' + item.periodPrice + ' ریال ' + periodTexts[item.period];
-            }
-        }
-    })
-    .factory('server', function($http) {
-        var address = serverConfig.address + ':' + serverConfig.port;
-        return {
-            address: address,
-            post: function(url, data) {
-                data = typeof data == 'undefined' ? {} : data;
-                var lastUrl = '';
-                if (url.indexOf('?') == -1) {
-                    lastUrl = address + url + '?_sid=' + _sid;
-                } else {
-                    lastUrl = address + url + '&_sid=' + _sid;
-                }
-                return $http.post(lastUrl, data);
-            },
-            file: function(url, data) {
-                var dt = new FormData();
-                data = typeof data == 'undefined' ? {} : data;
-                for (var i in data) {
-                    dt.append(i, data[i]);
-                }
-                var lastUrl = '';
-                if (url.indexOf('?') == -1) {
-                    lastUrl = address + url + '?_sid=' + _sid;
-                } else {
-                    lastUrl = address + url + '&_sid=' + _sid;
-                }
-                return $http.post(lastUrl, dt, {
-                    transformRequest: angular.identity,
-                    headers: { 'Content-Type': undefined }
-                });
-            },
-            get: function(url) {
-                var lastUrl = '';
-                if (url.indexOf('?') == -1) {
-                    lastUrl = address + url + '?_sid=' + _sid;
-                } else {
-                    lastUrl = address + url + '&_sid=' + _sid;
-                }
-                return $http.get(lastUrl);
-            }
-        }
-    });

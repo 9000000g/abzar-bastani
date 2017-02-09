@@ -5,10 +5,10 @@
     <section class="title">
         <h4 ng-bind="item.alias"></h4>
     </section>
-    <section class="icon button" ng-show="photoViewer" ng-click="photoViewer = false">
-        <i class="fa fa-close"></i>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-home"></i>
     </section>
-    <section class="icon button" tf-go="back" ng-show="!photoViewer">
+    <section class="icon button" tf-go="back">
         <i class="fa fa-arrow-left"></i>
     </section>
 </nav>

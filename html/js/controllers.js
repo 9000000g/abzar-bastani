@@ -33,20 +33,11 @@ angular.module('app.controllers', [])
         }
         $rootScope.deside(); // check logged in or not
     })
-    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, unreadMessages, ads) {
+    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, unreadMessages, ads, slides) {
         //alert('we are here');
         $scope.sidebar = false;
         $scope.searchbar = false;
-        $scope.images = [{
-            src: 'images/1.jpg'
-        }, {
-            src: 'images/2.jpg'
-        }, {
-            src: 'images/3.jpg'
-        }, {
-            src: 'images/4.jpg'
-        }];
-        $scope.images = ['images/1.jpg','images/2.jpg','images/3.jpg','images/4.jpg'];
+        $scope.slides = slides;
 
         $scope.unreadMessages = unreadMessages;
         $scope.ads = ads;

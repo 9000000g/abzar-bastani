@@ -10,10 +10,16 @@ function tableNameToItem(tableName) {
             return 'industry';
         case 'products':
             return 'product';
-        case 'userproducts':
-            return 'userproduct';
         case 'messages':
             return 'message';
+        case 'users':
+            return 'user';
+        case 'services':
+            return 'service';
+        case 'ads':
+            return 'ad';
+        case 'slider':
+            return 'slide';
         default:
             return tableName;
     }
@@ -36,6 +42,10 @@ function findItemTemplate(urlattr) {
 function findNewItemTemplate(urlattr) {
     var template = 'new-' + tableNameToItem(urlattr.table);
     return 'templates/' + template + '.html';
+}
+function findFilesTemplate(urlattr) {
+    var template = tableNameToItem(urlattr.table);
+    return 'templates/' + template + '-files.html';
 }
 
 function tableItemsResolve() {
@@ -92,14 +102,14 @@ function tableItemResolve() {
             }).catch(function(err) {
                 $theFramework.loading(false);
                 $theFramework.toast(err.data);
-                defer.reject(err.data);
+                defer.resolve(err.data);
             });
             return defer.promise;
         }
     }
 }
 
-function tableNewItemResolve() {
+function tableNewItemResolve(type) {
     return {
         data: function($q, $theFramework, $tfHttp, $route) {
             var defer = $q.defer();
@@ -117,6 +127,28 @@ function tableNewItemResolve() {
                 data.inputs = inputs;
             }
 
+            var nextAfterFetchDeps = function(){
+                if( type == 'insert' ){
+                    $theFramework.loading(false);
+                    defer.resolve(data);
+                }
+                else{
+                    // set data.inputs
+                    $tfHttp.get(
+                         '/get/' + $route.current.params.table + '/' + $route.current.params.id
+                    ).then(function(res) {
+                        data.inputs = res.data;
+                        delete data.inputs.file;
+                        $theFramework.loading(false);
+                        defer.resolve(data);
+                    }).catch(function(err) {
+                        $theFramework.toast(err.data);
+                        $theFramework.loading(false);
+                        defer.resolve(data);
+                    });
+
+                }
+            }
 
             if ($route.current.params.table == 'products') {
                 $theFramework.loading();
@@ -124,8 +156,7 @@ function tableNewItemResolve() {
 
                 function endOfStory() {
                     if (++c === 6) {
-                        $theFramework.loading(false);
-                        defer.resolve(data);
+                        nextAfterFetchDeps();
                     }
                 }
                 $tfHttp.get('/get-all/countries').then(function(res) {
@@ -201,30 +232,50 @@ function tableNewItemResolve() {
                     endOfStory();
                 });
             } else if ($route.current.params.table == 'messages') {
-                $tfHttp.get('/get-all/products').then(function(res) {
-                    data.options.products = [];
-                    for (var i = 0; i < res.data.length; i++) {
-                        data.options.products.push({
-                            text: res.data[i].name,
-                            value: res.data[i].id
-                        });
-                    }
-                    defer.resolve(data);
-                }).catch(function(err) {
-                    $theFramework.toast(err.data);
-                    endOfStory();
-                });
+                data.options.types = [
+                    //{text: 'خرید محصولات سایت', value: 1},
+                    {text: 'فروش محصول به سایت', value: 2},
+                    {text: 'سفارش محصول', value: 3},
+                    {text: 'پیام عادی', value: 4},
+                    {text: 'آگهی', value: 5}
+                ];
+                nextAfterFetchDeps();
+            } else if ($route.current.params.table == 'users') {
+                data.options.types = [
+                    {text: 'ادمین اصلی', value: 1},
+                    {text: 'مصرف کننده', value: 2},
+                    {text: 'تولید کننده', value: 3},
+                    {text: 'وارد کننده', value: 4},
+                    {text: 'کارگاه خدماتی', value: 5},
+                    {text: 'فروشگاه', value: 6}
+                ];
+                nextAfterFetchDeps();
             } else {
-                defer.resolve(data);
+                nextAfterFetchDeps()
             }
             return defer.promise;
         },
-        insert: function($q, $timeout, $theFramework, $tfHttp, $route) {
+        submit: function($q, $timeout, $theFramework, $tfHttp, $route) {
             return function(inputs, cb) {
                 cb = typeof cb != 'undefined' ? cb : function() {};
                 $theFramework.loading();
+                if( typeof inputs.file == 'undefined' || inputs.file == '' || !inputs.file || inputs.file === null ){
+                    delete inputs.file;
+                }
+                for( var i in inputs ){
+                    if( i.indexOf('_alias')!=-1){
+                        delete inputs[i];
+                    }
+                }
+                delete inputs.files;
+                var id = null;
+                if( type == 'update' ){
+                    id = inputs.id;
+                    delete inputs.id;
+                }
+                console.log(inputs)
                 $tfHttp.post(
-                    '/insert/' + $route.current.params.table, inputs
+                    '/'+type+'/' + $route.current.params.table + (type=='update'?'/id='+id:''), inputs
                 ).then(function(res) {
                     $theFramework.loading(false);
                     $theFramework.toast('با موفقیت ثبت شد!');
@@ -238,20 +289,124 @@ function tableNewItemResolve() {
     }
 }
 
-function mainResolve() {
+function tableFilesResolve() {
     return {
-        last: function($tfHttp, $q, $theFramework) {
-            $theFramework.loading();
+        files: function($q, $theFramework, $tfHttp, $route) {
             var defer = $q.defer();
             $tfHttp.get(
-                '/get-all/products/TRUE/6'
+                    '/get-files/' + $route.current.params.table + '/' + $route.current.params.id
+            ).then(function(res) {
+                $theFramework.loading(false);
+                defer.resolve(res.data);
+            }).catch(function(err) {
+                $theFramework.toast(err.data);
+                $theFramework.loading(false);
+                defer.resolve([]);
+            });
+            return defer.promise;
+        },
+        add: function($q, $theFramework, $tfHttp, $route) {
+            return function(file, cb) {
+                cb = typeof cb != 'undefined' ? cb : function() {};
+                $theFramework.loading();
+                var table = $route.current.params.table;
+                var id = $route.current.params.id;
+
+                $tfHttp.post(
+                    '/add-file/' + table + '/' + id, file
+                ).then(function(res) {
+                    $theFramework.loading(false);
+                    $theFramework.toast(res.data);
+                    cb(true);
+                }).catch(function(err) {
+                    $theFramework.loading(false);
+                    $theFramework.toast(err.data);
+                    cb(false);
+                });
+            }
+        },
+        del: function($q, $theFramework, $tfHttp, $route) {
+            return function(fileUrl, cb) {
+                var fileIndex = fileUrl.split('/');
+                fileIndex = fileIndex[fileIndex.length-1] == ''? fileIndex[fileIndex.length-2]: fileIndex[fileIndex.length-1];
+
+
+                cb = typeof cb != 'undefined' ? cb : function() {};
+                $theFramework.loading();
+                var table = $route.current.params.table;
+                var id = $route.current.params.id;
+
+                $tfHttp.post(
+                    '/delete-file/' + table + '/' + id + '/' + fileIndex, {}
+                ).then(function(res) {
+                    $theFramework.loading(false);
+                    $theFramework.toast(res.data);
+                    cb(true);
+                }).catch(function(err) {
+                    $theFramework.loading(false);
+                    $theFramework.toast(err.data);
+                    cb(false);
+                });
+            }
+        }
+    }
+}
+
+
+function mainResolve() {
+    return {
+        unreadMessages: function($tfHttp, $q, $theFramework){
+            var defer = $q.defer();
+            $theFramework.loading();
+            $tfHttp.get(
+                '/get-all/messages/read=0'
             ).then(function(res) {
                 $theFramework.loading(false);
                 defer.resolve(res.data);
             }).catch(function(err) {
                 $theFramework.loading(false);
-                $theFramework.toast(err.data);
-                defer.reject(err.data);
+                //$theFramework.toast(err.data);
+                defer.resolve({});
+            });
+            return defer.promise;
+        },
+        ads: function($tfHttp, $q, $theFramework){
+            var defer = $q.defer();
+            $theFramework.loading();
+            $tfHttp.get(
+                '/get-all/ads'
+            ).then(function(res) {
+                $theFramework.loading(false);
+                defer.resolve(res.data);
+            }).catch(function(err) {
+                $theFramework.loading(false);
+                //$theFramework.toast(err.data);
+                defer.resolve({});
+            });
+            return defer.promise;
+        },
+        slides: function($tfHttp, $q, $theFramework){
+            var defer = $q.defer();
+            $theFramework.loading();
+            $tfHttp.get(
+                '/get-all/slider'
+            ).then(function(res) {
+                console.log(res.data);
+                var ret = [];
+                for( var i = 0; i < res.data.length; i++ ){
+                    ret.push({
+                        src: res.data[i].files[ 0 ],
+                        text: res.data[i].term + ' + '+ res.data[i].discount +'% تخفیف',
+                        url: res.data[i].url
+                    })
+                }
+                console.log(ret);
+                $theFramework.loading(false);
+                defer.resolve(ret);
+            }).catch(function(err) {
+                $theFramework.loading(false);
+                //$theFramework.toast(err.data);
+                defer.resolve({});
             });
             return defer.promise;
         }
@@ -283,10 +438,20 @@ angular.module('app', ['theFramework', 'app.services', 'app.directives', 'app.co
                 templateUrl: findItemTemplate,
                 resolve: tableItemResolve()
             })
+            .when('/files/:table/:id', {
+                controller: 'TableFilesCtrl',
+                templateUrl: findFilesTemplate,
+                resolve: tableFilesResolve()
+            })
+            .when('/update/:table/:id', {
+                controller: 'TableNewItemCtrl',
+                templateUrl: findNewItemTemplate,
+                resolve: tableNewItemResolve('update')
+            })
             .when('/insert/:table/:inputs?', {
                 controller: 'TableNewItemCtrl',
                 templateUrl: findNewItemTemplate,
-                resolve: tableNewItemResolve()
+                resolve: tableNewItemResolve('insert')
             })
             .otherwise({
                 redirectTo: '/main'

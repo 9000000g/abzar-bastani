@@ -12,7 +12,8 @@ angular.module('app.directives', [])
                 '   <li tf-go="/main" ng-class="{active: active==0}"> <i class="fa fa-home"></i> خانه </li>' +
                 '   <li tf-go="/get-all/products/group=1" ng-class="{active: active==1}"> <i class="fa fa-gears"></i> ماشین‌آلات </li>' +
                 '   <li tf-go="/get-all/products/group=2" ng-class="{active: active==2}"> <i class="fa fa-legal"></i> ابزارآلات </li>' +
-                '   <li tf-go="/get-all/companies/" ng-class="{active: active==3}"> <i class="fa fa-building"></i> شرکت‌ها </li>' +
+                '   <li tf-go="/get-all/messages/type=5&confirmed=1" ng-class="{active: active==3}"> <i class="fa fa-cubes"></i> آکهی‌ها </li>' +
+                '   <li tf-go="/get-all/services" ng-class="{active: active==5}"> <i class="fa fa-cog"></i> خدمات </li>' +
                 '</ul>'
         }
     })

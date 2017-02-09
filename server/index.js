@@ -295,7 +295,7 @@ app.post('/update/:table/:filters', upload.single('file'), (req, res) => {
             //console.log('inserted')
             if (typeof req.file != 'undefined' && req.file) {
                 let rnd = new Date().getTime();
-                let path = `${__dirname}/files/${req.params.table}-${result.insertId}-${rnd}.jpg`;
+                let path = `${__dirname}/files/${req.params.table}-${filters.id}-${rnd}.jpg`;
                 jimp.read(req.file.path).then( (lenna)=>{
                     lenna.resize(450, jimp.AUTO)
                         .quality(45)

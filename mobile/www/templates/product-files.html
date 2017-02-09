@@ -1,0 +1,35 @@
+<nav class="tf-navbar">
+    <section class="icon">
+        <i class="fa fa-file"></i>
+    </section>
+    <section class="title">
+        <h4> فایل‌های محصول </h4>
+    </section>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-home"></i>
+    </section>
+    <section class="icon button" tf-go="back">
+        <i class="fa fa-arrow-left"></i>
+    </section>
+</nav>
+<div class="tf-container vertical-padding horizontal-padding">
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <label class="control-label"> {{files.length}} فایل پیدا شد! </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <label class="control-label"> اضافه‌کردن فایل </label>
+                <div class="btn btn-default btn-block" tf-image-picker ng-model="file" ng-change="add()">
+                    <i class="fa fa-image"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-4" ng-repeat="img in files">
+                <label class="control-label pointer red bold" ng-click="del(img)"> حذف فایل </label>
+                <img class="btn-block" ng-src="{{img}}" style="width: 100%"/>
+            </div>
+        </div>
+</div>

@@ -3,21 +3,43 @@
         <i class="fa fa-comment"></i>
     </section>
     <section class="title">
-        <h4> {{item.name}}, درخواست خرید {{item.product}} </h4>
+        <h4> پیام شماره {{item.id}} </h4>
+    </section>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-home"></i>
     </section>
     <section class="icon button" tf-go="back">
         <i class="fa fa-arrow-left"></i>
     </section>
 </nav>
-<div class="tf-container">
-    <div class="horizontal-padding vertical-padding item">
-        <h4 tf-go="/get/products/{{item.product_id}}">  {{item.name}}, درخواست خرید <a> {{item.product}} </a> </h4>
-        <div ng-if="item.phone"> <b> شماره تماس: </b>
-            <p class="inline" ng-bind="item.phone"></p>
+<div class="tf-container infomessage">
+    <div class="horizontal-padding vertical-padding item  row col-md-8 col-md-offset-2">
+        <div ng-if="item.files.length==1" class="product-img-single" ng-style="{'background': 'url(' + item.files[0] + ')'}" ></div> 
+        <h4 tf-go="/get/products/{{item.product_id}}" ng-if="item.product">  درخواست خرید <a> {{item.product}} </a> </h4>
+        <div> <b> نوع درخواست:</b>
+            <p class="inline">{{messageType(item.type)}}</p>
+        </div>
+        <div> <b> از طرف:</b>
+            <p class="inline" ng-bind="item.user_alias"></p>
+        </div>
+        <div ng-if="item.user_businessName"> <b> نام تجاری:</b>
+            <p class="inline" ng-bind="item.user_businessName"></p>
+        </div>
+        <div> <b> شماره‌های تماس:</b>
+            <p class="inline" ng-bind="item.user_phone"></p>
+            <p class="inline" ng-bind="item.user_mobile"></p>
+        </div>
+        <div> <b> آدرس:</b>
+            <p class="inline" ng-bind="item.user_address"></p>
+        </div>
+        <div> <b> تاریخ:</b>
+            <p class="inline">{{item.date | pDate }}</p>
         </div>
         <div ng-if="item.message"> <b> متن پیام: </b>
             <p class="inline" ng-bind="item.message"></p>
         </div>
-    </div>
-
+        <div ng-if="me !== false && me.type == 1 && item.type == 5"> <b> تایید شده توسط مدیر؟: </b>
+            <tf-switch ng-model="item.confirmed" on-value="1" off-value="0"></tf-switch>
+        </div>
+    </div>    
 </div>

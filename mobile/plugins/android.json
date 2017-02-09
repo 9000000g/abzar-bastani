@@ -7,9 +7,6 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.nainemom.abzarbastani"
-        },
         "cordova-plugin-camera": {
             "PACKAGE_NAME": "com.nainemom.abzarbastani"
         },
@@ -17,6 +14,9 @@
             "PACKAGE_NAME": "com.nainemom.abzarbastani"
         },
         "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.nainemom.abzarbastani"
+        },
+        "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.nainemom.abzarbastani"
         }
     },

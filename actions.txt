@@ -14,3 +14,9 @@ CREATE TABLE `bastani`.`ads` (`id` INT NOT NULL AUTO_INCREMENT,`title` VARCHAR(2
 
 // after clone:
 http://127.0.0.1:1978/fix-uploaded
+
+
+
+-----
+
+CREATE TABLE `bastani`.`slider` (`id` INT NOT NULL AUTO_INCREMENT,`title` VARCHAR(445) CHARACTER SET 'utf8' NULL,`url` VARCHAR(445) CHARACTER SET 'utf8' NULL,`discount` INT NOT NULL DEFAULT 0,`term` VARCHAR(45) CHARACTER SET 'utf8' NULL,PRIMARY KEY (`id`));

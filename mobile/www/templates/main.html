@@ -3,52 +3,78 @@
         <i class="fa fa-google"></i>
     </section>
     <section class="title">
-        <h4> ابزار باستانی </h4>
+        <h4> بازار کلاسیک </h4>
+    </section>
+    <section class="icon button" ng-click="searchbar =! searchbar">
+        <i class="fa fa-search"></i>
     </section>
     <section class="icon button" ng-click="sidebar =! sidebar">
         <i class="fa fa-navicon"></i>
     </section>
 </nav>
+<tf-searchbar open="searchbar" placeholder="نام و یا مدل دستگاه را وارد کنید..." search="search($text)">
+</tf-searchbar>
 <abzar-tabs active="0"></abzar-tabs>
-<div class="tf-container">
-    <tf-image-slider ng-model="images" class="vertical-padding"></tf-image-slider>
+<div class="tf-container" id="main">
+    
     <div class="vertical-padding horizontal-padding">
-        <h4>آخرین محصولات:</h4>
-        <ul class="last">
-            <li ng-repeat="item in last" tf-go="/get/products/{{item.id}}">
-                <div class="img" ng-style="{'background-image': 'url(' + item.file + ')'}"></div>
-                <h5 ng-bind="item.name"></h5>
-            </li>
-        </ul>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-1 col-xs-12">
+                <h4> <i class="fa fa-bolt red"></i>  فروش ویژه </h4>
+                <div class="">
+                    <tf-image-slider ng-model="slides" height="365" class="slider"></tf-image-slider>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-6">
+                <h4>لینک‌ها</h4>
+                <div class="appitem appitem-1" tf-go="/get-all/messages/type=5&confirmed=1"><i class="fa fa-cubes"></i> آگهی‌ها</div>
+                <div class="appitem appitem-2" ng-click="notYet()"><i class="fa fa-wrench"></i> مزایده و مناقصه</div>
+                <div class="appitem appitem-3"  tf-go="/insert/messages/type=2"><i class="fa fa-comment"></i> درخواست جدید </div>
+                <div class="appitem appitem-4" tf-go="get/companies/1"><i class="fa fa-google"></i> درباره ما</div>
+            </div>
+            <div class="col-md-2 col-xs-6">
+                <h4>تبلیغات</h4>
+                <div ng-repeat="(index, ad) in ads"  class="ad ad-{{index+1}}"><a ng-href="{{ad.url}}" target="_blank"> <i class="fa fa-external-link"></i> {{ad.title}} </a> </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <tf-sidebar open="sidebar" direction="left">
     <div class="profile">
-        <i class="fa fa-user"></i><br>
-        <h5 ng-if="me !== false"> {{ me.alias }} </h5>
+        <i class="fa fa-user pointer" ng-if="me !== false" tf-go="/update/users/{{me.id}}"></i><br>
+        <h5 class="pointer" ng-if="me !== false" tf-go="/update/users/{{me.id}}"> {{ me.alias }} </h5>
+        <i class="fa fa-user" ng-if="me === false" tf-go="/insert/users/type=2"></i><br>
         <h5 ng-if="me === false"> خوش آمدید! </h5>
     </div>
     <ul class="list-group main-sidebar pointer">
         <li class="list-group-item" tf-go="/login" ng-if="me === false">
             <i class="fa fa-sign-in"></i> ورود به سیستم
         </li>
-        <li class="list-group-item" ng-if="me !== false" tf-go="/get-all/messages">
-            <i class="fa fa-comments"></i> پیام‌ها
+        <li class="list-group-item" tf-go="/insert/users/type=2" ng-if="me === false">
+            <i class="fa fa-user-plus"></i> ثبت‌نام
         </li>
-
-        <li class="list-group-item" tf-go="/get-all/userproducts">
-            <i class="fa fa-cubes"></i> آگهی‌ها
+        <li class="list-group-item" tf-go="/insert/users" ng-if="me !== false && me.type === 1">
+            <i class="fa fa-user-plus"></i> اضافه‌کردن کاربر جدید
         </li>
-
+        <li class="list-group-item" tf-go="/insert/messages/type=2">
+            <i class="fa fa-comment"></i> درخواست جدید
+        </li>
+        <li class="list-group-item" ng-if="me !== false && me.type === 1" tf-go="/get-all/messages">
+            <i class="fa fa-comments"></i> پیام‌ها <span class="badge" ng-show="unreadMessages.length" ng-bind="unreadMessages.length"></span>
+        </li>
+        <li class="list-group-item" ng-if="me !== false && me.type === 1" tf-go="/get-all/slider">
+            <i class="fa fa-slideshare"></i> فروش ویژه
+        </li>
         <li class="list-group-item" tf-go="/get-all/companies">
             <i class="fa fa-building"></i> شرکت‌ها
         </li>
         <li class="list-group-item" tf-go="/get-all/brands">
             <i class="fa fa-tags"></i> برندها
         </li>
-
-
+        <li class="list-group-item" tf-go="/get-all/ads" ng-if="me !== false && me.type === 1">
+            <i class="fa fa-external-link"></i> تبلیغات
+        </li>
         <li class="list-group-item" ng-if="me !== false" tf-go="/login">
             <i class="fa fa-sign-out"></i> خروج
         </li>

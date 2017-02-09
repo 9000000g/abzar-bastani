@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.nainemom.abzarbastani" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>ابزار باستانی</name>
+<widget id="com.nainemom.bazarclassic" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>بازار کلاسیک</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        BazarClassic.ir application for android. Built with Apache Cordova.
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="nainemom@gmail.com" href="http://morde.ir">
+        Nainemom
     </author>
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />

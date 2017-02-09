@@ -18,6 +18,8 @@ function tableNameToItem(tableName) {
             return 'service';
         case 'ads':
             return 'ad';
+        case 'slider':
+            return 'slide';
         default:
             return tableName;
     }
@@ -376,6 +378,31 @@ function mainResolve() {
             ).then(function(res) {
                 $theFramework.loading(false);
                 defer.resolve(res.data);
+            }).catch(function(err) {
+                $theFramework.loading(false);
+                //$theFramework.toast(err.data);
+                defer.resolve({});
+            });
+            return defer.promise;
+        },
+        slides: function($tfHttp, $q, $theFramework){
+            var defer = $q.defer();
+            $theFramework.loading();
+            $tfHttp.get(
+                '/get-all/slider'
+            ).then(function(res) {
+                console.log(res.data);
+                var ret = [];
+                for( var i = 0; i < res.data.length; i++ ){
+                    ret.push({
+                        src: res.data[i].files[ 0 ],
+                        text: res.data[i].term + ' + '+ res.data[i].discount +'% تخفیف',
+                        url: res.data[i].url
+                    })
+                }
+                console.log(ret);
+                $theFramework.loading(false);
+                defer.resolve(ret);
             }).catch(function(err) {
                 $theFramework.loading(false);
                 //$theFramework.toast(err.data);

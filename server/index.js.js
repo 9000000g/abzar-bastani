@@ -272,7 +272,7 @@ app.post('/update/:table/:filters', upload.single('file'), function (req, res) {
         if (typeof req.file != 'undefined' && req.file) {
             (function () {
                 var rnd = new Date().getTime();
-                var path = __dirname + '/files/' + req.params.table + '-' + result.insertId + '-' + rnd + '.jpg';
+                var path = __dirname + '/files/' + req.params.table + '-' + filters.id + '-' + rnd + '.jpg';
                 jimp.read(req.file.path).then(function (lenna) {
                     lenna.resize(450, jimp.AUTO).quality(45).write(path, function () {
                         res.json(result);

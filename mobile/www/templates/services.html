@@ -1,10 +1,9 @@
 <nav class="tf-navbar">
     <section class="icon">
-        <i class="fa fa-tags"></i>
+        <i class="fa fa-cog"></i>
     </section>
     <section class="title">
-        <h4> ابزار باستانی </h4>
-        <p> برندها </p>
+        <h4> خدمات </h4>
     </section>
     <section class="icon button" tf-go="/main">
         <i class="fa fa-home"></i>
@@ -13,24 +12,29 @@
         <i class="fa fa-arrow-left"></i>
     </section>
 </nav>
+<abzar-tabs ng-if="filters" active="5"></abzar-tabs>
 <div class="tf-container">
     <ul class="list-group block pointer" ng-if="items.length > 0">
         <li class="list-group-item" ng-repeat="item in items" ng-click="bottomSheet(item)">
-            <i class="fa fa-tags"></i> {{item.alias}}
+            <i class="fa fa-cog"></i> <b> {{item.title}} </b>
+            <p> {{item.body}}</p>
         </li>
     </ul>
     <p class="vertical-padding horizontal-padding" ng-if="items.length == 0"> هنوز هیچ آیتمی ثبت نشده‌است. </p>
-    <tf-floating-btn tf-go="/insert/brands" ng-if="me !==false && me.type==1">
+    <tf-floating-btn tf-go="/insert/services" ng-if="me !==false && me.type==1">
         <i class="fa fa-plus"></i>
     </tf-floating-btn>
 </div>
-<tf-bottom-sheet open="_bottomSheet" label="برند {{hovered.alias}}">
+<tf-bottom-sheet open="_bottomSheet" label="{{hovered.title}}">
     <ul class="list-group block">
-        <li class="list-group-item" tf-go="update/brands/{{hovered.id}}" ng-if="me !==false && me.type==1">
-            <i class="fa fa-edit"></i> ویرایش برند
+        <li class="list-group-item" tf-go="update/services/{{hovered.id}}" ng-if="me !==false && me.type==1">
+            <i class="fa fa-edit"></i> ویرایش
         </li>
         <li class="list-group-item" ng-click="deleteItem(hovered.id)" ng-if="me !==false && me.type==1">
-            <i class="fa fa-trash"></i> حذف برند
+            <i class="fa fa-trash"></i> حذف
+        </li>
+        <li class="list-group-item" tf-go="/insert/messages/type=3">
+            <i class="fa fa-shopping-cart"></i> درخواست خرید
         </li>
     </ul>
 </tf-bottom-sheet>

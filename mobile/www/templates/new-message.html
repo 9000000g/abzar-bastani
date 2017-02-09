@@ -3,36 +3,56 @@
         <i class="fa fa-comment"></i>
     </section>
     <section class="title">
-        <h4> پیام جدید </h4>
+        <h4 ng-if="inputs.type != 1"> درخواست جدید </h4>
+        <h4 ng-if="inputs.type == 1"> درخواست خرید {{inputs.product}} </h4>
+    </section>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-home"></i>
     </section>
     <section class="icon button" tf-go="back">
         <i class="fa fa-arrow-left"></i>
     </section>
 </nav>
-<form class="tf-container vertical-padding" ng-submit="submit()">
-    <div class="container-fluid">
+<div class="infomessage" ng-if="me === false">
+    <div class="row">
+        <div class="col-xs-12">
+            <i class="fa fa-warning"></i> برای ثبت درخواست جدید، ابتدا باید وارد سیستم شده باشید.
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-4 col-sm-offset-2">
+            <label class="control-label"> </label>
+            <a class="btn btn-primary btn-lg btn-block" tf-go="/login">ورود به سایت</a>
+        </div>
+        <div class="form-group col-sm-4">
+            <label class="control-label"> </label>
+            <a class="btn btn-default btn-lg btn-block" tf-go="/insert/users/type=2">ثبت نام در سایت</a>
+        </div>
+    </div>
+</div>
+<form class="tf-container vertical-padding" ng-submit="submit()"  ng-if="me !== false">
+    <div class="container-fluid col-md-8 col-md-offset-2">
+        <div class="row">
+            <div class="form-group col-xs-12" ng-if="inputs.type != 1">
+                <label class="control-label">نوع درخواست</label>
+                <tf-select class="form-control" options="options.types" ng-model="inputs.type" required><tf-select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-4 col-xs-offset-8" ng-if="inputs.type != 1">
+                <label class="control-label"> تصویر </label>
+                <div class="btn btn-default btn-block" tf-image-picker ng-model="inputs.file" required>
+                    <i class="fa fa-image"></i>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="form-group col-sm-12">
-                <label class="control-label">کد محصول</label>
-                <input type="text" class="form-control" ng-model="inputs.product" placeholder="کد محصول" required/>
+                <label class="control-label">متن</label>
+                <textarea class="form-control" ng-model="inputs.message" placeholder="متن درخواست خود را به همراه تمام جزئیات وارد کنید." required></textarea>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group col-xs-6">
-                <label class="control-label">نام شما</label>
-                <input type="text" class="form-control" ng-model="inputs.name" placeholder="نام" required/>
-            </div>
-            <div class="form-group col-xs-6">
-                <label class="control-label">شماره تماس</label>
-                <input type="tel" class="form-control" ng-model="inputs.phone" placeholder="شماره تماس" required/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-12">
-                <label class="control-label">متن پیام</label>
-                <textarea class="form-control" ng-model="inputs.message" placeholder="متن پیام" required></textarea>
-            </div>
-        </div>
+
         <div class="row">
             <div class="form-group col-xs-12">
                 <label class="control-label"> </label>

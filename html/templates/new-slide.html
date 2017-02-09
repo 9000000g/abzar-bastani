@@ -1,9 +1,9 @@
 <nav class="tf-navbar">
     <section class="icon">
-        <i class="fa fa-external-link"></i>
+        <i class="fa fa-slideshare"></i>
     </section>
     <section class="title">
-        <h4> تبلیغ </h4>
+        <h4> فروش ویژه </h4>
     </section>
     <section class="icon button" tf-go="/main">
         <i class="fa fa-home"></i>
@@ -13,7 +13,7 @@
     </section>
 </nav>
 <form class="tf-container vertical-padding" ng-submit="submit()">
-    <div class="container-fluid col-md-8 col-md-offset-2">
+    <div class="container-fluid col-md-8 col-md-offset-2 col-xs-12">
         <div class="row">
             <div class="form-group col-xs-12">
                 <label class="control-label"> عنوان </label>
@@ -24,6 +24,26 @@
             <div class="form-group col-xs-12">
                 <label class="control-label"> لینک </label>
                 <input type="text" class="form-control" ng-model="inputs.url" placeholder="لینک مقصد. مثلا: https://google.com" required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-12">
+                <label class="control-label"> درصد تخفیف </label>
+                <input type="tel" class="form-control" ng-model="inputs.discount" placeholder="مثلا 10" required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-12">
+                <label class="control-label"> شرایط </label>
+                <input type="text" class="form-control" ng-model="inputs.term" required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-12">
+                <label class="control-label"> تصویر </label>
+                <div class="btn btn-default btn-block" tf-image-picker ng-model="inputs.file" required>
+                    <i class="fa fa-image"></i>
+                </div>
             </div>
         </div>
         <div class="row">

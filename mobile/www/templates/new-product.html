@@ -3,7 +3,10 @@
         <i class="fa fa-plus-square"></i>
     </section>
     <section class="title">
-        <h4> محصول جدید </h4>
+        <h4> محصول </h4>
+    </section>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-home"></i>
     </section>
     <section class="icon button" tf-go="back">
         <i class="fa fa-arrow-left"></i>
@@ -34,43 +37,47 @@
         <div class="row">
             <div class="form-group col-sm-6">
                 <label class="control-label">کشور سازنده</label>
-                <select tf-selectize class="form-control" options="options.countries" ng-model="inputs.country" required><select>
+                <tf-select class="form-control" options="options.countries" ng-model="inputs.country" required><tf-select>
             </div>
             <div class="form-group col-sm-6">
                 <label class="control-label">برند دستگاه</label>
-                <select tf-selectize class="form-control" options="options.brands" ng-model="inputs.brand" required><select>
+                <tf-select class="form-control" options="options.brands" ng-model="inputs.brand" required></tf-select>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-sm-6">
                 <label class="control-label">صنعت</label>
-                <select tf-selectize class="form-control" options="options.industries" ng-model="inputs.industry" required><select>
+                <tf-select class="form-control" options="options.industries" ng-model="inputs.industry" required></tf-select>
             </div>
             <div class="form-group col-sm-6">
                 <label class="control-label">شرکت توزیع‌کننده</label>
-                <select tf-selectize class="form-control" options="options.importers" ng-model="inputs.importer" required><select>
+                <tf-select class="form-control" options="options.importers" ng-model="inputs.importer" required></tf-select>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-sm-6">
                 <label class="control-label">گروه</label>
-                <select tf-selectize class="form-control" options="options.groups" ng-model="inputs.group" required><select>
+                <tf-select class="form-control" options="options.groups" ng-model="inputs.group" required></tf-select>
             </div>
             <div class="form-group col-sm-6">
                 <label class="control-label">زیرگروه</label>
-                <select tf-selectize class="form-control" options="options.subgroups" ng-model="inputs.subgroup" required><select>
+                <tf-select class="form-control" options="options.subgroups" ng-model="inputs.subgroup" required></tf-select>
             </div>
         </div>
         <div class="row">
+            <div class="form-group col-sm-6">
+                <label class="control-label">قیمت (به تومان)</label>
+                <input type="tel" class="form-control" ng-model="inputs.price" placeholder="قیمت" required/>
+            </div>
             <div class="form-group col-sm-3">
                 <label class="control-label"> تصویر </label>
-                <div class="btn btn-default btn-block" tf-image-picker ng-model="inputs.file">
+                <div class="btn btn-default btn-block" tf-image-picker ng-model="inputs.file" required>
                     <i class="fa fa-image"></i>
                 </div>
             </div>
             <div class="form-group col-sm-3">
                 <label class="control-label">کارکرده</label>
-                <tf-switch class="form-control" ng-model="inputs.used" required></tf-switch>
+                <tf-switch class="form-control" ng-model="inputs.used" on-value="1" off-value="0"></tf-switch>
             </div>
         </div>
         <div class="row">
