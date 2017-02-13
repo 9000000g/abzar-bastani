@@ -1,6 +1,6 @@
-<nav class="tf-navbar">
-    <section class="icon">
-        <i class="fa fa-google"></i>
+<nav class="tf-navbar logo-navbar">
+    <section class="icon logo-container">
+        <img src="../images/logo.png" alt="logo" height="50"/>
     </section>
     <section class="title">
         <h4> بازار کلاسیک </h4>
@@ -20,21 +20,25 @@
     <div class="vertical-padding horizontal-padding">
         <div class="row">
             <div class="col-md-6 col-md-offset-1 col-xs-12">
-                <h4> <i class="fa fa-bolt red"></i>  فروش ویژه </h4>
+                <h4 class="text-center"> <i class="fa fa-bolt red"></i>  فروش ویژه </h4>
                 <div class="">
                     <tf-image-slider ng-model="slides" height="365" class="slider"></tf-image-slider>
                 </div>
             </div>
             <div class="col-md-2 col-xs-6">
-                <h4>لینک‌ها</h4>
+                <h4 class="text-center">لینک‌ها</h4>
                 <div class="appitem appitem-1" tf-go="/get-all/messages/type=5&confirmed=1"><i class="fa fa-cubes"></i> آگهی‌ها</div>
-                <div class="appitem appitem-2" ng-click="notYet()"><i class="fa fa-wrench"></i> مزایده و مناقصه</div>
-                <div class="appitem appitem-3"  tf-go="/insert/messages/type=2"><i class="fa fa-comment"></i> درخواست جدید </div>
+                <div class="appitem appitem-2" tf-go="get-all/brands"><i class="fa fa-tags"></i> برندها </div>
+                <div class="appitem appitem-3"  tf-go="/insert/messages/type=2"><i class="fa fa-comment"></i> درخواست </div>
                 <div class="appitem appitem-4" tf-go="get/companies/1"><i class="fa fa-google"></i> درباره ما</div>
             </div>
             <div class="col-md-2 col-xs-6">
-                <h4>تبلیغات</h4>
+                <h4 class="text-center">تبلیغات</h4>
                 <div ng-repeat="(index, ad) in ads"  class="ad ad-{{index+1}}"><a ng-href="{{ad.url}}" target="_blank"> <i class="fa fa-external-link"></i> {{ad.title}} </a> </div>
+            </div>
+            <div class="col-md-4 col-md-offset-7 col-xs-12" ng-if="!isCordova">
+                <h4 class="text-center"> <i class="fa fa-mobile red"></i>  اپلیکیشن موبایل</h4>
+                <div class="ad ad-4"><a href="./bazar-classic-v1.apk" target="_blank"> <i class="fa fa-android"></i> اندروید </a> </div>
             </div>
         </div>
     </div>
@@ -58,7 +62,7 @@
             <i class="fa fa-user-plus"></i> اضافه‌کردن کاربر جدید
         </li>
         <li class="list-group-item" tf-go="/insert/messages/type=2">
-            <i class="fa fa-comment"></i> درخواست جدید
+            <i class="fa fa-comment"></i> درخواست
         </li>
         <li class="list-group-item" ng-if="me !== false && me.type === 1" tf-go="/get-all/messages">
             <i class="fa fa-comments"></i> پیام‌ها <span class="badge" ng-show="unreadMessages.length" ng-bind="unreadMessages.length"></span>
@@ -68,6 +72,9 @@
         </li>
         <li class="list-group-item" tf-go="/get-all/companies">
             <i class="fa fa-building"></i> شرکت‌ها
+        </li>
+        <li class="list-group-item" tf-go="/get-all/importers" ng-if="me !== false && me.type === 1">
+            <i class="fa fa-download"></i> واردکننده‌ها
         </li>
         <li class="list-group-item" tf-go="/get-all/brands">
             <i class="fa fa-tags"></i> برندها

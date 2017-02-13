@@ -1,0 +1,30 @@
+<nav class="tf-navbar">
+    <section class="icon">
+        <i class="fa fa-download"></i>
+    </section>
+    <section class="title">
+        <h4> واردکننده </h4>
+    </section>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-home"></i>
+    </section>
+    <section class="icon button" tf-go="back">
+        <i class="fa fa-arrow-left"></i>
+    </section>
+</nav>
+<form class="tf-container vertical-padding" ng-submit="submit()">
+    <div class="container-fluid col-md-8 col-md-offset-2">
+        <div class="row">
+            <div class="form-group col-xs-12">
+                <label class="control-label"> نام </label>
+                <input type="text" class="form-control" ng-model="inputs.alias" placeholder="نام" required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-12">
+                <label class="control-label"> </label>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">ثبت</button>
+            </div>
+        </div>
+    </div>
+</form>

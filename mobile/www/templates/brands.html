@@ -26,6 +26,9 @@
 </div>
 <tf-bottom-sheet open="_bottomSheet" label="برند {{hovered.alias}}">
     <ul class="list-group block">
+        <li class="list-group-item" tf-go="get-all/products/brand={{hovered.id}}/{{hovered.alias}}">
+            <i class="fa fa-edit"></i> نمایش محصولات
+        </li>
         <li class="list-group-item" tf-go="update/brands/{{hovered.id}}" ng-if="me !==false && me.type==1">
             <i class="fa fa-edit"></i> ویرایش برند
         </li>

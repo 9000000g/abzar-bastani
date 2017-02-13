@@ -1,3 +1,14 @@
+.logo-container{
+    padding: 0 25px;
+}
+
+.logo-navbar, .logo-navbar .icon, .logo-navbar .button{
+    background: #8a1616;
+}
+.logo-navbar .button:active{
+    background: #921616;
+}
+
 .profile {
     padding: 25px 0;
     text-align: center;
@@ -39,6 +50,11 @@
     line-height: 2;
 }
 
+
+.product, .product-container{
+    padding-left: 0;
+    padding-right: 0;
+}
 .product .label {
     display: inline-block;
     padding: 8px;
@@ -125,9 +141,9 @@ ul.last li h5 {
     height: 80px;
     margin-bottom: 15px;
     text-align: center;
-    font-size: 15px;
+    font-size: 12px;
     font-weight:bold;
-    padding: 25px 0;
+    padding: 26px 0;
     color: #fff;
     background: #b12121;
     cursor: pointer;
@@ -135,6 +151,10 @@ ul.last li h5 {
     -webkit-transition: all .3s;
     border: solid 3px rgba(255,255,255,0.4);
     border-radius: 6px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
 }
 #main .ad a{
     color: #fff;

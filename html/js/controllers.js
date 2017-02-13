@@ -31,6 +31,8 @@ angular.module('app.controllers', [])
                     return 'آگهی';
             }
         }
+        $rootScope.isCordova = document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
+
         $rootScope.deside(); // check logged in or not
     })
     .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, unreadMessages, ads, slides) {

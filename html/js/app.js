@@ -26,26 +26,26 @@ function tableNameToItem(tableName) {
 }
 
 function findTemplate(templateName) {
-    return 'templates/' + templateName + '.html';
+    return 'templates/' + templateName + '.html?h2';
 }
 
 function findItemsTemplate(urlattr) {
     var template = urlattr.table;
-    return 'templates/' + template + '.html';
+    return 'templates/' + template + '.html?h2';
 }
 
 function findItemTemplate(urlattr) {
     var template = tableNameToItem(urlattr.table);
-    return 'templates/' + template + '.html';
+    return 'templates/' + template + '.html?h2';
 }
 
 function findNewItemTemplate(urlattr) {
     var template = 'new-' + tableNameToItem(urlattr.table);
-    return 'templates/' + template + '.html';
+    return 'templates/' + template + '.html?h2';
 }
 function findFilesTemplate(urlattr) {
     var template = tableNameToItem(urlattr.table);
-    return 'templates/' + template + '-files.html';
+    return 'templates/' + template + '-files.html?h2';
 }
 
 function tableItemsResolve() {
