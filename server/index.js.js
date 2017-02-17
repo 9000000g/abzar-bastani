@@ -237,7 +237,11 @@ app.post('/insert/:table', upload.single('file'), function (req, res) {
         }
     }).catch(function (error) {
         console.log(error);
-        res.status(500).json(error);
+        if (error.errno == 1062) {
+            res.status(500).json('این مشخصات قبلا ثبت شده.');
+        } else {
+            res.status(500).json(error);
+        }
     });
 });
 app.post('/update/:table/:filters', upload.single('file'), function (req, res) {

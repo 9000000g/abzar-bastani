@@ -13,8 +13,9 @@
     </section>
 </nav>
 <abzar-tabs ng-if="filters" active="3"></abzar-tabs>
+<abzar-tabs ng-if="!filters" active="-1"></abzar-tabs>
 <div class="tf-container">
-    <ul class="list-group block pointer" ng-if="items.length > 0">
+    <ul class="list-group bastan-list-group block pointer col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" ng-if="items.length > 0">
         <li class="list-group-item" ng-repeat="item in items" tf-go="/get/messages/{{item.id}}" ng-class="{'message-unread': item.read!=1, 'message-unconfirm': item.confirmed!=1, 'message-confirm': item.confirmed==1}">
             <i class="fa fa-comment"></i> {{item.user_alias}}, <b>{{messageType(item.type)}}</b>
             <p> {{item.message}}</p>

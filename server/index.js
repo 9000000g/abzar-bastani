@@ -260,8 +260,17 @@ app.post('/insert/:table', upload.single('file'), (req, res) => {
             }
         })
         .catch((error) => {
-            console.log(error);
-            res.status(500).json(error);
+            console.log('ERROR', error.errno);
+            if(error.errno == 1062){
+                res.status(500).json('این مشخصات قبلا ثبت شده.');
+            }
+            else if(error.errno == 1062){
+                res.status(500).json('نوع اطلاعات وارد شده صحیح نیست.');
+            }
+            else{
+                res.status(500).json(error);
+            }
+            
         });
 });
 app.post('/update/:table/:filters', upload.single('file'), (req, res) => {
@@ -309,8 +318,16 @@ app.post('/update/:table/:filters', upload.single('file'), (req, res) => {
             }
         })
         .catch((error) => {
-            console.log(error);
-            res.status(500).json(error);
+            console.log('ERROR', error.errno);
+            if(error.errno == 1062){
+                res.status(500).json('این مشخصات قبلا ثبت شده.');
+            }
+            else if(error.errno == 1062){
+                res.status(500).json('نوع اطلاعات وارد شده صحیح نیست.');
+            }
+            else{
+                res.status(500).json(error);
+            }
         });
 });
 

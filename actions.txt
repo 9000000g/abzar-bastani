@@ -25,3 +25,6 @@ CREATE TABLE `bastani`.`slider` (`id` INT NOT NULL AUTO_INCREMENT,`title` VARCHA
 
 
 ALTER TABLE `bastani`.`services` CHANGE COLUMN `title` `title` VARCHAR(355) CHARACTER SET 'utf8' NULL DEFAULT NULL , CHANGE COLUMN `body` `body` VARCHAR(455) CHARACTER SET 'utf8' NULL DEFAULT NULL ;
+
+
+-----

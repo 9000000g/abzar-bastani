@@ -35,11 +35,12 @@ angular.module('app.controllers', [])
 
         $rootScope.deside(); // check logged in or not
     })
-    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, unreadMessages, ads, slides) {
+    .controller('MainCtrl', function($scope, $rootScope, $theFramework, $timeout, $http, $tfHttp, unreadMessages, ads, slides, lastProducts) {
         //alert('we are here');
         $scope.sidebar = false;
         $scope.searchbar = false;
         $scope.slides = slides;
+        $scope.lastProducts = lastProducts;
 
         $scope.unreadMessages = unreadMessages;
         $scope.ads = ads;

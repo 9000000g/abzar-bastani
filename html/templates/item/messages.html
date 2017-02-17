@@ -12,8 +12,9 @@
         <i class="fa fa-arrow-left"></i>
     </section>
 </nav>
+<abzar-tabs active="-1"></abzar-tabs>
 <div class="tf-container infomessage">
-    <div class="horizontal-padding vertical-padding item  row col-md-8 col-md-offset-2">
+    <div class="horizontal-padding vertical-padding row col-md-8 col-md-offset-2">
         <div ng-if="item.files.length==1" class="product-img-single" ng-style="{'background': 'url(' + item.files[0] + ')'}" ></div> 
         <h4 tf-go="/get/products/{{item.product_id}}" ng-if="item.product">  درخواست خرید <a> {{item.product}} </a> </h4>
         <div> <b> نوع درخواست:</b>

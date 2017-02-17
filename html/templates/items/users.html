@@ -1,0 +1,38 @@
+<nav class="tf-navbar">
+    <section class="icon">
+        <i class="fa fa-user"></i>
+    </section>
+    <section class="title">
+        <h4> کاربران </h4>
+    </section>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-home"></i>
+    </section>
+    <section class="icon button" tf-go="back">
+        <i class="fa fa-arrow-left"></i>
+    </section>
+</nav>
+<abzar-tabs active="-1"></abzar-tabs>
+<div class="tf-container">
+    <ul class="list-group block pointer bastan-list-group  col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" ng-if="items.length > 0">
+        <li class="list-group-item" ng-repeat="item in items" ng-click="bottomSheet(item)">
+            <i class="fa fa-user"></i> <b>{{item.alias}}</b>
+            <p> نام کاربری: <b> {{item.username}} </b> </p>
+        </li>
+        <br><br><br>
+    </ul>
+    <p class="vertical-padding horizontal-padding" ng-if="items.length == 0"> هنوز هیچ آیتمی ثبت نشده‌است. </p>
+    <tf-floating-btn tf-go="/insert/users" ng-if="me !==false && me.type==1">
+        <i class="fa fa-plus"></i>
+    </tf-floating-btn>
+</div>
+<tf-bottom-sheet open="_bottomSheet" label="{{hovered.title}}">
+    <ul class="list-group block">
+        <li class="list-group-item" tf-go="update/users/{{hovered.id}}" ng-if="me !==false && me.type==1">
+            <i class="fa fa-edit"></i> ویرایش
+        </li>
+        <li class="list-group-item" ng-click="deleteItem(hovered.id)" ng-if="me !==false && me.type==1">
+            <i class="fa fa-trash"></i> حذف
+        </li>
+    </ul>
+</tf-bottom-sheet>

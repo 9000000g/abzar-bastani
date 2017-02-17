@@ -1,0 +1,68 @@
+<nav class="tf-navbar">
+    <section class="icon">
+        <i class="fa fa-download"></i>
+    </section>
+    <section class="title">
+        <h4> شرکت </h4>
+    </section>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-home"></i>
+    </section>
+    <section class="icon button" tf-go="back">
+        <i class="fa fa-arrow-left"></i>
+    </section>
+</nav>
+<form class="tf-container vertical-padding" ng-submit="submit()">
+    <div class="container-fluid col-md-8 col-md-offset-2">
+        <div class="row">
+            <div class="form-group col-xs-12">
+                <label class="control-label"> نام </label>
+                <input type="text" class="form-control" ng-model="inputs.alias" placeholder="نام" required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-12">
+                <label class="control-label"> خدمات </label>
+                <input type="text" class="form-control" ng-model="inputs.job" placeholder="نام" required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <label class="control-label">آدرس</label>
+                <textarea class="form-control" ng-model="inputs.address" placeholder="آدرس" required></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label class="control-label">تلفن</label>
+                <input class="form-control" ng-model="inputs.address" type="tel" placeholder="تلفن" required>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="control-label">فکس</label>
+                <input class="form-control" ng-model="inputs.fax" type="tel" placeholder="فکس" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label class="control-label">سایت</label>
+                <input class="form-control" ng-model="inputs.site" placeholder="سایت" required>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="control-label">ایمیل</label>
+                <input class="form-control" ng-model="inputs.site" placeholder="ایمیل" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <label class="control-label">توضیحات</label>
+                <textarea class="form-control" ng-model="inputs.description" placeholder="توضیحات" required></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-12">
+                <label class="control-label"> </label>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">ثبت</button>
+            </div>
+        </div>
+    </div>
+</form>

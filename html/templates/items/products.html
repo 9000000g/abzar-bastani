@@ -1,0 +1,74 @@
+<nav class="tf-navbar">
+    <section class="icon">
+        <i class="fa fa-cubes"></i>
+    </section>
+    <section class="title">
+        <h4 ng-if="!searchTitle"> {{filters.group==1? 'ماشین‌آلات': (filters.group==2? 'ابزارآلات': 'نتایج جست‌وجو')}} </h4>
+        <h4 ng-if="searchTitle"> جست‌وجو: {{searchTitle}}</h4>
+    </section>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-home"></i>
+    </section>
+    <section class="icon button" tf-go="back">
+        <i class="fa fa-arrow-left"></i>
+    </section>
+</nav>
+<abzar-tabs active="filters.group==1? 1: (filters.group==2? 2: -1)"></abzar-tabs>
+<div class="tf-container vertical-padding">
+    <div class="col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 product-container">
+        <div class="col-xs-12 product" ng-repeat="item in items">
+            <div class="panel panel-default">
+                <div class="panel-heading pointer" ng-click="bottomSheet(item)"><i class="fa fa-cube"></i> <b>{{item.name}}، مدل {{item.model}}</b> </div>
+                <div class="panel-body">
+                    <!--img ng-click="bottomSheet(item)" ng-src="{{item.files[0]}}" class="pointer img" width="100%" ng-if="item.files.length == 1"/-->
+                    <div ng-click="bottomSheet(item)" class="pointer products-img-container">
+                        <div class="product-img" ng-style="{'background': 'url(' + item.files[0] + ')'}" ></div>
+                        <!--tf-image-slider  ng-if="item.files.length>1" ng-model="item.files" height="365" class="slider"></tf-image-slider-->
+                    </div>
+                    <p class="text-justify">
+                        محصول <b>{{item.name}}</b>، مدل <b>{{item.model}}</b> با کد <b>{{item.code}}</b> و ساخته‌شده توسط <b class="pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}brand={{item.brand}}/برند {{item.brand_alias}}">برند {{item.brand_alias}}</b> می‌باشد.
+                        این محصول در <b class="pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}year={{item.year}}/سال ساخت {{item.year}}">سال {{item.year}}</b> و در <b class="pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}country={{item.country}}/کشور {{item.country_alias}}">کشور {{item.country_alias}}</b> ساخته شده
+                        که از نظر دسته‌بندی، در <b class="pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}industry={{item.industry}}/صنعت {{item.industry_alias}}">صنعت {{item.industry_alias}}</b> و در <b class="pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}subgroup={{item.subgroup}}/زیرگروه {{item.subgroup_alias}}">زیرگروه {{item.subgroup_alias}}</b> قرار می‌گیرد.
+                       توجه داشته‌باشید که این محصول <b class="pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}used=1/کارکرده" ng-if="item.used">کارکرده</b><b class="pointer" tf-go="/get-all/products/{{filters.group? 'group='+filters.group+'&': ''}}used=0/نو" ng-if="!item.used">نو</b> می‌باشد.
+                       جهت سفارش این محصول، پس از ورود به برنامه، از دکمه زیر استفاده کنید و برای دیدن فایل‌ها و سایر عملیات، روی تصویر محصول کلیک کنید.
+                    </p>
+                    <hr/>
+                    <div class="text-left">
+                        <p>
+                            <i class="fa fa-dollar"></i> قیمت: 
+                            <b ng-if="item.price">{{item.price}} تومان</b>
+                            <b ng-if="!item.price">نامشخص</b>
+                        </p>
+                    </div>
+                    <div class="text-left">
+                        <button class="btn btn-default" tf-go="/get/products/{{item.id}}"> <i class="fa fa-lg fa-eye"></i> مشاهده محصول </button>
+                        <button class="btn btn-success" tf-go="/insert/messages/product={{item.code}}&type=1"> <i class="fa fa-lg fa-shopping-cart"></i> درخواست خرید </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="vertical-padding horizontal-padding" ng-if="items.length==0"> متاسفانه هیچ موردی یافت نشد! </p>
+    <tf-floating-btn tf-go="/insert/products" ng-if="me !==false && me.type==1">
+        <i class="fa fa-plus"></i>
+    </tf-floating-btn>
+</div>
+<tf-bottom-sheet open="_bottomSheet" label="{{hovered.name}}، مدل {{hovered.model}}">
+    <ul class="list-group block">
+        <li class="list-group-item" tf-go="get/products/{{hovered.id}}">
+            <i class="fa fa-eye"></i> مشاهده محصول
+        </li>
+        <li class="list-group-item" tf-go="update/products/{{hovered.id}}" ng-if="me !==false && me.type==1">
+            <i class="fa fa-edit"></i> ویرایش محصول
+        </li>
+        <li class="list-group-item" tf-go="files/products/{{hovered.id}}" ng-if="me !==false && me.type==1">
+            <i class="fa fa-file"></i> فایل‌های محصول
+        </li>
+        <li class="list-group-item" ng-click="deleteItem(hovered.id)" ng-if="me !==false && me.type==1">
+            <i class="fa fa-trash"></i> حذف محصول
+        </li>
+        <li class="list-group-item" tf-go="/insert/messages/product={{hovered.code}}&type=1">
+            <i class="fa fa-shopping-cart"></i> درخواست خرید محصول
+        </li>
+    </ul>
+</tf-bottom-sheet>

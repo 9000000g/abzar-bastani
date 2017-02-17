@@ -12,9 +12,9 @@
         <i class="fa fa-arrow-left"></i>
     </section>
 </nav>
+<abzar-tabs active="-1"></abzar-tabs>
 <div class="tf-container">
     <div class="product horizontal-padding vertical-padding row col-md-8 col-md-offset-2">
-        <!--img ng-src="{{item.file}}" class="full-width pointer" /-->
         <div ng-if="item.files.length==1" class="product-img-single" ng-style="{'background': 'url(' + item.files[0] + ')'}" ></div>
         <tf-image-slider  ng-if="item.files.length>1" ng-model="item.files" height="365" class="slider"></tf-image-slider>
         <div class="horizontal-padding vertical-padding ">
@@ -51,7 +51,9 @@
                 <p class="inline" ng-if="!item.price">نامشخص</p>
             </div>
             <hr>
-            <button class="btn btn-primary" tf-go="/insert/messages/product={{item.code}}&type=1"> درخواست خرید این محصول </button>
+            <div class="text-left">
+                <button class="btn btn-success" tf-go="/insert/messages/product={{item.code}}&type=1"> <i class="fa fa-lg fa-shopping-cart"></i> درخواست خرید </button>
+            </div>
         </div>
     </div>
 </div>

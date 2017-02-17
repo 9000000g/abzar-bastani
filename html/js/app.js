@@ -31,21 +31,21 @@ function findTemplate(templateName) {
 
 function findItemsTemplate(urlattr) {
     var template = urlattr.table;
-    return 'templates/' + template + '.html?h2';
+    return 'templates/items/' + template + '.html?h2';
 }
 
 function findItemTemplate(urlattr) {
-    var template = tableNameToItem(urlattr.table);
-    return 'templates/' + template + '.html?h2';
+    var template = urlattr.table;
+    return 'templates/item/' + template + '.html?h2';
 }
 
 function findNewItemTemplate(urlattr) {
-    var template = 'new-' + tableNameToItem(urlattr.table);
-    return 'templates/' + template + '.html?h2';
+    var template = urlattr.table;
+    return 'templates/new/' + template + '.html?h2';
 }
 function findFilesTemplate(urlattr) {
-    var template = tableNameToItem(urlattr.table);
-    return 'templates/' + template + '-files.html?h2';
+    var template = urlattr.table;
+    return 'templates/files/' + template + '.html?h2';
 }
 
 function tableItemsResolve() {
@@ -360,6 +360,35 @@ function mainResolve() {
             $theFramework.loading();
             $tfHttp.get(
                 '/get-all/messages/read=0'
+            ).then(function(res) {
+                $theFramework.loading(false);
+                defer.resolve(res.data);
+            }).catch(function(err) {
+                $theFramework.loading(false);
+                defer.resolve({});
+            });
+            return defer.promise;
+        },
+        lastProducts: function($tfHttp, $q, $theFramework){
+            var defer = $q.defer();
+            $theFramework.loading();
+            $tfHttp.get(
+                '/get-all/products/TRUE/10'
+            ).then(function(res) {
+                $theFramework.loading(false);
+                defer.resolve(res.data);
+            }).catch(function(err) {
+                $theFramework.loading(false);
+                //$theFramework.toast(err.data);
+                defer.resolve({});
+            });
+            return defer.promise;
+        },
+        info: function($tfHttp, $q, $theFramework){
+            var defer = $q.defer();
+            $theFramework.loading();
+            $tfHttp.get(
+                '/get/companies/1'
             ).then(function(res) {
                 $theFramework.loading(false);
                 defer.resolve(res.data);
