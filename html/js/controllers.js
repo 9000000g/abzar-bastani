@@ -106,15 +106,18 @@ angular.module('app.controllers', [])
     .controller('TableItemCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $routeParams, item) {
         $scope.item = item;
         $scope.temp = {};
-        if( $routeParams.table == 'messages' && $rootScope.me !== false && $rootScope.me.type == 1){
+        if( ['products', 'messages'].indexOf($routeParams.table) != -1 && $rootScope.me !== false && $rootScope.me.type == 1){
             var id = $routeParams.id;
-            $tfHttp.post('/update/messages/id=' + $routeParams.id, {read: 1});
-
-            if( item.type == 5 ){
-                $scope.$watch('item.confirmed', function(val){
-                    $tfHttp.post('/update/messages/id=' + $routeParams.id, {confirmed: val});
-                });
+            if( $routeParams.table == 'messages' ){
+                $tfHttp.post('/update/messages/id=' + $routeParams.id, {read: 1});
             }
+            $scope.$watch('item.confirmed', function(val){
+                $tfHttp.post('/update/'+$routeParams.table+'/id=' + $routeParams.id, {confirmed: val});
+            });
+
+            //if( item.type == 5 ){
+
+            //}
         }
 
     })

@@ -96,6 +96,10 @@ module.exports.getAll = (table = 'users', filters = {}, limit = false) => {
             filters['p`.`id'] = filters.id;
             delete filters.id;
         }
+        if (filters.confirmed) {
+            filters['p`.`confirmed'] = filters.confirmed;
+            delete filters.confirmed;
+        }
     } else if (table == 'messages') {
         if (filters.id) {
             filters['m`.`id'] = filters.id;
@@ -104,6 +108,10 @@ module.exports.getAll = (table = 'users', filters = {}, limit = false) => {
         if (filters.type) {
             filters['m`.`type'] = filters.type;
             delete filters.type;
+        }
+        if (filters.confirmed) {
+            filters['m`.`confirmed'] = filters.confirmed;
+            delete filters.confirmed;
         }
     }
     for (let i in filters) {
@@ -187,6 +195,7 @@ module.exports.insert = (table = 'users', data = {}) => {
         delete data.read;
     }
     let query = qc.new().insert(table, data).val();
+    console.log(query);
     return new Promise((resolve, reject) => {
         db.query(query, (err, result) => {
             if (err) {

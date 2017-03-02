@@ -100,16 +100,6 @@ app.get('/get-all/:table/:filters?/:limit?', (req, res) => {
             }
         }
     }
-    if (req.params.table == 'messages' && filters.type != 5) {
-        if (req.session == null) {
-            res.status(500).json('اشکال در ایجاد سشن!');
-            return;
-        }
-        if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1) {
-            res.status(500).json('ابتدا وارد سیستم شوید!');
-            return;
-        }
-    }
     bst.getAll(req.params.table, filters, req.params.limit).then((result) => {
             for (var i in result) {
                 result[i].files = bst.getFiles( req.params.table, result[i].id, true );
@@ -226,7 +216,15 @@ app.post('/insert/:table', upload.single('file'), (req, res) => {
         res.status(500).json('اشکال در ایجاد سشن!');
         return;
     }
-    if (  req.params.table == 'messages' || req.params.table == 'userproducts' || (req.params.table == 'users' && req.body.type != 1) ) { // mikhad user add kone o typesh 1 nist
+    if( req.params.table == 'products' && req.session.me !== false ){
+        if( [3,4,5,6].indexOf(req.session.me.type) != -1 ){
+            req.body.confirmed = 0;
+        }
+        else{
+            req.body.confirmed = 1;
+        }
+    }
+    else if (  req.params.table == 'messages' || req.params.table == 'userproducts' || (req.params.table == 'users' && req.body.type != 1) ) { // mikhad user add kone o typesh 1 nist
         if( req.params.table == 'messages' ){
             req.body.user = req.session.me.id;
             req.body.read = 0;

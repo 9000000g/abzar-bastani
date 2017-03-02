@@ -18,7 +18,7 @@
     <div class="col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 product-container">
         <div class="col-xs-12 product" ng-repeat="item in items">
             <div class="panel panel-default">
-                <div class="panel-heading pointer" ng-click="bottomSheet(item)"><i class="fa fa-cube"></i> <b>{{item.name}}، مدل {{item.model}}</b> </div>
+                <div class="panel-heading pointer" ng-click="bottomSheet(item)"><i class="fa fa-cube"></i> <b>{{item.name}}، مدل {{item.model}}</b> <b class="red" ng-if="item.confirmed != 1">تایید نشده!</b> </div>
                 <div class="panel-body">
                     <!--img ng-click="bottomSheet(item)" ng-src="{{item.files[0]}}" class="pointer img" width="100%" ng-if="item.files.length == 1"/-->
                     <div ng-click="bottomSheet(item)" class="pointer products-img-container">
@@ -49,7 +49,7 @@
         </div>
     </div>
     <p class="vertical-padding horizontal-padding" ng-if="items.length==0"> متاسفانه هیچ موردی یافت نشد! </p>
-    <tf-floating-btn tf-go="/insert/products" ng-if="me !==false && me.type==1">
+    <tf-floating-btn tf-go="/insert/products" ng-if="me !==false && [1,3,4,5,6].indexOf(me.type)!=-1">
         <i class="fa fa-plus"></i>
     </tf-floating-btn>
 </div>
@@ -57,6 +57,9 @@
     <ul class="list-group block">
         <li class="list-group-item" tf-go="get/products/{{hovered.id}}">
             <i class="fa fa-eye"></i> مشاهده محصول
+        </li>
+        <li class="list-group-item" tf-go="get/products/{{hovered.id}}" ng-if="me !==false && me.type==1">
+            <i class="fa fa-edit"></i> تایید محصول
         </li>
         <li class="list-group-item" tf-go="update/products/{{hovered.id}}" ng-if="me !==false && me.type==1">
             <i class="fa fa-edit"></i> ویرایش محصول

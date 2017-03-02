@@ -94,16 +94,6 @@ app.get('/get-all/:table/:filters?/:limit?', function (req, res) {
             }
         }
     }
-    if (req.params.table == 'messages' && filters.type != 5) {
-        if (req.session == null) {
-            res.status(500).json('اشکال در ایجاد سشن!');
-            return;
-        }
-        if (typeof req.session.me == 'undefined' || req.session.me === false || req.session.me.type != 1) {
-            res.status(500).json('ابتدا وارد سیستم شوید!');
-            return;
-        }
-    }
     bst.getAll(req.params.table, filters, req.params.limit).then(function (result) {
         for (var i in result) {
             result[i].files = bst.getFiles(req.params.table, result[i].id, true);
@@ -144,15 +134,13 @@ app.post('/add-file/:table/:id', upload.single('file'), function (req, res) {
     }
     //fs.unlinkSync
     if (typeof req.file != 'undefined' && req.file) {
-        (function () {
-            var rnd = new Date().getTime();
-            var path = __dirname + '/files/' + req.params.table + '-' + req.params.id + '-' + rnd + '.jpg';
-            jimp.read(req.file.path).then(function (lenna) {
-                lenna.resize(450, jimp.AUTO).quality(45).write(path, function () {
-                    res.json('با موفقیت آپلود شد');
-                });
+        var rnd = new Date().getTime();
+        var _path = __dirname + '/files/' + req.params.table + '-' + req.params.id + '-' + rnd + '.jpg';
+        jimp.read(req.file.path).then(function (lenna) {
+            lenna.resize(450, jimp.AUTO).quality(45).write(_path, function () {
+                res.json('با موفقیت آپلود شد');
             });
-        })();
+        });
     } else {
         res.status(500).json('اشکال در آپلود فایل!');
     }
@@ -204,7 +192,13 @@ app.post('/insert/:table', upload.single('file'), function (req, res) {
         res.status(500).json('اشکال در ایجاد سشن!');
         return;
     }
-    if (req.params.table == 'messages' || req.params.table == 'userproducts' || req.params.table == 'users' && req.body.type != 1) {
+    if (req.params.table == 'products' && req.session.me !== false) {
+        if ([3, 4, 5, 6].indexOf(req.session.me.type) != -1) {
+            req.body.confirmed = 0;
+        } else {
+            req.body.confirmed = 1;
+        }
+    } else if (req.params.table == 'messages' || req.params.table == 'userproducts' || req.params.table == 'users' && req.body.type != 1) {
         // mikhad user add kone o typesh 1 nist
         if (req.params.table == 'messages') {
             req.body.user = req.session.me.id;
@@ -222,23 +216,23 @@ app.post('/insert/:table', upload.single('file'), function (req, res) {
     bst.insert(req.params.table, req.body).then(function (result) {
         //console.log('inserted')
         if (typeof req.file != 'undefined' && req.file) {
-            (function () {
-                var rnd = new Date().getTime();
-                var path = __dirname + '/files/' + req.params.table + '-' + result.insertId + '-' + rnd + '.jpg';
-                jimp.read(req.file.path).then(function (lenna) {
-                    lenna.resize(450, jimp.AUTO).quality(45).write(path, function () {
-                        res.json(result);
-                    });
+            var rnd = new Date().getTime();
+            var _path2 = __dirname + '/files/' + req.params.table + '-' + result.insertId + '-' + rnd + '.jpg';
+            jimp.read(req.file.path).then(function (lenna) {
+                lenna.resize(450, jimp.AUTO).quality(45).write(_path2, function () {
+                    res.json(result);
                 });
-                //fs.renameSync(req.file.path, path);
-            })();
+            });
+            //fs.renameSync(req.file.path, path);
         } else {
             res.json(result);
         }
     }).catch(function (error) {
-        console.log(error);
+        console.log('ERROR', error.errno);
         if (error.errno == 1062) {
             res.status(500).json('این مشخصات قبلا ثبت شده.');
+        } else if (error.errno == 1062) {
+            res.status(500).json('نوع اطلاعات وارد شده صحیح نیست.');
         } else {
             res.status(500).json(error);
         }
@@ -274,22 +268,26 @@ app.post('/update/:table/:filters', upload.single('file'), function (req, res) {
     bst.update(req.params.table, req.body, filters).then(function (result) {
         //console.log('inserted')
         if (typeof req.file != 'undefined' && req.file) {
-            (function () {
-                var rnd = new Date().getTime();
-                var path = __dirname + '/files/' + req.params.table + '-' + filters.id + '-' + rnd + '.jpg';
-                jimp.read(req.file.path).then(function (lenna) {
-                    lenna.resize(450, jimp.AUTO).quality(45).write(path, function () {
-                        res.json(result);
-                    });
+            var rnd = new Date().getTime();
+            var _path3 = __dirname + '/files/' + req.params.table + '-' + filters.id + '-' + rnd + '.jpg';
+            jimp.read(req.file.path).then(function (lenna) {
+                lenna.resize(450, jimp.AUTO).quality(45).write(_path3, function () {
+                    res.json(result);
                 });
-                //res.json(result);
-            })();
+            });
+            //res.json(result);
         } else {
             res.json(result);
         }
     }).catch(function (error) {
-        console.log(error);
-        res.status(500).json(error);
+        console.log('ERROR', error.errno);
+        if (error.errno == 1062) {
+            res.status(500).json('این مشخصات قبلا ثبت شده.');
+        } else if (error.errno == 1062) {
+            res.status(500).json('نوع اطلاعات وارد شده صحیح نیست.');
+        } else {
+            res.status(500).json(error);
+        }
     });
 });
 

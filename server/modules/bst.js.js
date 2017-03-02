@@ -102,6 +102,10 @@ module.exports.getAll = function () {
             filters['p`.`id'] = filters.id;
             delete filters.id;
         }
+        if (filters.confirmed) {
+            filters['p`.`confirmed'] = filters.confirmed;
+            delete filters.confirmed;
+        }
     } else if (table == 'messages') {
         if (filters.id) {
             filters['m`.`id'] = filters.id;
@@ -110,6 +114,10 @@ module.exports.getAll = function () {
         if (filters.type) {
             filters['m`.`type'] = filters.type;
             delete filters.type;
+        }
+        if (filters.confirmed) {
+            filters['m`.`confirmed'] = filters.confirmed;
+            delete filters.confirmed;
         }
     }
     for (var i in filters) {
@@ -154,6 +162,7 @@ module.exports.insert = function () {
         delete data.read;
     }
     var query = qc.new().insert(table, data).val();
+    console.log(query);
     return new Promise(function (resolve, reject) {
         db.query(query, function (err, result) {
             if (err) {

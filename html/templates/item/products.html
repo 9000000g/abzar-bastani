@@ -46,6 +46,9 @@
             <div> <b> وضعیت: </b>
                 <p class="inline">{{item.used? 'کارکرده': 'نو'}}</p>
             </div>
+            <div ng-if="me !== false && me.type == 1"> <b> تایید شده توسط مدیر؟: </b>
+                <tf-switch ng-model="item.confirmed" on-value="1" off-value="0"></tf-switch>
+            </div>
             <div> <b> قیمت: </b>
                 <p class="inline" ng-if="item.price">{{item.price}} تومان</p>
                 <p class="inline" ng-if="!item.price">نامشخص</p>
