@@ -270,3 +270,38 @@ module.exports.getFiles = (table = 'products', id = "1", notFoundImg = false)=>{
     }
     return ret;
 }
+
+
+module.exports.getViews = (date=null)=>{
+    const query = qc.new()
+        .select(['views'], 'views')
+        .where(`\`date\` = '${date}'`)
+        .val();
+    return new Promise((resolve, reject) => {
+        db.query(query, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                if( result.length == 1){
+                    resolve(result[0].views);
+                }
+                else{
+                    resolve(0);
+                }
+                
+            }
+        });
+    });
+}
+module.exports.addView = (date=null)=>{
+    const query = `INSERT INTO \`views\` (\`date\`, \`views\`) VALUES ('${date}', 1) ON DUPLICATE KEY UPDATE \`views\` = \`views\` + 1;`;
+    return new Promise((resolve, reject) => {
+        db.query(query, (err, result) => {
+            if (err) {
+                reject(false);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+}

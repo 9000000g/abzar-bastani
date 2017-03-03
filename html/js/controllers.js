@@ -5,13 +5,15 @@ angular.module('app.controllers', [])
         $rootScope.me = false;
         $rootScope.deside = function() {
             $theFramework.loading();
-            $tfHttp.get('/users/me').then(function(res) {
-                $theFramework.loading(false);
-                $rootScope.me = res.data;
-                // alert($rootScope.me);
-            }).catch(function(err) {
-                $theFramework.loading(false);
-                $theFramework.toast(err.data);
+            $tfHttp.post('/views/'+moment.utc().format('jYYYY-jMM-jDD')).then(function(res) {
+                $tfHttp.get('/users/me').then(function(res) {
+                    $theFramework.loading(false);
+                    $rootScope.me = res.data;
+                    // alert($rootScope.me);
+                }).catch(function(err) {
+                    $theFramework.loading(false);
+                    $theFramework.toast(err.data);
+                });
             });
         }
         $rootScope.log = function(msg){
@@ -77,6 +79,26 @@ angular.module('app.controllers', [])
             $theFramework.loading(false);
             $theFramework.toast(err.data);
         });
+    })
+    .controller('ViewsCtrl', function($scope, $rootScope, $theFramework, $timeout, $interval, $tfHttp) {
+        $scope.inputs = {};
+        $scope.result = null;
+        $scope.get = function() {
+            $theFramework.loading();
+            $scope.result = 0;
+            var promise = $interval(function(){
+                $scope.result = parseInt( Math.random() * 100 );
+            }, 50);
+
+            $tfHttp.get('/views/'+$scope.inputs.date).then(function(res) {
+                $theFramework.loading(false);
+                $interval.cancel(promise);
+                $scope.result = res.data;
+            }).catch(function(err) {
+                $theFramework.loading(false);
+                $theFramework.toast(err.data);
+            });
+        }
     })
     .controller('TableItemsCtrl', function($scope, $rootScope, $theFramework, $tfHttp, $route, $routeParams, items, searching, searchTitle, filters) {
         $scope.bars = true;

@@ -28,3 +28,6 @@ ALTER TABLE `bastani`.`services` CHANGE COLUMN `title` `title` VARCHAR(355) CHAR
 
 
 -----
+
+
+CREATE TABLE `bastani`.`views` (`date` VARCHAR(45) NOT NULL,`views` INT NULL, PRIMARY KEY (`date`));

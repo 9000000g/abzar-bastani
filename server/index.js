@@ -379,3 +379,25 @@ app.get('/fix-uploaded', upload.single('file'), (req, res) => {
     
 
 });
+
+
+
+// for views
+app.get('/views/:date', (req, res) => {
+    bst.getViews(req.params.date).then((result) => {
+            res.json(result);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).json('اشکال در بازیابی اطلاعات!');
+        });
+});
+app.post('/views/:date', (req, res) => {
+    bst.addView(req.params.date).then((result) => {
+            res.json(result);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).json('ثبت اطلاعات با مشکل مواجه شد!');
+        });
+});

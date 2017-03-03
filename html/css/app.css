@@ -313,3 +313,7 @@ ul.last li h5 {
 .message-confirm .fa{
     color: #2EB22C !important;
 }
+
+.views-number{
+    font-size: 58px;
+}

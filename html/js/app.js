@@ -457,6 +457,10 @@ angular.module('app', ['theFramework', 'app.services', 'app.directives', 'app.co
                 controller: 'MainCtrl',
                 resolve: mainResolve()
             })
+            .when('/views', {
+                templateUrl: findTemplate('views'),
+                controller: 'ViewsCtrl'
+            })
             .when('/get-all/:table/:filters?/:searchTitle?', {
                 controller: 'TableItemsCtrl',
                 templateUrl: findItemsTemplate,

@@ -1,0 +1,35 @@
+<nav class="tf-navbar">
+    <section class="icon">
+        <i class="fa fa-bar-chart"></i>
+    </section>
+    <section class="title">
+        <h4 ng-show="result === null"> آمار بازدید </h4>
+        <h4 ng-show="result !== null">آمار بازدید شما در تاریخ {{inputs.date}}</h4>
+    </section>
+    <section class="icon button" tf-go="/main">
+        <i class="fa fa-home"></i>
+    </section>
+    <section class="icon button" tf-go="back">
+        <i class="fa fa-arrow-left"></i>
+    </section>
+</nav>
+<abzar-tabs active="-1"></abzar-tabs>
+<div class="tf-container vertical-padding">
+    <form class="container-fluid col-md-8 col-md-offset-2" ng-submit="get()">
+        <div class="row" ng-show="result === null">
+            <div class="form-group col-xs-12">
+                <label class="control-label"> تاریخ </label>
+                <tf-datepicker class="form-control" ng-model="inputs.date" placeholder="تاریخ" required/>
+            </div>
+            <div class="form-group col-xs-12">
+                <label class="control-label"> ‌ </label>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">ثبت</button>
+            </div>
+        </div>
+        <div class="row" ng-show="result !== null">
+            <div class="col-xs-12">
+                <h1 class="text-center red views-number">{{result}}</h1>
+            </div>
+        </div>
+    </form>
+</div>

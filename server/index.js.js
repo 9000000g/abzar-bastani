@@ -333,3 +333,21 @@ app.get('/fix-uploaded', upload.single('file'), function (req, res) {
         });
     });
 });
+
+// for views
+app.get('/views/:date', function (req, res) {
+    bst.getViews(req.params.date).then(function (result) {
+        res.json(result);
+    }).catch(function (error) {
+        console.log(error);
+        res.status(500).json('اشکال در بازیابی اطلاعات!');
+    });
+});
+app.post('/views/:date', function (req, res) {
+    bst.addView(req.params.date).then(function (result) {
+        res.json(result);
+    }).catch(function (error) {
+        console.log(error);
+        res.status(500).json('ثبت اطلاعات با مشکل مواجه شد!');
+    });
+});
